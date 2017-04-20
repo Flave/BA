@@ -1,0 +1,1 @@
+Any data that gets into a redux application gets there by actions
