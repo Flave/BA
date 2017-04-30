@@ -29,7 +29,18 @@ module.exports = function(passport) {
   // facebook --------------------------------
 
   // route for facebook authentication and login
-  router.get('/auth/facebook', passport.authenticate('facebook', { scope : ['email', 'user_likes'] }));
+  router.get('/auth/facebook', passport.authenticate('facebook', { 
+    scope : [
+    'email', 
+    'user_likes', 
+    'user_friends', 
+    'user_posts', 
+    'user_actions.books', 
+    'user_actions.music', 
+    'user_actions.news', 
+    'user_actions.video'
+    ]
+  }));
   router.get('/auth/facebook/callback', function(req, res, next) {
     passport.authenticate('facebook', {
         successRedirect: '/', 

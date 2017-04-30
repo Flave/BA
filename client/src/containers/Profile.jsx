@@ -31,7 +31,7 @@ class Profile extends Component {
   createPredictionsButton() {
     const { store } = this.context;
     const state = store.getState();
-    if(state.profile && state.profile.predictions)
+    if(state.profile && state.profile.predictions.length)
       return undefined;
     return <button onClick={this.handleClick}>Make personality analysis</button>
   }

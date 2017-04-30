@@ -1,16 +1,15 @@
 // config/passport.js
 // https://github.com/scotch-io/easy-node-authentication/blob/linking/config/passport.js
-// https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt
 
 // load all the things we need
 var FacebookStrategy = require('passport-facebook').Strategy;
 var TwitterStrategy = require('passport-twitter').Strategy;
 
 // load up the user model
-var User = require('../models/user');
+var User = require('../app/models/user');
 
 // load the auth variables
-var configAuth = require('../../config/auth')[process.env.NODE_ENV];
+var configAuth = require('./auth');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -40,16 +39,17 @@ module.exports = function(passport) {
   passport.use(new FacebookStrategy({
 
     // pull in our app id and secret from our auth.js file
-    clientID : configAuth.facebookAuth.clientID,
-    clientSecret : configAuth.facebookAuth.clientSecret,
-    callbackURL : configAuth.facebookAuth.callbackURL,
-    profileFields : ["email", "displayName"],
+    clientID        : configAuth.facebookAuth.clientID,
+    clientSecret    : configAuth.facebookAuth.clientSecret,
+    callbackURL     : configAuth.facebookAuth.callbackURL,
+    profileFields: ["email", "displayName"],
     passReqToCallback : true
 
   },
 
   // facebook will send back the token and profile
   function(req, token, refreshToken, profile, done) {
+
     // asynchronous
     process.nextTick(function() {
 
@@ -126,7 +126,7 @@ module.exports = function(passport) {
   },
     // twitter will send back the token and profile
   function(req, token, refreshToken, profile, done) {
-    console.log('twitter responded!!!');
+
     // asynchronous
     process.nextTick(function() {
 

@@ -35,6 +35,7 @@ router.get('/api/predictions', isLoggedIn, function(req, res) {
     .then((likes) => {
       let hasNewItems = !_.isEqual(user.facebook.likes.sort(), likes.sort());
       // if there are new like items, save them and get new prediction
+      colors.blue('got likes');
       if(hasNewItems) {
         user.facebook.likes = likes;
         return user.save()
