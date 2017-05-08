@@ -15,3 +15,7 @@ export const fetchProfile = () => {
 export const fetchFeed = () => {
   return get('/api/feed');
 }
+
+export const fetchAll = () => {
+  return get('/api/all');
+}

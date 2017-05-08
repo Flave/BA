@@ -1,8 +1,8 @@
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    minRadius = 20,
-    maxRadius = 50;
+    minRadius = 5,
+    maxRadius = 20;
 
 
 
@@ -12,7 +12,7 @@ var colorScale = d3.scaleLinear()
 
 var r2StrokeWidth = d3.scaleLinear()
   .domain([minRadius, maxRadius])
-  .range([0.1, 2]);
+  .range([0.1, 1]);
 
 var circles = [
   {x: 210, y: 230, r:80, col:"red"},
@@ -41,7 +41,7 @@ function generateRandomCircle() {
   return {
     x: Math.random() * 1000,
     y: Math.random() * 1000,
-    r: Math.random() * 20 + 30,
+    r: Math.random() * (maxRadius-minRadius) + minRadius,
     col: "red"
   }
 }
@@ -56,7 +56,7 @@ function generateCircle() {
     return circle;
 }
 
-for(var i=0; i<80; i++) {
+for(var i=0; i<450; i++) {
   circles.push(generateCircle());
 }
 

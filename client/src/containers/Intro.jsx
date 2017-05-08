@@ -7,35 +7,13 @@ import { receiveLogin } from '../actions';
 
 
 class Intro extends Component {
-  componentDidMount() {
-    fetchLogin().then((response) => {
-      this.context.store.dispatch(receiveLogin(response.data.login));
-    });
-  }
-
   render() {
-    return <Login {...this.props} />;
+    return (
+      <div className="intro">
+        <Login />
+      </div>
+    )
   }
 }
-
-Intro.contextTypes = {
-  store: PropTypes.object
-}
-
-
-const mapStateToProps = (state) => {
-  return {
-    login: state.login
-  }
-}
-
-/*const mapDispatchToProps = (dispatch) => {
-  receiveUser: 
-}*/
-
-/*Intro = connect(
-  mapStateToProps,
-  null
-)(Intro);*/
 
 export default Intro;

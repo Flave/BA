@@ -9,6 +9,8 @@ import {
   withRouter
 } from 'react-router-dom';
 
+require('./style/index.scss');
+
 const addLoggingToDispatch = (store) => {
   const rawDispatch = store.dispatch;
   if(!console.group) {

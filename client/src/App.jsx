@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Intro from './containers/Intro.jsx';
 import Profile from './containers/Profile.jsx';
-import Others from './containers/Others.jsx'
+import Others from './containers/Others.jsx';
+import *  as actions from './actions';
 
 import {
   Route,
@@ -13,9 +14,12 @@ import {
 
 class App extends Component {
   componentDidMount() {
-    this.unsubscribe = this.context.store.subscribe(() => {
+    var { store } = this.context;
+    this.unsubscribe = store.subscribe(() => {
       this.forceUpdate();
     });
+
+    store.dispatch(actions.fetchProfile());
   }
 
   componentWillUnmount() {
@@ -24,9 +28,9 @@ class App extends Component {
 
   render() {
     const state = this.context.store.getState();
-    const { login } = state;
+    const { profile } = state;
     
-    if(!login) {
+    if(!profile || !profile.login) {
       return <Route path="/" component={Intro} />
     } else {
       return (

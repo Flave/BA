@@ -10,7 +10,7 @@ class Others extends Component {
       this.forceUpdate();
     });
 
-    //store.dispatch(actions.fetchAll());
+    store.dispatch(actions.fetchAll());
   }
 
   componentWillUnmount() {
@@ -19,6 +19,8 @@ class Others extends Component {
 
 
   render() {
+    const { store } = this.context;
+
     return (
       <div>
         <Link to="/">My Internet</Link>

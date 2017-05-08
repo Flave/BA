@@ -11,7 +11,6 @@ class Profile extends Component {
       this.forceUpdate();
     });
 
-    store.dispatch(actions.fetchProfile());
     store.dispatch(actions.fetchFeed());
   }
 
