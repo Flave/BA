@@ -1,13 +1,17 @@
-import axios from 'axios';
+import {get} from 'axios';
 
 export const fetchLogin = () => {
-  return axios.get('/api/login');
+  return get('/api/login');
 }
 
 export const fetchPredictions = () => {
-  return axios.get('/api/predictions');
+  return get('/api/predictions');
 }
 
 export const fetchProfile = () => {
-  return axios.get('/api/profile');
+  return get('/api/profile');
+}
+
+export const fetchFeed = () => {
+  return get('/api/feed');
 }

@@ -18,6 +18,14 @@ export default (state = {login: null, profile: null}, action) => {
         ...state,
         profile: action.profile
       }
+    case 'RECEIVE_FEED':
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          feed: action.feed
+        }
+      }
     default:
       return state;
   }

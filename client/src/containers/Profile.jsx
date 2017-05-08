@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { fetchPredictions, fetchProfile } from '../api';
-import { receivePredictions, receiveProfile } from '../actions';
+import * as actions from '../actions';
+import FacebookPost from '../components/FacebookPost.jsx';
 
 class Profile extends Component {
   componentDidMount() {
@@ -10,10 +11,8 @@ class Profile extends Component {
       this.forceUpdate();
     });
 
-    fetchProfile().then((response) => {
-      console.log(response);
-      store.dispatch(receiveProfile(response.data));
-    });
+    store.dispatch(actions.fetchProfile());
+    store.dispatch(actions.fetchFeed());
   }
 
   componentWillUnmount() {
@@ -22,10 +21,7 @@ class Profile extends Component {
 
   handleClick = () => {
     const {store} = this.context;
-    fetchPredictions().then((response) => {
-      console.log(response);
-      store.dispatch(receivePredictions(response.data.predictions));
-    });
+    store.dispatch(actions.fetchPredictions());
   }
 
   createPredictionsButton() {
@@ -51,12 +47,28 @@ class Profile extends Component {
       })
   }
 
+  createFeed() {
+    const { store } = this.context;
+    const state = store.getState();
+    if(state.profile && state.profile.feed) {
+      return state.profile.feed.map((feedItem, index) => {
+        return (
+          <div key={index}>
+            <FacebookPost key={index} url={feedItem.url}/>
+          </div>
+        )
+      })
+    }
+  }
+
   render() {
     return (
       <div>
-        <h1>This is the profile page!!!</h1>
+        <Link to="/others">Other People</Link>
+        <h1>Your Internet</h1>
         {this.createPredictions()}
         {this.createPredictionsButton()}
+        {this.createFeed()}
       </div>
     )
   }

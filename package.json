@@ -7,12 +7,13 @@
     "start": "NODE_ENV='development' nodemon --ignore 'server/api/secrets.json' --use_strict index.js",
     "start-uberspace": "PORT=61999 NODE_ENV='production' node index.js",
     "bundle": "webpack --watch",
-    "build": "webpack"
+    "build": "webpack --optimize-minimize"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.1",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.1",
     "colors": "^1.1.2",
     "connect-flash": "^0.1.1",
@@ -26,6 +27,7 @@
     "lodash": "^4.17.4",
     "mongoose": "^4.9.5",
     "morgan": "^1.8.1",
+    "needle": "^1.6.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-twitter": "^1.0.4",
@@ -33,8 +35,11 @@
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-facebook": "^4.0.8",
+    "react-instagram-embed": "^1.2.0",
     "react-redux": "^5.0.4",
     "react-router-dom": "^4.1.1",
+    "react-tweet-embed": "^1.0.5",
     "redux": "^3.6.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3"

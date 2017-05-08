@@ -27,6 +27,7 @@ router.get('/api/profile', isLoggedIn, ({ user }, res) => {
   });
 });
 
+
 router.get('/api/predictions', isLoggedIn, function(req, res) {
   let user = req.user;
   fbApi
@@ -56,9 +57,8 @@ router.get('/api/predictions', isLoggedIn, function(req, res) {
       user.predictions = predictions;
       user.save().then(() => {
         colors.blue('sending prediction');
-        res.json({
-          predictions: predictions
-        });
+        console.log(predictions);
+        res.json(predictions);
       });
     })
     .catch((err) => {
@@ -67,6 +67,15 @@ router.get('/api/predictions', isLoggedIn, function(req, res) {
       });
       console.log(err);
     })
+});
+
+
+router.get('/api/feed', isLoggedIn, ({ user }, res) => {
+  fbApi
+    .fetchFeed(user)
+    .then(response => {
+      res.json(response);
+    });
 });
 
 // route middleware to make sure

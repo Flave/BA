@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import PrivateRoute from './PrivateRoute.jsx';
 import Intro from './containers/Intro.jsx';
 import Profile from './containers/Profile.jsx';
+import Others from './containers/Others.jsx'
 
 import {
   Route,
@@ -25,12 +25,17 @@ class App extends Component {
   render() {
     const state = this.context.store.getState();
     const { login } = state;
-    console.log(login);
     
     if(!login) {
       return <Route path="/" component={Intro} />
     } else {
-      return <Route path="/" component={Profile} />
+      return (
+        <div>
+          <Route path="/" exact component={Profile} />
+          <Route path="/others" exact component={Others} />
+          <Route path="/someone/:userId" component={Profile} />
+        </div>
+      )
     }
   }
 }

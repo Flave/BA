@@ -1,6 +1,5 @@
 const path = require('path');
 
-
 module.exports = {
   // the entry file for the bundle
   entry: path.join(__dirname, '/client/src/main.jsx'),
@@ -19,7 +18,7 @@ module.exports = {
       include: path.join(__dirname, '/client/src'),
       loader: 'babel-loader',
       query: {
-        presets: ["react", ["es2015", {modules: false}]],
+        presets: ["react", "es2015"],
         plugins: [require('babel-plugin-transform-object-rest-spread'), require('babel-plugin-transform-class-properties')]
       }
     }],

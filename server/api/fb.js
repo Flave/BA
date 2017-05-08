@@ -2,22 +2,12 @@ const request = require('request-promise-native');
 const _ = require('lodash');
 const colors = require('../../colorlog');
 const Promise = require('promise');
+const axios = require('axios');
 
 const fetchLikes = (user) => {
   let likes = [];
   let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes{id}&access_token=' + user.facebook.token;
-
-  const finishFetching = (likes) => {
-    likes = _.map(likes, 'id');
-    let hasNewItems = !_.isEqual(user.facebook.likes.sort(), likes.sort());
-    if(hasNewItems) {
-      user.facebook.likes = likes;
-      return user.save();
-    } else {
-      return Promise.resolve(true);
-    }
-  }
-
+  colors.blue('Fetching likes');
   const fetchLikesBatch = (batchUri) => {
     let opts = {
       uri: batchUri,
@@ -48,7 +38,29 @@ const fetchLikes = (user) => {
   return fetchLikesBatch(startUri);
 }
 
+const fetchFeed = (user) => {
+  let likeIds = user.facebook.likes.slice(0, 2).toString();
+  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url&ids=${likeIds}`;
+
+  return request({
+    uri: startUri,
+    json: true
+  })
+  .then((response) => {
+    const promises = _.map(response, post => {
+      return axios.get(`https://www.facebook.com/plugins/post/oembed.json/?url=${post.data[0].permalink_url}&omitscript=true`);
+    });
+    return Promise.all(promises)
+  })
+  .then((responses) => {
+    responses = _.map(responses, (response) => response.data);
+    return responses;
+  })
+  .catch(err => colors.red('Feed fail'))
+}
 
 module.exports = {
-  fetchLikes
+  fetchLikes,
+  fetchFeed
 }
+
