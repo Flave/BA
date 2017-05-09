@@ -5,14 +5,14 @@ module.exports = {
     development: {
 
     'facebookAuth' : {
-      'clientID'    : '1754125368233773', // your App ID
-      'clientSecret'  : '0f9450749b9c04ec1d6c3cd27abcb907', // your App Secret
+      'clientID'    : '668487066691859', // your App ID
+      'clientSecret'  : '36be87468a221ee932f4fa43bd7df2ee', // your App Secret
       'callbackURL'   : 'http://localhost:8080/auth/facebook/callback'
     },
 
     'twitterAuth' : {
-      'consumerKey'     : 'Whn98xNG0nEZNHXh6yCLhBTJv',
-      'consumerSecret'  : 'jEUbZ79RiZ0cMRk5r4r4NgkfMge4bC3cZn8qwoBQx1kXOeboe1',
+      'consumerKey'     : 'Ebrb5Zc5aAqL0i0pojtcsS2w7',
+      'consumerSecret'  : 'eO991SsR1KLxV4JvT0AyYIx61zP4oObCCWemBqJ0UXh7e9Fa5S',
       'callbackURL'     : 'http://localhost:8080/auth/twitter/callback'
     },
 
@@ -25,14 +25,14 @@ module.exports = {
   production: {
 
     'facebookAuth' : {
-      'clientID'    : '1754125368233773', // your App ID
-      'clientSecret'  : '0f9450749b9c04ec1d6c3cd27abcb907', // your App Secret
+      'clientID'    : '668487066691859', // your App ID
+      'clientSecret'  : '36be87468a221ee932f4fa43bd7df2ee', // your App Secret
       'callbackURL'   : 'http://flavioba.capella.uberspace.de/auth/facebook/callback'
     },
 
     'twitterAuth' : {
-      'consumerKey'     : 'Whn98xNG0nEZNHXh6yCLhBTJv',
-      'consumerSecret'  : 'jEUbZ79RiZ0cMRk5r4r4NgkfMge4bC3cZn8qwoBQx1kXOeboe1',
+      'consumerKey'     : 'Ebrb5Zc5aAqL0i0pojtcsS2w7',
+      'consumerSecret'  : 'eO991SsR1KLxV4JvT0AyYIx61zP4oObCCWemBqJ0UXh7e9Fa5S',
       'callbackURL'     : 'http://flavioba.capella.uberspace.de/auth/twitter/callback'
     },
 

@@ -46,43 +46,37 @@ module.exports = function(passport) {
 
   },
 
+//User.findOne({'$or': [{'email': profile.emails[0].value}, {'facebook.id': profile.id}]}, (err, user) => {
+
   // facebook will send back the token and profile
   function(req, token, refreshToken, profile, done) {
     // asynchronous
     process.nextTick(function() {
       // check if the user is already logged in
       if (!req.user)
-        User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
+        User.findOne({'$or': [{'email': profile.emails[0].value}, {'facebook.id': profile.id}]}, (err, user) => {
+          /*
+          CHECK IF HAS
+          */
+          console.log(user);
           if (err)
             return done(err);
           if (user)
-            // if there is a user id already but no token (user was linked at one point and then removed)
-            relinkUser(user, token, profile, done);
+            if(!user.facebook.token)
+              // if there is a user id already but no token (user was linked at one point and then removed)
+              linkFacebookAccount(user, token, profile, done);
+            else
+              return done(null, user); // user found, return that user
           else
             // if there is no user, create them
             createNewUser(token, profile, done);
         });
       else
         // user already exists and is logged in, we have to link accounts
-        linkAccounts(req, token, profile, done);
+        linkFacebookAccount(req.user, token, profile, done);
     });
   }));
 
-  function relinkUser(user, token, profile, done) {
-    if (!user.facebook.token) {
-      user.facebook.token = token;
-      user.facebook.name  = profile.displayName;
-      user.facebook.email = profile.emails[0].value;
-
-      user.save((err) => {
-        if (err)
-          throw err;
-        return done(null, user);
-      });
-    }
-
-    return done(null, user); // user found, return that user    
-  }
 
   function createNewUser(token, profile, done) {
     var newUser            = new User();
@@ -90,13 +84,11 @@ module.exports = function(passport) {
     newUser.facebook.token = token;
     newUser.facebook.name  = profile.displayName;
     newUser.facebook.email = profile.emails[0].value;
-    log.blue('Saving new user');
+    newUser.email = profile.emails[0].value;
     newUser.save((err, user) => {
       if (err)
         throw err;
-      log.blue('Fetching predictions');
-      api
-        .fetchPredictions(user)
+      api.fetchPredictions(user)
         .then(() => {
           return done(null, user);
         })
@@ -106,9 +98,7 @@ module.exports = function(passport) {
     });
   }
 
-  function linkAccounts(req, token, profile, done) {
-    
-    var user = req.user; // pull the user out of the session
+  function linkFacebookAccount(user, token, profile, done) {
     user.facebook.id = profile.id;
     user.facebook.token = token;
     user.facebook.name  = profile.displayName;
@@ -117,6 +107,13 @@ module.exports = function(passport) {
     user.save((err) => {
       if (err)
         throw err;
+      api.fetchPredictions(user)
+        .then(() => {
+          return done(null, user);
+        })
+        .catch((err) => {
+          throw err;
+        });
       return done(null, user);
     });
   }
@@ -126,74 +123,82 @@ module.exports = function(passport) {
   // =========================================================================
 
   passport.use(new TwitterStrategy({
-
     consumerKey     : configAuth.twitterAuth.consumerKey,
     consumerSecret  : configAuth.twitterAuth.consumerSecret,
     callbackURL     : configAuth.twitterAuth.callbackURL,
+    userProfileURL: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true",
     passReqToCallback : true
 
   },
     // twitter will send back the token and profile
-  function(req, token, refreshToken, profile, done) {
-    console.log('twitter responded!!!');
+  function(req, token, tokenSecret, profile, done) {
     // asynchronous
     process.nextTick(() => {
-
       // check if the user is already logged in
-      if (!req.user) {
-
-        User.findOne({ 'twitter.id' : profile.id }, (err, user) => {
+      if (!req.user)
+        User.findOne({'$or': [{'email': profile.emails[0].value}, {'twitter.id': profile.id}]}, (err, user) => {
           if (err)
             return done(err);
-
-          if (user) {
-
-            // if there is a user id already but no token (user was linked at one point and then removed)
-            if (!user.twitter.token) {
-              user.twitter.token = token;
-              user.twitter.name  = profile.name;
-              user.twitter.email = profile.emails[0].value;
-
-              user.save((err) => {
-                if (err)
-                  throw err;
-                return done(null, user);
-              });
-            }
-
-            return done(null, user); // user found, return that user
-          } else {
-            // if there is no user, create them
-            var newUser = new User();
-            newUser.twitter.id    = profile.id;
-            newUser.twitter.token = token;
-            newUser.twitter.name  = profile.name;
-
-            newUser.save((err) => {
-              if (err)
-                throw err;
-              return done(null, newUser);
-            });
-          }
+          if (user)
+            if (!user.twitter.token)
+              // if there is a user id already but no token (user was linked at one point and then removed)
+              linkTwitterAccount(user, token, tokenSecret, profile, done);
+            else
+              return done(null, user); // user found, return that user
+          else
+            createNewTwitter(token, tokenSecret, profile, done);
         });
 
-      } else {
+      else
         // user already exists and is logged in, we have to link accounts
-        var user            = req.user; // pull the user out of the session
-
-        user.twitter.id    = profile.id;
-        user.twitter.token = token;
-        user.twitter.name  = profile.name;
-
-        user.save((err) => {
-          if (err)
-            throw err;
-          return done(null, user);
-        });
-
-      }
+        linkTwitterAccount(req.user, token, tokenSecret, profile, done);
     });
 
   }));
+
+  function createNewTwitter(token, tokenSecret, profile, done) {
+    // if there is no user, create them
+    var newUser = new User();
+    newUser.twitter.id    = profile.id;
+    newUser.twitter.token = token;
+    newUser.twitter.tokenSecret = tokenSecret;
+    newUser.twitter.name  = profile.name;
+    newUser.twitter.email = profile.emails[0].value;
+    newUser.email = profile.emails[0].value;
+
+    newUser.save((err, user) => {
+      if (err)
+        throw err;
+/*      api.fetchTwitterPredictions(user)
+        .then(() => {
+          return done(null, user);
+        })
+        .catch((err) => {
+          throw err;
+        });*/
+      return done(null, newUser);
+    });
+  }
+
+  function linkTwitterAccount(user, token, tokenSecret, profile, done) {
+    user.twitter.id    = profile.id;
+    user.twitter.token = token;
+    user.twitter.tokenSecret = tokenSecret;
+    user.twitter.name  = profile.name;
+    user.twitter.email = profile.emails[0].value;
+
+    user.save((err) => {
+      if (err)
+        throw err;
+/*      api.fetchTwitterPredictions(user)
+        .then(() => {
+          return done(null, user);
+        })
+        .catch((err) => {
+          throw err;
+        });*/
+      return done(null, user);
+    });
+  }
 
 };

@@ -63,6 +63,8 @@ class Profile extends Component {
     return (
       <div>
         <Link to="/">Other People</Link>
+        <br/>
+        <a href="/connect/twitter">Connect to Twitter</a>
         <h1>Your Internet</h1>
         {this.createPredictions(profile)}
         {this.createFeed(profile)}

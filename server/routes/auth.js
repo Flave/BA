@@ -30,7 +30,7 @@ module.exports = function(passport) {
   router.get('/connect/facebook', passport.authorize('facebook', { scope : 'email' }));
   router.get('/connect/facebook/callback',
       passport.authorize('facebook', {
-          successRedirect : '/profile',
+          successRedirect : '/',
           failureRedirect : '/'
       }));
 
@@ -39,7 +39,7 @@ module.exports = function(passport) {
       var user = req.user;
       user.facebook.token = undefined;
       user.save(function(err) {
-          res.redirect('/profile');
+          res.redirect('/');
       });
   });
 
@@ -47,10 +47,10 @@ module.exports = function(passport) {
   // twitter --------------------------------
 
   // send to twitter to do the authentication
-  router.get('/auth/twitter', passport.authenticate('twitter', { scope : 'email' }));
+  router.get('/auth/twitter', passport.authenticate('twitter', { scope : ['email'] }));
   router.get('/auth/twitter/callback',
     passport.authenticate('twitter', {
-      successRedirect : '/profile',
+      successRedirect : '/',
       failureRedirect : '/'
     }));
 
@@ -58,7 +58,7 @@ module.exports = function(passport) {
   router.get('/connect/twitter', passport.authorize('twitter', { scope : 'email' }));
   router.get('/connect/twitter/callback',
       passport.authorize('twitter', {
-          successRedirect : '/profile',
+          successRedirect : '/',
           failureRedirect : '/'
       }));
 
@@ -67,7 +67,7 @@ module.exports = function(passport) {
       var user           = req.user;
       user.twitter.token = undefined;
       user.save(function(err) {
-         res.redirect('/profile');
+         res.redirect('/');
       });
   });
 
