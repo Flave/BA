@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV='development' nodemon --ignore 'server/api/secrets.json' --use_strict index.js",
+    "start": "NODE_ENV='development' nodemon --ignore 'server/external/secrets.json' --use_strict index.js",
     "start-uberspace": "PORT=61999 NODE_ENV='production' node index.js",
     "bundle": "webpack --watch",
     "build": "webpack --optimize-minimize"
@@ -25,6 +25,7 @@
     "history": "^4.6.1",
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
+    "lodash-es": "^4.17.4",
     "mongoose": "^4.9.5",
     "morgan": "^1.8.1",
     "needle": "^1.6.0",
@@ -42,7 +43,8 @@
     "react-tweet-embed": "^1.0.5",
     "redux": "^3.6.0",
     "request": "^2.81.0",
-    "request-promise-native": "^1.0.3"
+    "request-promise-native": "^1.0.3",
+    "shortid": "^2.2.8"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

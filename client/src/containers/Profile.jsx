@@ -3,40 +3,33 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import FacebookPost from '../components/FacebookPost.jsx';
+import _find from 'lodash/find';
 
 class Profile extends Component {
   componentDidMount() {
     const { store } = this.context;
+    const { user } = store.getState();
+    const profileId = this.props.match.params.id;
     this.unsubscribe = store.subscribe(() => {
       this.forceUpdate();
     });
 
-    store.dispatch(actions.fetchFeed());
+    !store.users && store.dispatch(actions.fetchAll());
+    store.dispatch(actions.fetchProfile(profileId));
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  handleClick = () => {
-    const {store} = this.context;
-    store.dispatch(actions.fetchPredictions());
-  }
-
-  createPredictionsButton() {
-    const { store } = this.context;
-    const state = store.getState();
-    if(state.profile && state.profile.predictions.length)
-      return undefined;
-    return <button onClick={this.handleClick}>Make personality analysis</button>
-  }
-
   createPredictions() {
     const { store } = this.context;
-    const state = store.getState();
+    const { users } = store.getState();
+    const { match } = this.props;
+    const profile = _find(users, {_id: match.params.id});
 
-    if(state.profile && state.profile.predictions)
-      return state.profile.predictions.map((prediction, key) => {
+    if(profile && profile.predictions)
+      return profile.predictions.map((prediction, key) => {
         return (
           <div key={key}>
             <span>{prediction.trait}: </span>
@@ -48,9 +41,10 @@ class Profile extends Component {
 
   createFeed() {
     const { store } = this.context;
-    const state = store.getState();
-    if(state.profile && state.profile.feed) {
-      return state.profile.feed.map((feedItem, index) => {
+    const { profile } = store.getState();
+
+    if(profile && profile.feed) {
+      return profile.feed.map((feedItem, index) => {
         return (
           <div key={index}>
             <FacebookPost key={index} url={feedItem.url}/>
@@ -61,13 +55,17 @@ class Profile extends Component {
   }
 
   render() {
+    const { store } = this.context;
+    const { users } = store.getState();
+    const { match } = this.props;
+    const profile = _find(users, {_id: match.params.id});
+
     return (
       <div>
-        <Link to="/others">Other People</Link>
+        <Link to="/">Other People</Link>
         <h1>Your Internet</h1>
-        {this.createPredictions()}
-        {this.createPredictionsButton()}
-        {this.createFeed()}
+        {this.createPredictions(profile)}
+        {this.createFeed(profile)}
       </div>
     )
   }

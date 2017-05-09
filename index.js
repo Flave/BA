@@ -7,7 +7,7 @@ var passport = require('passport');
 mongoose.Promise = require('promise');
 var configDB = require('./config/db');
 
-app.use(express.static('./server/static/'));
+//app.use(express.static('./server/static/'));
 app.use(express.static('./client/dist/'));
 mongoose.connect(configDB.url); // connect to our database
 require('./server/passport')(passport); // pass passport for configuration
@@ -30,6 +30,7 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: true, saveU
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+app.use(require('./server/routes/app')); 
 // load authentication routes and pass in fully configured passport
 app.use(require('./server/routes/auth')(passport));
 // load api routes

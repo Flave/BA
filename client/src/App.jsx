@@ -19,7 +19,7 @@ class App extends Component {
       this.forceUpdate();
     });
 
-    store.dispatch(actions.fetchProfile());
+    store.dispatch(actions.fetchUser());
   }
 
   componentWillUnmount() {
@@ -28,16 +28,26 @@ class App extends Component {
 
   render() {
     const state = this.context.store.getState();
-    const { profile } = state;
+    const { user } = state;
+    const redirectTo = localStorage.getItem("redirectTo");
+    const currentPath = window.location.pathname;
     
-    if(!profile || !profile.login) {
+    // if no user is logged in and path is not "home", redirect to login and save path
+    // for later retrieval
+    if((!user || !user.login) && currentPath !== "/") {
+      localStorage.setItem("redirectTo", currentPath);
+      return <Redirect from={currentPath} to="/" />
+    } else if(!user || !user.login) {
       return <Route path="/" component={Intro} />
-    } else {
+    } else if(redirectTo) {
+      localStorage.removeItem("redirectTo");
+      return <Redirect from="/" to={redirectTo} />
+    }
+    else {
       return (
         <div>
-          <Route path="/" exact component={Profile} />
-          <Route path="/others" exact component={Others} />
-          <Route path="/someone/:userId" component={Profile} />
+          <Route path="/" exact component={Others} />
+          <Route path="/someone/:id" component={Profile} />
         </div>
       )
     }
@@ -48,4 +58,4 @@ App.contextTypes = {
   store: PropTypes.object
 }
 
-export default App;
+export default withRouter(App);

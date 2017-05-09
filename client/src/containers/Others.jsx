@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import actions from '../actions';
+import * as actions from '../actions';
+import _find from 'lodash/find';
 
 class Others extends Component {
   componentDidMount() {
@@ -10,21 +11,34 @@ class Others extends Component {
       this.forceUpdate();
     });
 
-    store.dispatch(actions.fetchAll());
+    !store.users && store.dispatch(actions.fetchAll());
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
+  createUsersList() {
+    const { store } = this.context;
+    const { users, user } = store.getState();
+
+    if(!users) return;
+    return users.map((bubbleUser, i) => {
+      const age = _find(bubbleUser.predictions, {trait: "Age"});
+
+      return (
+        <p key={i}>
+          <Link to={`/someone/${bubbleUser._id}`}>{bubbleUser._id}</Link> is probably around {age && age.value} years old
+        </p>
+      )
+    })
+  }
 
   render() {
-    const { store } = this.context;
-
     return (
       <div>
-        <Link to="/">My Internet</Link>
         <h1>This is the Others page!!!</h1>
+        {this.createUsersList()}
       </div>
     )
   }

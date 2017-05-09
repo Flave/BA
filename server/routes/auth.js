@@ -1,30 +1,8 @@
 const express = require('express');
-
 const router = new express.Router();
 
 // app/routes.js
 module.exports = function(passport) {
-
-  // always send index file if specific page is requested. 
-  // Routing will be done in the browser
-  router.get('/profile', function(req, res) {
-    res.render('index.ejs', {
-      user: req.user
-    }); // load the index.ejs files
-  });
-
-  router.get('/someone', function(req, res) {
-    res.render('index.ejs', {
-      user: req.user
-    }); // load the index.ejs files
-  });
-
-  router.get('/', function(req, res) {
-    res.render('index.ejs', {
-      user: req.user
-    }); // load the index.ejs files
-  });
-
 
   // facebook --------------------------------
 
@@ -58,7 +36,7 @@ module.exports = function(passport) {
 
   // route for unlinking facebook
   router.get('/unlink/facebook', function(req, res) {
-      var user            = req.user;
+      var user = req.user;
       user.facebook.token = undefined;
       user.save(function(err) {
           res.redirect('/profile');
@@ -103,14 +81,3 @@ module.exports = function(passport) {
 
   return router;
 };
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.redirect('/');
-}

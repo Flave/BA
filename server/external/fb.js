@@ -1,6 +1,6 @@
 const request = require('request-promise-native');
 const _ = require('lodash');
-const colors = require('../../colorlog');
+const colors = require('colors');
 const Promise = require('promise');
 const axios = require('axios');
 

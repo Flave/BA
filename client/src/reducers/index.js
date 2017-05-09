@@ -1,4 +1,16 @@
-export default (state = {profile: null}, action) => {
+import profile from './profile';
+import users from './users';
+import user from './user';
+import { combineReducers } from 'redux';
+
+export default combineReducers({
+  user: user,
+  users: users,
+  profile: profile
+});
+
+
+/*export default (state = {profile: null}, action) => {
   switch(action.type) {
     case 'RECEIVE_LOGIN':
       return {
@@ -29,4 +41,4 @@ export default (state = {profile: null}, action) => {
     default:
       return state;
   }
-}
+}*/

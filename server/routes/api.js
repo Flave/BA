@@ -1,8 +1,9 @@
 const express = require('express');
-const fbApi = require('../apis/fb');
-const amsApi = require('../apis/ams');
+const fbApi = require('../external/fb');
+const amsApi = require('../external/ams');
+const api = require('../api');
 const User = require('../models/user');
-const colors = require('colors');
+const log = require('../../log');
 const _ = require('lodash');
 const Promise = require('promise');
 
@@ -17,72 +18,37 @@ router.get('/api/login', isLoggedInAjax, function(req, res) {
 });
 
 
+// ME
+
+router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
+  res.json({
+    name: user.facebook.name,
+    login: user._id
+  });
+});
+
+
 // PROFILE
 
-router.get('/api/profile', isLoggedInAjax, ({ user }, res) => {
-  fetchPredictions(user)
-    .then((predictions) => {
-      console.log(colors.green('Seinding profile'));
+router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
+  User.findOne({_id: req.params.id })
+    .then(fbApi.fetchFeed)
+    .then((feed) => {
       res.json({
-        name: user.facebook.name,
-        predictions: user.predictions || null,
-        login: user._id
+        feed: feed
       });
     });
 });
 
 
 // ALL
-
 router.get('/api/all', isLoggedInAjax, (req, res) => {
-  console.log(colors.blue('Seinding all'));
-  res.json({
-    name: req.user.facebook.name,
-    predictions: req.user.predictions || null,
-    login: req.user._id
+  log.rainbow('Seinding all');
+  User.find({}, {_id: true, predictions: true}).then((users) => {
+    res.json(users);
   });
 });
 
-
-
-// PREDICTIONS
-
-function fetchPredictions(user) {
-  return fbApi
-    .fetchLikes(user)
-    // then fetch the facebook likes
-    .then((likes) => {
-      let hasNewItems = !_.isEqual(user.facebook.likes.sort(), likes.sort());
-      // if there are new like items, save them and get new prediction
-      console.log(colors.blue('Got likes'));
-      if(hasNewItems) {
-        user.facebook.likes = likes;
-        return user.save()
-          .then(() => {
-            console.log(colors.blue('Gettig Prediction'));
-            return amsApi.getPrediction(user);
-          });
-      // if there are no new like items but no prediction yet, get prediction
-      } else if(!user.predictions) {
-        console.log(colors.blue('Just gettig Prediction, no likes'));
-        return amsApi.getPrediction(user);
-      } else {
-        console.log(colors.blue('Already have prediction'));
-        return Promise.resolve(user.predictions);        
-      }
-    })
-    .then((predictions) => {
-      user.predictions = predictions;
-      return user.save().then(() => {
-        console.log(colors.blue('Received Predictions'));
-        return predictions;
-      });
-    })
-    .catch((err) => {
-      console.log(colors.red("Predictions fail"));
-      console.log(err);
-    });
-}
 
 router.get('/api/predictions', isLoggedIn, function({ user }, res) {
   fbApi
@@ -91,27 +57,27 @@ router.get('/api/predictions', isLoggedIn, function({ user }, res) {
     .then((likes) => {
       let hasNewItems = !_.isEqual(user.facebook.likes.sort(), likes.sort());
       // if there are new like items, save them and get new prediction
-      console.log(colors.blue('got likes'));
+      log.blue('got likes');
       if(hasNewItems) {
         user.facebook.likes = likes;
         return user.save()
           .then(() => {
-            console.log(colors.blue('gettig Prediction'));
+            log.blue('gettig Prediction');
             return amsApi.getPrediction(user);
           });
       // if there are no new like items but no prediction yet, get prediction
       } else if(!user.predictions) {
-        console.log(colors.blue('just gettig Prediction, no likes'));
+        log.blue('just gettig Prediction, no likes');
         return amsApi.getPrediction(user);
       } else {
-        console.log(colors.blue('already got prediction'));
+        log.blue('already got prediction');
         return Promise.resolve(user.predictions);        
       }
     })
     .then((predictions) => {
       user.predictions = predictions;
       user.save().then(() => {
-        console.log(colors.blue('Sending prediction'));
+        log.blue('Sending prediction');
         res.json(predictions);
       });
     })

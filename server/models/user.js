@@ -1,9 +1,14 @@
 // app/models/user.js
 // load the things we need
 var mongoose = require('mongoose');
+var shortid = require('shortid');
 
 // define the schema for our user model
 var userSchema = mongoose.Schema({
+    _id: {
+        type: String,
+        'default': shortid.generate
+    },
     predictions: [{trait: String, value: Number}],
     facebook : {
         id : String,

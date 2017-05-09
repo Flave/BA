@@ -3,14 +3,12 @@
 // https://vladimirponomarev.com/blog/authentication-in-react-apps-jwt
 
 // load all the things we need
-var FacebookStrategy = require('passport-facebook').Strategy;
-var TwitterStrategy = require('passport-twitter').Strategy;
-
-// load up the user model
-var User = require('../models/user');
-
-// load the auth variables
-var configAuth = require('../../config/auth')[process.env.NODE_ENV];
+const FacebookStrategy = require('passport-facebook').Strategy;
+const TwitterStrategy = require('passport-twitter').Strategy;
+const User = require('../models/user');
+const configAuth = require('../../config/auth')[process.env.NODE_ENV];
+const api = require('../api');
+const log = require('../../log');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -52,65 +50,76 @@ module.exports = function(passport) {
   function(req, token, refreshToken, profile, done) {
     // asynchronous
     process.nextTick(function() {
-
       // check if the user is already logged in
-      if (!req.user) {
-
-        User.findOne({ 'facebook.id' : profile.id }, function(err, user) {
-          if (err) {
-            return done(err);
-          }
-
-          if (user) {
-            // if there is a user id already but no token (user was linked at one point and then removed)
-            if (!user.facebook.token) {
-              user.facebook.token = token;
-              user.facebook.name  = profile.displayName;
-              user.facebook.email = profile.emails[0].value;
-
-              user.save(function(err) {
-                if (err)
-                  throw err;
-                return done(null, user);
-              });
-            }
-
-            return done(null, user); // user found, return that user
-          } else {
-            // if there is no user, create them
-            var newUser            = new User();
-            newUser.facebook.id    = profile.id;
-            newUser.facebook.token = token;
-            newUser.facebook.name  = profile.displayName;
-            newUser.facebook.email = profile.emails[0].value;
-
-            newUser.save(function(err) {
-              if (err)
-                throw err;
-              return done(null, newUser);
-            });
-          }
-        });
-
-      } else {
-        // user already exists and is logged in, we have to link accounts
-        var user            = req.user; // pull the user out of the session
-
-        user.facebook.id    = profile.id;
-        user.facebook.token = token;
-        user.facebook.name  = profile.displayName;
-        user.facebook.email = profile.emails[0].value;
-
-        user.save(function(err) {
+      if (!req.user)
+        User.findOne({ 'facebook.id' : profile.id }, (err, user) => {
           if (err)
-            throw err;
-          return done(null, user);
+            return done(err);
+          if (user)
+            // if there is a user id already but no token (user was linked at one point and then removed)
+            relinkUser(user, token, profile, done);
+          else
+            // if there is no user, create them
+            createNewUser(token, profile, done);
         });
-
-      }
+      else
+        // user already exists and is logged in, we have to link accounts
+        linkAccounts(req, token, profile, done);
     });
   }));
 
+  function relinkUser(user, token, profile, done) {
+    if (!user.facebook.token) {
+      user.facebook.token = token;
+      user.facebook.name  = profile.displayName;
+      user.facebook.email = profile.emails[0].value;
+
+      user.save((err) => {
+        if (err)
+          throw err;
+        return done(null, user);
+      });
+    }
+
+    return done(null, user); // user found, return that user    
+  }
+
+  function createNewUser(token, profile, done) {
+    var newUser            = new User();
+    newUser.facebook.id    = profile.id;
+    newUser.facebook.token = token;
+    newUser.facebook.name  = profile.displayName;
+    newUser.facebook.email = profile.emails[0].value;
+    log.blue('Saving new user');
+    newUser.save((err, user) => {
+      if (err)
+        throw err;
+      log.blue('Fetching predictions');
+      api
+        .fetchPredictions(user)
+        .then(() => {
+          return done(null, user);
+        })
+        .catch((err) => {
+          throw err;
+        });
+    });
+  }
+
+  function linkAccounts(req, token, profile, done) {
+    
+    var user = req.user; // pull the user out of the session
+    user.facebook.id = profile.id;
+    user.facebook.token = token;
+    user.facebook.name  = profile.displayName;
+    user.facebook.email = profile.emails[0].value;
+
+    user.save((err) => {
+      if (err)
+        throw err;
+      return done(null, user);
+    });
+  }
 
   // =========================================================================
   // TWITTER =================================================================
@@ -128,12 +137,12 @@ module.exports = function(passport) {
   function(req, token, refreshToken, profile, done) {
     console.log('twitter responded!!!');
     // asynchronous
-    process.nextTick(function() {
+    process.nextTick(() => {
 
       // check if the user is already logged in
       if (!req.user) {
 
-        User.findOne({ 'twitter.id' : profile.id }, function(err, user) {
+        User.findOne({ 'twitter.id' : profile.id }, (err, user) => {
           if (err)
             return done(err);
 
@@ -145,7 +154,7 @@ module.exports = function(passport) {
               user.twitter.name  = profile.name;
               user.twitter.email = profile.emails[0].value;
 
-              user.save(function(err) {
+              user.save((err) => {
                 if (err)
                   throw err;
                 return done(null, user);
@@ -160,7 +169,7 @@ module.exports = function(passport) {
             newUser.twitter.token = token;
             newUser.twitter.name  = profile.name;
 
-            newUser.save(function(err) {
+            newUser.save((err) => {
               if (err)
                 throw err;
               return done(null, newUser);
@@ -176,7 +185,7 @@ module.exports = function(passport) {
         user.twitter.token = token;
         user.twitter.name  = profile.name;
 
-        user.save(function(err) {
+        user.save((err) => {
           if (err)
             throw err;
           return done(null, user);

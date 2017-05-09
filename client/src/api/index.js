@@ -8,8 +8,8 @@ export const fetchPredictions = () => {
   return get('/api/predictions');
 }
 
-export const fetchProfile = () => {
-  return get('/api/profile');
+export const fetchUser = () => {
+  return get('/api/user');
 }
 
 export const fetchFeed = () => {
@@ -18,4 +18,8 @@ export const fetchFeed = () => {
 
 export const fetchAll = () => {
   return get('/api/all');
+}
+
+export const fetchProfile = (id) => {
+  return get(`/api/profile/${id}`);
 }

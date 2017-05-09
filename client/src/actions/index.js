@@ -5,9 +5,9 @@ const receivePredictions = (predictions) => ({
   predictions
 });
 
-const receiveProfile = (profile) => ({
-  type: 'RECEIVE_PROFILE',
-  profile
+const receiveUser = (data) => ({
+  type: 'RECEIVE_USER',
+  data
 });
 
 const receiveFeed = (feed) => ({
@@ -15,30 +15,31 @@ const receiveFeed = (feed) => ({
   feed
 });
 
-const receiveLogin = (login) => ({
-  type: 'RECEIVE_LOGIN',
-  login
-});
-
-const receiveAll = (all) => ({
+const receiveAll = (data) => ({
   type: 'RECEIVE_ALL',
-  all
+  data
 });
 
-export const fetchLogin = () =>
-  api.fetchLogin().then(response => {
-    return receiveLogin(response.data);
-  })
+const receiveProfile = (data) => ({
+  type: 'RECEIVE_PROFILE',
+  data
+});
 
-export const fetchProfile = () => {
-  return api.fetchProfile().then(response => {
-    return receiveProfile(response.data);
-  }) 
+
+export const fetchUser = () => {
+  return api.fetchUser().then(response => {
+    return receiveUser(response.data);
+  })
 }
  
 export const fetchPredictions = () =>
   api.fetchPredictions().then(response => {
     return receivePredictions(response.data);
+  })
+
+export const fetchProfile = (id) =>
+  api.fetchProfile(id).then(response => {
+    return receiveProfile(response.data);
   })
 
 export const fetchFeed = () =>

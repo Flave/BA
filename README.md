@@ -20,3 +20,5 @@ To DEPLOY on Uberspace do:
 -[ ] Configure some webpack stuff to compress for production
 -[ ] Set up uberspace with git?
 -[ ] Run mongodb on uberspace?
+-[ ] Check out babel-plugin-lodash to reduce filesize ([tutorial](http://knpw.rs/blog/using-lodash))
+-[ ] Clean up npm packages
