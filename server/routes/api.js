@@ -37,7 +37,10 @@ router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
       res.json({
         feed: feed
       });
-    });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 });
 
 

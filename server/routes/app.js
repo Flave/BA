@@ -1,5 +1,6 @@
 const express = require('express');
 const router = new express.Router();
+const User = require('../models/user');
 
 
 // always send index file if specific page is requested. 
@@ -11,7 +12,13 @@ router.get('/me', function(req, res) {
 });
 
 router.get('/someone/:id', function(req, res) {
-  res.render('index.ejs', {});
+  User.findOne({_id: req.params.id })
+    .then((user) => {
+      if(!user)
+        res.redirect('/');
+      else
+        res.render('index.ejs', {});
+    });
 });
 
 router.get('/', function(req, res) {

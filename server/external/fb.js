@@ -56,7 +56,7 @@ const fetchFeed = (user) => {
     responses = _.map(responses, (response) => response.data);
     return responses;
   })
-  .catch(err => colors.red('Feed fail'))
+  .catch(err => colors.red(err))
 }
 
 module.exports = {
