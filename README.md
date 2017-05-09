@@ -22,3 +22,5 @@ To DEPLOY on Uberspace do:
 -[ ] Run mongodb on uberspace?
 -[ ] Check out babel-plugin-lodash to reduce filesize ([tutorial](http://knpw.rs/blog/using-lodash))
 -[ ] Clean up npm packages
+-[ ] Set up hooks for when someone revokes fb access n stuff
+  -> If you don't do this, the URL is still (with the particular id) accessible but no feed can be fetched. Alternatively you could check for errors ("code":190,"error_subcode":460) in the facebook response
