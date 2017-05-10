@@ -55,10 +55,6 @@ module.exports = function(passport) {
       // check if the user is already logged in
       if (!req.user)
         User.findOne({'$or': [{'email': profile.emails[0].value}, {'facebook.id': profile.id}]}, (err, user) => {
-          /*
-          CHECK IF HAS
-          */
-          console.log(user);
           if (err)
             return done(err);
           if (user)

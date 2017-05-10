@@ -12,14 +12,14 @@ export const fetchUser = () => {
   return get('/api/user');
 }
 
-export const fetchFeed = () => {
-  return get('/api/feed');
+export const fetchFeed = (id) => {
+  return get(`/api/feed/${id}`);
 }
 
 export const fetchAll = () => {
   return get('/api/all');
 }
 
-export const fetchProfile = (id) => {
-  return get(`/api/profile/${id}`);
+export const fetchOneUser = (id) => {
+  return get(`/api/user/${id}`);
 }

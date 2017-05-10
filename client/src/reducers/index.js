@@ -5,6 +5,6 @@ import { combineReducers } from 'redux';
 
 export default combineReducers({
   user: user,
-  users: users,
-  profile: profile
+  users: users/*,
+  profile: profile*/
 });

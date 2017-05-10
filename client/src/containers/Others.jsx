@@ -7,11 +7,13 @@ import _find from 'lodash/find';
 class Others extends Component {
   componentDidMount() {
     const { store } = this.context;
+    const { users } = store.getState();
+
     this.unsubscribe = store.subscribe(() => {
       this.forceUpdate();
     });
-
-    !store.users && store.dispatch(actions.fetchAll());
+    
+    !users && store.dispatch(actions.fetchAll());
   }
 
   componentWillUnmount() {

@@ -6,12 +6,18 @@ const receiveUser = (data) => ({
 });
 
 const receiveAll = (data) => ({
-  type: 'RECEIVE_ALL',
+  type: 'RECEIVE_ALL_USERS',
   data
 });
 
-const receiveProfile = (data) => ({
-  type: 'RECEIVE_PROFILE',
+const receiveFeed = (data, id) => ({
+  type: 'RECEIVE_FEED',
+  data,
+  id
+});
+
+const receiveOneUser = (data, id) => ({
+  type: 'RECEIVE_ONE_USER',
   data
 });
 
@@ -27,7 +33,12 @@ export const fetchAll = () =>
     return receiveAll(response.data);
   })
 
-export const fetchProfile = (id) =>
-  api.fetchProfile(id).then(response => {
-    return receiveProfile(response.data);
+export const fetchFeed = (id) =>
+  api.fetchFeed(id).then(response => {
+    return receiveFeed(response.data, id);
+  })
+
+export const fetchOneUser = (id) =>
+  api.fetchOneUser(id).then(response => {
+    return receiveOneUser(response.data);
   })

@@ -4796,7 +4796,8 @@ module.exports = SyntheticUIEvent;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(137);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fetchUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchAll; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchProfile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchFeed; });
+/* unused harmony export fetchOneUser */
 
 
 var receiveUser = function receiveUser(data) {
@@ -4808,14 +4809,22 @@ var receiveUser = function receiveUser(data) {
 
 var receiveAll = function receiveAll(data) {
   return {
-    type: 'RECEIVE_ALL',
+    type: 'RECEIVE_ALL_USERS',
     data: data
   };
 };
 
-var receiveProfile = function receiveProfile(data) {
+var receiveFeed = function receiveFeed(data, id) {
   return {
-    type: 'RECEIVE_PROFILE',
+    type: 'RECEIVE_FEED',
+    data: data,
+    id: id
+  };
+};
+
+var receiveOneUser = function receiveOneUser(data, id) {
+  return {
+    type: 'RECEIVE_ONE_USER',
     data: data
   };
 };
@@ -4832,9 +4841,15 @@ var fetchAll = function fetchAll() {
   });
 };
 
-var fetchProfile = function fetchProfile(id) {
-  return __WEBPACK_IMPORTED_MODULE_0__api__["c" /* fetchProfile */](id).then(function (response) {
-    return receiveProfile(response.data);
+var fetchFeed = function fetchFeed(id) {
+  return __WEBPACK_IMPORTED_MODULE_0__api__["c" /* fetchFeed */](id).then(function (response) {
+    return receiveFeed(response.data, id);
+  });
+};
+
+var fetchOneUser = function fetchOneUser(id) {
+  return __WEBPACK_IMPORTED_MODULE_0__api__["d" /* fetchOneUser */](id).then(function (response) {
+    return receiveOneUser(response.data);
   });
 };
 
@@ -9899,9 +9914,9 @@ module.exports = function bind(fn, thisArg) {
 /* unused harmony export fetchLogin */
 /* unused harmony export fetchPredictions */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fetchUser; });
-/* unused harmony export fetchFeed */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchFeed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchAll; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchProfile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return fetchOneUser; });
 
 
 var fetchLogin = function fetchLogin() {
@@ -9916,16 +9931,16 @@ var fetchUser = function fetchUser() {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/user');
 };
 
-var fetchFeed = function fetchFeed() {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/feed');
+var fetchFeed = function fetchFeed(id) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/feed/' + id);
 };
 
 var fetchAll = function fetchAll() {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/all');
 };
 
-var fetchProfile = function fetchProfile(id) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/profile/' + id);
+var fetchOneUser = function fetchOneUser(id) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/user/' + id);
 };
 
 /***/ }),
@@ -15860,8 +15875,8 @@ App.contextTypes = {
 
 /* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_redux__["c" /* combineReducers */])({
   user: __WEBPACK_IMPORTED_MODULE_2__user__["a" /* default */],
-  users: __WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */],
-  profile: __WEBPACK_IMPORTED_MODULE_0__profile__["a" /* default */]
+  users: __WEBPACK_IMPORTED_MODULE_1__users__["a" /* default */] /*,
+               profile: profile*/
 }));
 
 /***/ }),
@@ -16935,11 +16950,14 @@ var Others = function (_Component) {
 
       var store = this.context.store;
 
+      var _store$getState = store.getState(),
+          users = _store$getState.users;
+
       this.unsubscribe = store.subscribe(function () {
         _this2.forceUpdate();
       });
 
-      !store.users && store.dispatch(__WEBPACK_IMPORTED_MODULE_3__actions__["b" /* fetchAll */]());
+      !users && store.dispatch(__WEBPACK_IMPORTED_MODULE_3__actions__["b" /* fetchAll */]());
     }
   }, {
     key: 'componentWillUnmount',
@@ -16951,9 +16969,9 @@ var Others = function (_Component) {
     value: function createUsersList() {
       var store = this.context.store;
 
-      var _store$getState = store.getState(),
-          users = _store$getState.users,
-          user = _store$getState.user;
+      var _store$getState2 = store.getState(),
+          users = _store$getState2.users,
+          user = _store$getState2.user;
 
       if (!users) return;
       return users.map(function (bubbleUser, i) {
@@ -17054,7 +17072,7 @@ var Profile = function (_Component) {
       });
 
       !store.users && store.dispatch(__WEBPACK_IMPORTED_MODULE_3__actions__["b" /* fetchAll */]());
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_3__actions__["c" /* fetchProfile */](profileId));
+      store.dispatch(__WEBPACK_IMPORTED_MODULE_3__actions__["c" /* fetchFeed */](profileId));
     }
   }, {
     key: 'componentWillUnmount',
@@ -17063,17 +17081,10 @@ var Profile = function (_Component) {
     }
   }, {
     key: 'createPredictions',
-    value: function createPredictions() {
-      var store = this.context.store;
+    value: function createPredictions(_ref) {
+      var predictions = _ref.predictions;
 
-      var _store$getState2 = store.getState(),
-          users = _store$getState2.users;
-
-      var match = this.props.match;
-
-      var profile = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(users, { _id: match.params.id });
-
-      if (profile && profile.predictions) return profile.predictions.map(function (prediction, key) {
+      return predictions.map(function (prediction, key) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { key: key },
@@ -17093,33 +17104,33 @@ var Profile = function (_Component) {
     }
   }, {
     key: 'createFeed',
-    value: function createFeed() {
-      var store = this.context.store;
+    value: function createFeed(_ref2) {
+      var feed = _ref2.feed;
 
-      var _store$getState3 = store.getState(),
-          profile = _store$getState3.profile;
-
-      if (profile && profile.feed) {
-        return profile.feed.map(function (feedItem, index) {
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { key: index },
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_FacebookPost_jsx__["a" /* default */], { key: index, url: feedItem.url })
-          );
-        });
-      }
+      return feed.map(function (feedItem, index) {
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { key: index },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_FacebookPost_jsx__["a" /* default */], { key: index, url: feedItem.url })
+        );
+      });
     }
   }, {
     key: 'render',
     value: function render() {
       var store = this.context.store;
 
-      var _store$getState4 = store.getState(),
-          users = _store$getState4.users;
+      var _store$getState2 = store.getState(),
+          users = _store$getState2.users;
 
       var match = this.props.match;
 
-      var profile = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(users, { _id: match.params.id });
+      var user = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(users, { _id: match.params.id });
+      if (!user) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        'Loading'
+      );
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -17138,10 +17149,11 @@ var Profile = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h1',
           null,
-          'Your Internet'
+          'The Internet of ',
+          user._id
         ),
-        this.createPredictions(profile),
-        this.createFeed(profile)
+        user.predictions && this.createPredictions(user),
+        user.feed && this.createFeed(user)
       );
     }
   }]);
@@ -17237,7 +17249,7 @@ render();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony default export */ __webpack_exports__["a"] = (function () {
+/* unused harmony default export */ var _unused_webpack_default_export = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var action = arguments[1];
 
@@ -17271,17 +17283,36 @@ render();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 /* harmony default export */ __webpack_exports__["a"] = (function () {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
   var action = arguments[1];
 
   switch (action.type) {
-    case 'RECEIVE_ALL':
+    case 'RECEIVE_ALL_USERS':
       return action.data;
+    case 'RECEIVE_FEED':
+      return receiveFeed(state, action);
     default:
       return state;
   }
 });
+
+function receiveFeed(state, _ref) {
+  var data = _ref.data,
+      id = _ref.id;
+
+  // if there's no users yet simply put the new user in a new array
+  if (state === null) return [data];
+  // else replaces the received user with the one in state
+  return state.map(function (user) {
+    if (user._id !== id) return user;
+    return _extends({}, user, {
+      feed: data
+    });
+  });
+}
 
 /***/ }),
 /* 256 */

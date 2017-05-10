@@ -15,59 +15,50 @@ class Profile extends Component {
     });
 
     !store.users && store.dispatch(actions.fetchAll());
-    store.dispatch(actions.fetchProfile(profileId));
+    store.dispatch(actions.fetchFeed(profileId));
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  createPredictions() {
-    const { store } = this.context;
-    const { users } = store.getState();
-    const { match } = this.props;
-    const profile = _find(users, {_id: match.params.id});
-
-    if(profile && profile.predictions)
-      return profile.predictions.map((prediction, key) => {
-        return (
-          <div key={key}>
-            <span>{prediction.trait}: </span>
-            <span>{prediction.value}</span>
-          </div>
-        )
-      })
+  createPredictions({ predictions }) {
+    return predictions.map((prediction, key) => {
+      return (
+        <div key={key}>
+          <span>{prediction.trait}: </span>
+          <span>{prediction.value}</span>
+        </div>
+      )
+    })
   }
 
-  createFeed() {
-    const { store } = this.context;
-    const { profile } = store.getState();
-
-    if(profile && profile.feed) {
-      return profile.feed.map((feedItem, index) => {
-        return (
-          <div key={index}>
-            <FacebookPost key={index} url={feedItem.url}/>
-          </div>
-        )
-      })
-    }
+  createFeed({ feed }) {
+    return feed.map((feedItem, index) => {
+      return (
+        <div key={index}>
+          <FacebookPost key={index} url={feedItem.url}/>
+        </div>
+      )
+    })
   }
 
   render() {
     const { store } = this.context;
     const { users } = store.getState();
     const { match } = this.props;
-    const profile = _find(users, {_id: match.params.id});
+    const user = _find(users, {_id: match.params.id});
+    if(!user)
+      return <div>Loading</div>
 
     return (
       <div>
         <Link to="/">Other People</Link>
         <br/>
         <a href="/connect/twitter">Connect to Twitter</a>
-        <h1>Your Internet</h1>
-        {this.createPredictions(profile)}
-        {this.createFeed(profile)}
+        <h1>The Internet of {user._id}</h1>
+        {user.predictions && this.createPredictions(user)}
+        {user.feed && this.createFeed(user)}
       </div>
     )
   }

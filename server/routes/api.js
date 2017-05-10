@@ -20,9 +20,11 @@ router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
   });
 });
 
+
 // PROFILE
 
-router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
+router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
+  log.blue("Requested ONE USER");
   User.findOne({_id: req.params.id })
     .then(fbApi.fetchFeed)
     .then((feed) => {
@@ -30,6 +32,20 @@ router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
       res.json({
         feed: feed
       });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+});
+
+
+// FEED
+router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
+  User.findOne({_id: req.params.id })
+    .then(fbApi.fetchFeed)
+    .then((feed) => {
+      log.rainbow('Sending FEED');
+      res.json(feed);
     })
     .catch((err) => {
       console.log(err);
