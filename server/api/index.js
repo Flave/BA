@@ -48,5 +48,5 @@ module.exports.fetchTwitterPredictions = (user) => {
 }
 
 module.exports.fetchFeed = (user) => {
-  
+
 }

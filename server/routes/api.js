@@ -24,10 +24,10 @@ router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
 // PROFILE
 
 router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
-  log.blue("Requested ONE USER");
   User.findOne({_id: req.params.id })
     .then(fbApi.fetchFeed)
     .then((feed) => {
+
       log.rainbow('Sending PROFILE');
       res.json({
         feed: feed
@@ -42,7 +42,22 @@ router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
 // FEED
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
   User.findOne({_id: req.params.id })
-    .then(fbApi.fetchFeed)
+    .then((user) => {
+      amsApi.getPrediction(user)
+        .then((predictions) => {
+          user.predictions = predictions;
+          user.save().then(() => {
+            log.blue("got new predictions and saved this dude");
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+        })
+        .then((err) => {
+          console.log(err);
+        });
+      return fbApi.fetchFeed(user);
+    })
     .then((feed) => {
       log.rainbow('Sending FEED');
       res.json(feed);
@@ -52,12 +67,28 @@ router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
     })
 });
 
+//User.find({}, {_id: true, predictions: true}).then((users) => {
 
 // ALL
 router.get('/api/all', isLoggedInAjax, (req, res) => {
-  log.rainbow('Sending ALL');
-  User.find({}, {_id: true, predictions: true}).then((users) => {
-    res.json(users);
+  User.find({}).then((users) => {
+    let strippedUsers = _.map(users, user => {
+      let accounts = _.map(['facebook', 'twitter', 'youtube', 'instagram'], platform => (
+        { 
+          name: platform,
+          isConnected: user[platform] && (user[platform].token !== undefined)
+        }
+      ));
+
+      return {
+        id: user._id,
+        predictions: user.predictions,
+        accounts: accounts
+      }
+    });
+
+    log.rainbow('Sending ALL');
+    res.json(strippedUsers);
   });
 });
 

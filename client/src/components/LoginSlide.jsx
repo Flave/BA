@@ -8,7 +8,7 @@ const Login = ({ user }) => {
       </p>
       <div className="login">
         <p className="login__copy">Check it out with &hellip;</p>
-        <a className="btn btn--facebook" href="/auth/facebook"><i className="icon-facebook"></i>Facebook</a>
+        <a className="btn btn--big btn--facebook" href="/auth/facebook"><i className="icon-facebook"></i>Facebook</a>
         {/*<a className="btn btn--twitter " href="/auth/twitter"><i className="icon-twitter"></i>Twitter</a>*/}
       </div>
     </div>

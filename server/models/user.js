@@ -9,18 +9,20 @@ var userSchema = mongoose.Schema({
     type: String,
     'default': shortid.generate
   },
-  predictions: [{trait: String, value: Number}],
+  predictions: {
+    demographics: [{trait: String, value: Number}],
+    religion: [{trait: String, value: Number}],
+    politics: [{trait: String, value: Number}],
+    big5: [{trait: String, value: Number}],
+    religion: [{trait: String, value: Number}]
+  },
   email: String,
   facebook : {
     id : String,
     token : String,
     email : String,
     name : String,
-    likes: Array,
-    feed: {
-      items: Array,
-      timestamp: Date
-    }
+    likes: Array
   },
   twitter : {
     id : String,
@@ -28,11 +30,7 @@ var userSchema = mongoose.Schema({
     tokenSecret: String,
     email : String,
     displayName : String,
-    username : String,
-    feed: {
-      items: Array,
-      timestamp: Date
-    }
+    username : String
   }
 });
 

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV='development' nodemon --ignore 'server/external/secrets.json' --use_strict index.js",
+    "start": "NODE_ENV='development' nodemon --ignore 'server/external/secrets.json' --ignore 'client/' --use_strict index.js",
     "start-uberspace": "PORT=61999 NODE_ENV='production' node index.js",
     "bundle": "webpack --watch",
     "build": "webpack --optimize-minimize"

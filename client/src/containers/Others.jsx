@@ -9,15 +9,10 @@ class Others extends Component {
     const { store } = this.context;
     const { users } = store.getState();
 
-    this.unsubscribe = store.subscribe(() => {
-      this.forceUpdate();
-    });
-    
     !users && store.dispatch(actions.fetchAll());
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
   }
 
   createUsersList() {
@@ -30,7 +25,7 @@ class Others extends Component {
 
       return (
         <p key={i}>
-          <Link to={`/someone/${bubbleUser._id}`}>{bubbleUser._id}</Link> is probably around {age && age.value} years old
+          <Link to={`/someone/${bubbleUser.id}`}>{bubbleUser.id}</Link> is probably around {age && age.value} years old
         </p>
       )
     })

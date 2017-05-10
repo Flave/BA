@@ -1,18 +1,36 @@
 .btn {
   text-decoration: none;
-  color: #fff;
-  font-size: 20px;
+  display: inline-block;
+  text-align: center;
+  color: $c-black;
+  font-size: 16px;
   font-family: $monospace;
   border-radius: 24px;
-  padding: 7px 16px;
+  padding: 10px 20px;
   margin-right: 20px;
+
+  &--raised {
+    box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+  }
+
+  &--big {
+    font-size: 20px;
+    padding: 13px 27px;
+
+    &.btn [class*="icon-"] {
+      font-size: 18px;
+      margin-right: 10px;
+    }
+  }
 
   &--facebook {
     background: $c-facebook;
+    color: #fff;
   }
 
   &--twitter {
     background: $c-twitter;
+    color: #fff;
   }
 
   [class*="icon-"] {

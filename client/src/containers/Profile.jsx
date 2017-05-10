@@ -4,22 +4,17 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import FacebookPost from '../components/FacebookPost.jsx';
 import _find from 'lodash/find';
+import Header from '../components/profile/Header.jsx';
+import Predictions from '../components/profile/Predictions.jsx';
 
 class Profile extends Component {
   componentDidMount() {
     const { store } = this.context;
-    const { user } = store.getState();
+    const { users } = store.getState();
     const profileId = this.props.match.params.id;
-    this.unsubscribe = store.subscribe(() => {
-      this.forceUpdate();
-    });
 
-    !store.users && store.dispatch(actions.fetchAll());
+    !users && store.dispatch(actions.fetchAll());
     store.dispatch(actions.fetchFeed(profileId));
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
   }
 
   createPredictions({ predictions }) {
@@ -45,20 +40,21 @@ class Profile extends Component {
 
   render() {
     const { store } = this.context;
-    const { users } = store.getState();
+    const { users, user } = store.getState();
     const { match } = this.props;
-    const user = _find(users, {_id: match.params.id});
-    if(!user)
+    const profile = _find(users, {id: match.params.id});
+    let isMe = false;
+
+    if(!profile)
       return <div>Loading</div>
+
+    isMe = (user.login === profile.id);
 
     return (
       <div>
-        <Link to="/">Other People</Link>
-        <br/>
-        <a href="/connect/twitter">Connect to Twitter</a>
-        <h1>The Internet of {user._id}</h1>
-        {user.predictions && this.createPredictions(user)}
-        {user.feed && this.createFeed(user)}
+        <Header isMe={isMe} profile={profile} />
+        {/*profile.predictions && this.createPredictions(profile)*/}
+        {profile.feed && this.createFeed(profile)}
       </div>
     )
   }
