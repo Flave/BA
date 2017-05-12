@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions';
 
+const onClick = () => {
+  const currentPath = window.location.pathname;
+  localStorage.setItem("redirectTo", currentPath);
+  window.location = "/connect/twitter";
+}
+
 const Header = ({ isMe, profile }) => {
   const title = isMe ? "Your internet" : "Someone else's internet";
   const sourcesLabel = isMe ? "Connected Platforms" : "Sources";
@@ -33,7 +39,7 @@ const Header = ({ isMe, profile }) => {
           </span>
           <span className="btn btn--raised">Edit</span>
         </span>
-        {/*<a className="btn" href="/connect/twitter">Connect to Twitter</a>*/}        
+        <span className="btn" onClick={onClick}>Connect to Twitter</span>
       </div>
 
     </div>

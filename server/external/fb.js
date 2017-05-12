@@ -39,10 +39,10 @@ const fetchLikes = (user) => {
 }
 
 const fetchFeed = (user) => {
-  let likeIds = user.facebook.likes.slice(0, 1).toString();
+  let likeIds = user.facebook.likes.slice(0, 4).toString();
   // DOC Multiple ID Read Requests: https://developers.facebook.com/docs/graph-api/using-graph-api
   // DOC /post: https://developers.facebook.com/docs/graph-api/reference/v2.9/post/
-  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url&ids=${likeIds}`;
+  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url,type&ids=${likeIds}`;
 
   return request({
     uri: startUri,
@@ -51,6 +51,7 @@ const fetchFeed = (user) => {
   .then((response) => {
     return _(response).map(posts => {
       if(!posts.data.length) return;
+      console.log(posts.data);
       return {
         url: posts.data[0].permalink_url
       };

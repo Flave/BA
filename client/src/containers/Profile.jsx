@@ -6,6 +6,7 @@ import FacebookPost from '../components/FacebookPost.jsx';
 import _find from 'lodash/find';
 import Header from '../components/profile/Header.jsx';
 import Predictions from '../components/profile/Predictions.jsx';
+import Feed from '../components/profile/Feed.jsx';
 
 class Profile extends Component {
   componentDidMount() {
@@ -28,16 +29,6 @@ class Profile extends Component {
     })
   }
 
-  createFeed({ feed }) {
-    return feed.map((feedItem, index) => {
-      return (
-        <div key={index}>
-          <FacebookPost key={index} url={feedItem.url}/>
-        </div>
-      )
-    })
-  }
-
   render() {
     const { store } = this.context;
     const { users, user } = store.getState();
@@ -54,7 +45,7 @@ class Profile extends Component {
       <div>
         <Header isMe={isMe} profile={profile} />
         {/*profile.predictions && this.createPredictions(profile)*/}
-        {profile.feed && this.createFeed(profile)}
+        <Feed feed={profile.feed}/>
       </div>
     )
   }

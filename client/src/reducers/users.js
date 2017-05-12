@@ -1,9 +1,27 @@
+import _find from 'lodash/find';
+
+/*
+[
+  {
+    id,
+    feed: {
+      url,
+      colIndex,
+      top
+    },
+    predictions
+  }
+]
+*/
+
 export default (state = null, action) => {
   switch(action.type) {
     case 'RECEIVE_ALL_USERS':
       return action.data;
     case 'RECEIVE_FEED':
       return receiveFeed(state, action);
+    case 'UPDATE_FEED_POSITIONS':
+      return updateFeedPositions(state, action);
     default:
       return state;
   }
@@ -26,7 +44,24 @@ function receiveFeed(state, {data, id}) {
   });
 }
 
+// takes an array of items from a user with positions
+function updateFeedPositions(state, {data, userId}) {
+  return state.map((user) => {
+    if(user.id !== id) return user;
+    let feed = user.feed.map((item) => {
+      const {colIndex, top} = _find(data, (newItem) => {
+        newItem.url === item.url
+      });
+      return {
+        ...item,
+        colIndex,
+        top
+      }
+    });
 
-function calculateSimilarity() {
-
+    return {
+      ...user,
+      feed
+    };
+  });
 }
