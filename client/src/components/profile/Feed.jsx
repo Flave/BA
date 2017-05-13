@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import * as actions from '../../actions';
 import FacebookPost from '../FacebookPost.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
@@ -7,8 +8,8 @@ import { event as d3Event } from 'd3-selection';
 import _compact from 'lodash/compact';
 import { randomNormal as d3RandomNormal } from 'd3-random';
 
-const GRID_WIDTH = 400;
-const GRID_PADDING = 20;
+
+window.d3RandomNormal = d3RandomNormal;
 
 class Feed extends Component {
   constructor(props) {
@@ -35,16 +36,6 @@ class Feed extends Component {
   zoomed() {
     const { transform } = d3Event;
     d3Select(this.canvas).style("transform", "translate(" + transform.x + "px," + transform.y + "px) scale(" + transform.k + ")");
-
-    d3Select(this.root)
-      .selectAll('.feed__canvas > div')/*
-      .style('filter', () => {
-
-        return `blur(${1/Math.pow(transform.k, 2)}px)`
-      })
-      .style('-webkit-filter', () => {
-        return `blur(${1/Math.pow(transform.k, 2)}px)`
-      })*/;
   }
 
   zoomEnd() {
@@ -59,61 +50,37 @@ class Feed extends Component {
     console.log("wheeeled");
   }
 
-  getFeedPositions(feed) {
 
+  handleItemLoad(itemHeight, itemUrl) {
+    const { id } = this.props.profile;
+    this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemUrl, id));
   }
-
-  /*
-    Gets the col index around which to cluster the feed items
-  */
-  getFeedOrigin(feed) {
-  }
-
-  generateGridPositions(feed) {
-    const width = window.innerWidth;
-    const height = window.innerWidth;
-    const centerIndex = Math.floor(width / GRID_WIDTH);
-    const oldPositions = _compact(feed.map(item => item.colIndex !== undefined ? [item.colIndex, item.top] : undefined)); //[[colIndex, top]]
-    let newPositions = [];
-    //const colIndexBounds = d3Extent(oldPositions, pos => pos.colIndex);
-
-    feed.forEach((item) => {
-      if(item.colIndex !== undefined) newPositions.push(item);
-      let colIndex = Math.floor(d3RandomNormal(centerIndex, 1));
-      const itemsInCol = oldPositions.find(pos => pos.colIndex === colIndex);
-      if(itemsInCol && (itemsInCol.length === 0))
-        return d3RandomNormal(height/2, 10);
-    });
-  }
-
-
-  generateColumns(feed) {
-    
-  }
-
 
   createFeed(feed) {
-    this.generateGridPositions(feed);
-    return feed.map((feedItem, index) => {
+    return feed.map((item, index) => {
       return (
-        <FacebookPost key={index} url={feedItem.url}/>
+        <FacebookPost onLoad={this.handleItemLoad.bind(this)} key={index} item={item}/>
       )
     })
   }
 
   render() {
-    const {feed} = this.props;
+    const {feed} = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
 
     return (
       <div ref={(root) => this.root = root} className="feed">
         {!feed && <div>Loading</div>}
-        {/*<div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>*/}
+        <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
           {feed && this.createFeed(feed)}
-        {/*</div>*/}
+        </div>
       </div>
     )
   }
 };
+
+Feed.contextTypes = {
+  store: PropTypes.object
+}
 
 export default Feed;

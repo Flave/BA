@@ -45,7 +45,7 @@ class Profile extends Component {
       <div>
         <Header isMe={isMe} profile={profile} />
         {/*profile.predictions && this.createPredictions(profile)*/}
-        <Feed feed={profile.feed}/>
+        <Feed profile={profile} />
       </div>
     )
   }

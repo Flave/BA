@@ -1,9 +1,6 @@
-var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    minRadius = 5,
-    maxRadius = 20;
-
+var svg = d3.select("#canvas"),
+    minRadius = 20,
+    maxRadius = 100;
 
 
 var colorScale = d3.scaleLinear()
@@ -14,19 +11,67 @@ var r2StrokeWidth = d3.scaleLinear()
   .domain([minRadius, maxRadius])
   .range([0.1, 1]);
 
-var circles = [
-  {x: 210, y: 230, r:80, col:"red"},
-  {x: 150, y: 70, r:45, col:"green"},
-  {x: 240, y: 100, r:70, col:"blue"},
-  {x: 80, y: 270, r:50, col:"orange"},
-  {x: 120, y: 230, r:40, col:"brown"}
-]
+var circles = generateCircles(70);
 
 
-var circles = [];
-var circlesGenerated = 0;
+var root = svg.append('g')
+.attr("filter", "url(#bubble-filter-1)")
 
-function circleCollides(circle) {
+var circle = root
+  .selectAll("g")
+  .data(circles)
+  .enter()
+  .append("g")/*
+  .attr("clip-path", function(d, i) {
+    return "url(#clip-circle-" + i + ")";
+  })*/
+
+var circleMask = root
+  .append("defs")
+  .selectAll('clipPath')
+  .data(circles)
+  .enter()
+  .append("clipPath")
+  .attr("id", function(d, i) {return "clip-circle-" + i;})
+
+
+circleMask.append("path")
+  .attr('id', "blur")
+  .attr("d", calculateBubblePath);
+
+var filter = svg
+  .append('filter')
+  .attr("x", "-40%")
+  .attr("y", "-40%")
+  .attr("width", "160%")
+  .attr("height", "160%")
+  .attr('id', "bubble-filter");
+
+circle.append("path")
+  .attr("d", calculateBubblePath)
+  .style("fill", "#FF8AF2");
+
+circle.append("path")
+  .attr("d", calculateBubblePath)
+  .style("fill", "none")
+  .style("stroke-width", 1)
+  .style("stroke", "#fff");
+
+
+/*
+  Circle Generation
+*/
+
+function generateCircles(num) {
+  var circles = [];
+  for(var i=0; i<num; i++) {
+    circles.push(generateCircle(circles));
+  }
+
+  return circles;
+}
+
+function circleCollides(circle, circles) {
   var collide;
   for(var cIndex=0; cIndex<circles.length; cIndex++) {
     var checkCircle = circles[cIndex];
@@ -39,96 +84,76 @@ function circleCollides(circle) {
 
 function generateRandomCircle() {
   return {
-    x: Math.random() * 1000,
-    y: Math.random() * 1000,
+    x: Math.random() * 1440,
+    y: Math.random() * 1024,
     r: Math.random() * (maxRadius-minRadius) + minRadius,
     col: "red"
   }
 }
 
-function generateCircle() {
-  circlesGenerated++;
+function generateCircle(circles) {
   var circle = generateRandomCircle();
-  if(circleCollides(circle)) {
-    return generateCircle();
+  if(circleCollides(circle, circles)) {
+    return generateCircle(circles);
   }
   else
     return circle;
 }
 
-for(var i=0; i<450; i++) {
-  circles.push(generateCircle());
+
+
+/*
+  Bubble Creation
+*/
+
+function calculateBubblePath(circle, i) {
+  var sortedCircles = sortCirclesByAngle(circle, getOverlappingCircles(circle));
+  if(!sortedCircles.length)
+    return circlePath(circle);
+  if(sortedCircles.length === 1)
+    return oneAdjacent(circle, sortedCircles[0]);
+
+  if(sortedCircles.length === 2)
+    return twoAdjacent(circle, sortedCircles);
+  return multipleAdjacent(circle, sortedCircles);
 }
 
-console.log(circles, circlesGenerated);
+function multipleAdjacent(circle, adjacent) {
+  var d = "";
+  adjacent.forEach(function(circle2, i) {
+    var prevCircle = i === 0 ? adjacent[adjacent.length - 1] : adjacent[i - 1];
+    var nextCircle = i < (adjacent.length - 1) ? adjacent[i + 1] : adjacent[0];
+    var points = getIntersectionPoints(circle, getIntersectionAngles(circle, circle2), true);
+    var nextPoints = getIntersectionPoints(circle, getIntersectionAngles(circle, nextCircle), true);
+    var prevPoints = getIntersectionPoints(circle, getIntersectionAngles(circle, prevCircle), true);
 
-var circle = svg.selectAll("g")
-  .data(circles)
-  .enter().append("g");
+    var finish = prevCircle === nextCircle && i === adjacent.length - 1;
+    var angleBetweenEndAndStart = getAngleBetweenCirclePoints(circle, points[1], nextPoints[0]);
+    var overlapsPrev = doCirclesOverlap(circle2, prevCircle);
+    var overlapsNext = doCirclesOverlap(circle2, nextCircle);
+    var start, end;
 
+    if(overlapsPrev)
+      start = getLineIntersection(points, prevPoints);
+    else
+      start = {x: points[0].x, y: points[0].y};
+    if(overlapsNext)
+      end = getLineIntersection(points, nextPoints);
+    else
+      end = {x: points[1].x, y: points[1].y};
 
-circle.append("circle")
-    .attr("id", function(d, i) {return "circle-" + i})
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", function(d) {return d.r; })
-    .style("fill", "none");/*
-    .style("stroke", function(d) {return d.col; })*/
+    d += "L " + start.x + "," + start.y + "L " + end.x + "," + end.y;
 
+    if(!overlapsNext && angleBetweenEndAndStart > Math.PI) {
+      d += "A " + circle.r + " " + circle.r + " 0 1 1 " + nextPoints[0].x + " " + nextPoints[0].y;
+    }
 
-circle.append("path")
-  .attr("d", function(circle1, i) {
-    var sortedCircles = sortCirclesByAngle(circle1, getOverlappingCircles(circle1));
-    if(!sortedCircles.length)
-      return circlePath(circle1);
-    if(sortedCircles.length === 1)
-      return oneAdjacent(circle1, sortedCircles[0]);
-
-    if(sortedCircles.length === 2)
-      return twoAdjacent(circle1, sortedCircles);
-
-    var d = "";
-    sortedCircles.forEach(function(circle2, i) {
-      var prevCircle = i === 0 ? sortedCircles[sortedCircles.length - 1] : sortedCircles[i - 1];
-      var nextCircle = i < (sortedCircles.length - 1) ? sortedCircles[i + 1] : sortedCircles[0];
-      var points = getIntersectionPoints(circle1, getIntersectionAngles(circle1, circle2), true);
-      var nextPoints = getIntersectionPoints(circle1, getIntersectionAngles(circle1, nextCircle), true);
-      var prevPoints = getIntersectionPoints(circle1, getIntersectionAngles(circle1, prevCircle), true);
-
-      var finish = prevCircle === nextCircle && i === sortedCircles.length - 1;
-      var angleBetweenEndAndStart = getAngleBetweenCirclePoints(circle1, points[1], nextPoints[0]);
-      var overlapsPrev = doCirclesOverlap(circle2, prevCircle);
-      var overlapsNext = doCirclesOverlap(circle2, nextCircle);
-      var start, end;
-
-      if(overlapsPrev)
-        start = getLineIntersectionAsArray(points, prevPoints);
-      else
-        start = {x: points[0].x, y: points[0].y};
-      if(overlapsNext)
-        end = getLineIntersectionAsArray(points, nextPoints);
-      else
-        end = {x: points[1].x, y: points[1].y};
-
-      d += "L " + start.x + "," + start.y + "L " + end.x + "," + end.y;
-
-      if(!overlapsNext && angleBetweenEndAndStart > Math.PI) {
-        d += "A " + circle1.r + " " + circle1.r + " 0 1 1 " + nextPoints[0].x + " " + nextPoints[0].y;
-      }
-
-      else if(!overlapsNext && angleBetweenEndAndStart < Math.PI) {
-        d += "A " + circle1.r + " " + circle1.r + " 0 0 1 " + nextPoints[0].x + " " + nextPoints[0].y;
-      }
-    });
-    return "M" + d.substr(1, d.length);
-  })
-  .style("stroke", "#000")
-  .style("fill", "none")/*
-  .style("fill", function(d) {
-    return colorScale(d.r);
-  })*/
-  .style("stroke-width", function(d) {return r2StrokeWidth(d.r)})
-
+    else if(!overlapsNext && angleBetweenEndAndStart < Math.PI) {
+      d += "A " + circle.r + " " + circle.r + " 0 0 1 " + nextPoints[0].x + " " + nextPoints[0].y;
+    }
+  });
+  return "M" + d.substr(1, d.length);
+}
 
 function circlePath(circle){
     return 'M '+circle.x+' '+circle.y+' m -'+circle.r+', 0 a '+circle.r+','+circle.r+' 0 1,0 '+(circle.r*2)+',0 a '+circle.r+','+circle.r+' 0 1,0 -'+(circle.r*2)+',0';
@@ -169,7 +194,7 @@ function twoAdjacent(circle, adjacentCircles) {
     return d;
   }
 
-  intersection = getLineIntersectionAsArray(points1, points2);
+  intersection = getLineIntersection(points1, points2);
   angleBetweenEndAndStart = getAngleBetweenCirclePoints(circle, points2[1], points1[0]);
   sweep = angleBetweenEndAndStart > Math.PI ? 1 : 0;
   if(!overlapsFromBehind) {
@@ -188,7 +213,7 @@ function twoAdjacent(circle, adjacentCircles) {
 }
 
 
-function getLineIntersectionAsArray(l1, l2){
+function getLineIntersection(l1, l2){
   var m1 = (l1[0].y-l1[1].y)/(l1[0].x-l1[1].x);  // slope of line 1
   var m2 = (l2[0].y-l2[1].y)/(l2[0].x-l2[1].x);  // slope of line 2
   //if(m1 - m2 < Number.EPSILON) return;
@@ -198,35 +223,17 @@ function getLineIntersectionAsArray(l1, l2){
   };
 }
 
-function getLineIntersection(l1, l2){
-  var m1 = (l1.y1-l1.y2)/(l1.x1-l1.x2);  // slope of line 1
-  var m2 = (l2.y1-l2.y2)/(l2.x1-l2.x2);  // slope of line 2
-  //if(m1 - m2 < Number.EPSILON) return;
-  return { 
-    x: (m1 * l1.x1 - m2*l2.x1 + l2.y1 - l1.y1) / (m1 - m2),
-    y: (m1*m2*(l2.x1-l1.x1) + m2*l1.y1 - m1*l2.y1) / (m2 - m1)
-  };
-}
-
-function getIntersectionPoints(circle, angles, asArray) {
-  if(asArray)
-    return [
-      {
-        x: Math.cos(angles.start) * circle.r + circle.x,
-        y: Math.sin(angles.start) * circle.r + circle.y
-      },
-      {
-        x: Math.cos(angles.end) * circle.r + circle.x,
-        y: Math.sin(angles.end) * circle.r + circle.y
-      }
-    ]
-
-  return {
-    x1: Math.cos(angles.start) * circle.r + circle.x,
-    y1: Math.sin(angles.start) * circle.r + circle.y,
-    x2: Math.cos(angles.end) * circle.r + circle.x,
-    y2: Math.sin(angles.end) * circle.r + circle.y
-  }
+function getIntersectionPoints(circle, angles) {
+  return [
+    {
+      x: Math.cos(angles.start) * circle.r + circle.x,
+      y: Math.sin(angles.start) * circle.r + circle.y
+    },
+    {
+      x: Math.cos(angles.end) * circle.r + circle.x,
+      y: Math.sin(angles.end) * circle.r + circle.y
+    }
+  ]
 }
 
 function getIntersectionAngles(circle1, circle2) {
@@ -234,7 +241,6 @@ function getIntersectionAngles(circle1, circle2) {
   var aCenter = Math.atan2(circle2.y - circle1.y, circle2.x - circle1.x);
   return {start: aCenter - aSector, end: aCenter + aSector};
 }
-
 
 function getSSSangle(opposite, adjacent1, adjacent2) {
   return Math.acos((Math.pow(adjacent1, 2) + Math.pow(adjacent2, 2) - Math.pow(opposite, 2)) / (2 * adjacent1 * adjacent2));
@@ -264,6 +270,10 @@ function getOverlappingCircles(circle1) {
   return oCircles;
 }
 
+/*
+  Generates a function that can be used to compare circles for clockwise 
+  ordering around a given point
+*/
 function generateCompareCircles(circle) {
   return function compare(circleA, circleB) {
     var anglesA = getClockwiseIntersactionAngles(circle, circleA);
@@ -279,6 +289,9 @@ function generateCompareCircles(circle) {
   }
 }
 
+/*
+  Returns the angles in which circle2 intersects circle1 in clockwise order
+*/
 function getClockwiseIntersactionAngles(circle1, circle2) {
   var intersectionAngles = getIntersectionAngles(circle1, circle2);
   return {
@@ -287,7 +300,9 @@ function getClockwiseIntersactionAngles(circle1, circle2) {
   }
 }
 
-// returns the angle between pointA and pointB in clockwise direction
+/*
+  Returns the angle between pointA and pointB in clockwise direction
+*/
 function getClockwiseAngle(pointA, pointB) {
   var angle = Math.atan2(pointB.y - pointA.y, pointB.x - pointA.x)
   return angle < 0 ? (Math.PI - Math.abs(angle)) + Math.PI : angle;
@@ -301,73 +316,3 @@ function getAngleBetweenCirclePoints(center, pointA, pointB) {
   var diff = getClockwiseAngle(center, pointB) - getClockwiseAngle(center, pointA);
   return diff < 0 ? diff + 2 * Math.PI : diff;
 }
-
-function getAngleBetweenCircles(center, circleA, circleB) {
-  return Math.PI - (getClockwiseAngle(center, circleB) - getClockwiseAngle(center, circleA));
-}
-
-/*var circle = svg.selectAll("g")
-  .data(circles)
-  .enter().append("g")
-    .call(d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended));
-
-// clip objects
-var cell = circle.append("path")
-  .data(voronoi.polygons(circles))
-    .attr("d", renderCell)
-    .attr("id", function(d, i) { return "cell-" + i; });
-
-circle.append("circle")
-    .attr("id", function(d, i) {return "circle-" + i})
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", function(d) {return d.r; });
-
-// clip paths
-circle.append("clipPath")
-    .attr("id", function(d, i) { return "cell-clip-" + i; })
-    .append("use")
-    .attr("xlink:href", function(d, i) { return "#cell-" + i; });
-
-circle.append("clipPath")
-  .attr("id", function(d, i) {return "circle-clip-" + i})
-  .append("use")
-  .attr("xlink:href", function(d, i) {return "#circle-" + i});
-
-// drawn cells
-circle.append("path")
-  .data(voronoi.polygons(circles))
-    .attr("d", renderCell)
-    .attr("class", "clipped-cell")
-    .attr("clip-path", function(d, i) { return "url(#circle-clip-" + i + ")"; });
-
-// drawn circles
-circle.append("circle")
-    .attr("class", "clipped-circle")
-    .attr("clip-path", function(d, i) { return "url(#cell-clip-" + i + ")"; })
-    .attr("cx", function(d) { return d.x; })
-    .attr("cy", function(d) { return d.y; })
-    .attr("r", function(d) {return d.r; })
-    .style('stroke', '#000')
-    .style("fill", '#fff');
-
-
-function dragstarted(d) {
-  d3.select(this).raise().classed("active", true);
-}
-
-function dragged(d) {
-  d3.select(this).select("circle").attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-  cell = cell.data(voronoi.polygons(circles)).attr("d", renderCell);
-}
-
-function dragended(d, i) {
-  d3.select(this).classed("active", false);
-}
-
-function renderCell(d) {
-  return d == null ? null : "M" + d.join("L") + "Z";
-}*/

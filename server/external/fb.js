@@ -39,10 +39,10 @@ const fetchLikes = (user) => {
 }
 
 const fetchFeed = (user) => {
-  let likeIds = user.facebook.likes.slice(0, 4).toString();
+  let likeIds = user.facebook.likes.slice(0, 8).toString();
   // DOC Multiple ID Read Requests: https://developers.facebook.com/docs/graph-api/using-graph-api
   // DOC /post: https://developers.facebook.com/docs/graph-api/reference/v2.9/post/
-  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url,type&ids=${likeIds}`;
+  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url,type,privacy&ids=${likeIds}`;
 
   return request({
     uri: startUri,
@@ -51,10 +51,12 @@ const fetchFeed = (user) => {
   .then((response) => {
     return _(response).map(posts => {
       if(!posts.data.length) return;
-      console.log(posts.data);
-      return {
-        url: posts.data[0].permalink_url
-      };
+      const privacy = posts.data[0].privacy.value;
+      if(privacy === 'EVERYONE' || privacy === '') {
+        return {
+          url: posts.data[0].permalink_url
+        };
+      }
     })
     .compact()
     .value();
@@ -62,12 +64,34 @@ const fetchFeed = (user) => {
   .catch(err => console.log(err));
 }
 
+
+
+/*const fetchFeed = (user) => {
+  let likeIds = user.facebook.likes.slice(0, 2).toString();
+  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url&ids=${likeIds}`;
+
+  return request({
+    uri: startUri,
+    json: true
+  })
+  .then((response) => {
+    const promises = _.map(response, post => {
+      return axios.get(`https://www.facebook.com/plugins/post/oembed.json/?url=${post.data[0].permalink_url}&omitscript=true`);
+    });
+    return Promise.all(promises)
+  })
+  .then((responses) => {
+    responses = _.map(responses, (response) => response.data);
+    console.log(responses);
+    return responses;
+  })
+  .catch(err => colors.red('Feed fail'))
+}*/
+
 module.exports = {
   fetchLikes,
   fetchFeed
 }
-
-
 
 /*{ 
   '100440753329511': 

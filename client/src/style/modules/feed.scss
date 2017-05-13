@@ -16,5 +16,15 @@
 }
 
 .feed__item {
-  //position: absolute;
+  position: absolute;
+
+/*   > div {
+    opacity: 0;
+
+    &.feeeed_item {
+      width: 10px;
+      height: 10px;
+      background-color: #000;
+    }
+  } */
 }

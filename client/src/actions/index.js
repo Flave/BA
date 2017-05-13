@@ -22,6 +22,13 @@ const receiveOneUser = (data, id) => ({
 });
 
 
+export const setFeedItemHeight = (height, itemUrl, profileId) => ({
+  type: 'SET_FEED_ITEM_HEIGHT',
+  height,
+  itemUrl,
+  profileId
+});
+
 export const fetchUser = () => {
   return api.fetchUser().then(response => {
     return receiveUser(response.data);

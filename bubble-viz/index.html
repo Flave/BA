@@ -9,7 +9,152 @@
   </style>
 </head>
 <body>
-  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1440" height="1024"></svg>
+  <svg id="canvas" height="1024" width="1440" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <filter id="bubble-filter-1" width="150%" height="160%" x="-25%" y="-25%">
+        <!-- COLORS -->
+          <feFlood flood-color="#16B5FF" result="COLOR-blue"></feFlood>‚
+          <feFlood flood-color="#9800FF" result="COLOR-violet"></feFlood>
+          <feFlood flood-color="#A64DFF" result="COLOR-violet-light"></feFlood>
+        <!-- COLORS END -->
+
+        <!-- BOTTOM SPLASH -->
+          <feTurbulence baseFrequency="0.005" type="fractalNoise" numOctaves="1" seed="2" result="BOTTOM-SPLASH_10"></feTurbulence>
+          <feGaussianBlur stdDeviation="6.5" in="SourceAlpha" result="BOTTOM-SPLASH_20"></feGaussianBlur>
+          <feDisplacementMap scale="420" in="BOTTOM-SPLASH_20" in2="BOTTOM-SPLASH_10" result="BOTTOM-SPLASH_30"></feDisplacementMap>
+          <feComposite operator="in" in="COLOR-blue" in2="BOTTOM-SPLASH_30" result="BOTTOM-SPLASH_40"></feComposite>
+        <!-- BOTTOM END -->
+
+        <!-- MIDDLE SPLASH -->
+          <feTurbulence baseFrequency="0.001" type="fractalNoise" numOctaves="1" seed="1" result="MIDDLE-SPLASH_10"></feTurbulence>
+          <feGaussianBlur in="SourceAlpha" stdDeviation="0.1" result="MIDDLE-SPLASH_20"></feGaussianBlur>
+          <feDisplacementMap in="MIDDLE-SPLASH_20" in2="MIDDLE-SPLASH_10" scale="25" result="MIDDLE-SPLASH_30"></feDisplacementMap>
+          <feComposite in="COLOR-violet-light" in2="MIDDLE-SPLASH_30" operator="in" result="MIDDLE-SPLASH_40"></feComposite>
+        <!-- MIDDLE END -->
+
+        <!-- TOP SPLASH -->
+          <feTurbulence baseFrequency="0.001" type="fractalNoise" numOctaves="1" seed="1" result="TOP-SPLASH_10"></feTurbulence>
+          <feGaussianBlur stdDeviation="3.5" in="SourceAlpha" result="TOP-SPLASH_20"></feGaussianBlur>
+          <feDisplacementMap scale="220" in="TOP-SPLASH_20" in2="TOP-SPLASH_10" result="TOP-SPLASH_30"></feDisplacementMap>
+          <feComposite operator="in" in="COLOR-violet" in2="TOP-SPLASH_30" result="TOP-SPLASH_40"></feComposite>
+        <!-- TOP END -->
+
+        <!-- LIGHT EFFECTS -->
+          <feMerge result="LIGHT-EFFECTS_10">
+            <!-- <feMergeNode in="BOTTOM-SPLASH_40"></feMergeNode> -->
+            <feMergeNode in="MIDDLE-SPLASH_40"></feMergeNode>
+            <!-- <feMergeNode in="TOP-SPLASH_40"></feMergeNode> -->
+          </feMerge>
+
+          <feColorMatrix type="matrix" values="0 0 0 0 0,
+          0 0 0 0 0,
+          0 0 0 0 0,
+          0 0 0 1 0" in="LIGHT-EFFECTS_10" result="LIGHT-EFFECTS_20"></feColorMatrix>
+          
+          <feGaussianBlur stdDeviation="8" in="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_30"></feGaussianBlur>
+          <feSpecularLighting surfaceScale="30" specularConstant="1" specularExponent="30" lighting-color="#white" in="LIGHT-EFFECTS_30" result="LIGHT-EFFECTS_40">
+            <fePointLight x="-50" y="1000" z="400"></fePointLight>
+          </feSpecularLighting>
+          <feComposite operator="in" in="LIGHT-EFFECTS_40" in2="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_50"></feComposite>
+          <feComposite operator="arithmetic" k1="1" k2="10" k3="10" k4="0" in="LIGHT-EFFECTS_10" in2="LIGHT-EFFECTS_50" result="LIGHT-EFFECTS_60"></feComposite>
+        </filter>
+
+
+
+        <filter id="bubble-filter-2">
+            <feFlood flood-color="#A64DFF" result="COLOR-violet-light"></feFlood>
+
+            <feTurbulence type="fractalNoise" baseFrequency="0.00015" numOctaves="2" result="turbulence" data-filterId="5" />
+            <feDisplacementMap id="distortion" in="SourceAlpha" in2="turbulence" scale="20" result="displacement">
+              <animate attributeName="scale" values="20; 60; 20" dur="1s" repeatCount="indefinite"></animate>
+            </feDisplacementMap>
+
+            <feGaussianBlur stdDeviation="0.5" in="SourceAlpha" result="blur"></feGaussianBlur>
+            <feComposite operator="in" in="COLOR-violet-light" in2="blur" result="blur-composite"></feComposite>
+
+            <feColorMatrix type="matrix" values="
+              1 0 0 0 0,
+              0 1 0 0 0,
+              0 0 1 0 0,
+              0 0 0 18 -2" in="composite" result="blur-composite"></feColorMatrix>
+
+          <feComposite operator="in" in="blur-composite" in2="displacement" result="shape"></feComposite>
+
+          <feMerge result="LIGHT-EFFECTS_10">
+            <!-- <feMergeNode in="BOTTOM-SPLASH_40"></feMergeNode> -->
+            <feMergeNode in="shape"></feMergeNode>
+            <!-- <feMergeNode in="TOP-SPLASH_40"></feMergeNode> -->
+          </feMerge>
+          
+          <feGaussianBlur stdDeviation="8" in="LIGHT-EFFECTS_10" result="LIGHT-EFFECTS_30"></feGaussianBlur>
+          <feSpecularLighting surfaceScale="30" specularConstant="1" specularExponent="30" lighting-color="#white" in="LIGHT-EFFECTS_30" result="LIGHT-EFFECTS_40">
+            <fePointLight x="-50" y="1000" z="400"></fePointLight>
+          </feSpecularLighting>
+          <feComposite operator="in" in="LIGHT-EFFECTS_40" in2="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_50"></feComposite>
+          <feComposite operator="arithmetic" k1="1" k2="10" k3="10" k4="0" in="LIGHT-EFFECTS_10" in2="LIGHT-EFFECTS_50" result="LIGHT-EFFECTS_60"></feComposite>
+        </filter>
+
+
+
+        <filter id="pixelate" x="0" y="0">
+          <feFlood x="0" y="0" height="1" width="1"/>
+          <feComposite width="2" height="2"/>
+          <feTile result="a"/>
+          <feComposite in="SourceGraphic" in2="a" operator="in"/>
+          <feMorphology operator="dilate" radius=".1"/>
+        </filter>
+
+      <filter id="bubble">
+        <feFlood flood-color="#A64DFF" result="COLOR-violet-light"></feFlood>
+
+        <feTurbulence baseFrequency="0.001" type="fractalNoise" numOctaves="1" seed="1" result="MIDDLE-SPLASH_10"></feTurbulence>
+        <feGaussianBlur in="SourceAlpha" stdDeviation="0.1" result="MIDDLE-SPLASH_20"></feGaussianBlur>
+        <feDisplacementMap in="MIDDLE-SPLASH_20" in2="MIDDLE-SPLASH_10" scale="25" result="MIDDLE-SPLASH_30"></feDisplacementMap>
+        <feComposite in="COLOR-violet-light" in2="MIDDLE-SPLASH_30" operator="in" result="MIDDLE-SPLASH_40"></feComposite>
+
+        <!-- LIGHT EFFECTS -->
+          <feMerge result="LIGHT-EFFECTS_10">
+            <!-- <feMergeNode in="BOTTOM-SPLASH_40"></feMergeNode> -->
+            <feMergeNode in="MIDDLE-SPLASH_40"></feMergeNode>
+            <!-- <feMergeNode in="TOP-SPLASH_40"></feMergeNode> -->
+          </feMerge>
+
+          <feColorMatrix type="matrix" values="0 0 0 0 0,
+          0 0 0 0 0,
+          0 0 0 0 0,
+          0 0 0 1 0" in="LIGHT-EFFECTS_10" result="LIGHT-EFFECTS_20"></feColorMatrix>
+          
+          <feGaussianBlur stdDeviation="8" in="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_30"></feGaussianBlur>
+          <feSpecularLighting surfaceScale="30" specularConstant="1" specularExponent="30" lighting-color="#white" in="LIGHT-EFFECTS_30" result="LIGHT-EFFECTS_40">
+            <fePointLight x="-50" y="1000" z="400"></fePointLight>
+          </feSpecularLighting>
+          <feComposite operator="in" in="LIGHT-EFFECTS_40" in2="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_50"></feComposite>
+          <feComposite operator="arithmetic" k1="1" k2="10" k3="10" k4="0" in="LIGHT-EFFECTS_10" in2="LIGHT-EFFECTS_50" result="LIGHT-EFFECTS_60"></feComposite>
+      </filter>
+
+      <filter id="watery" width="300" height="500" x="-50%" y="-50%">
+        <feFlood flood-color="rgba(160, 40, 200, .3)" result="element"></feFlood>
+
+        <feTurbulence baseFrequency="0.02" type="fractalNoise" numOctaves="20" seed="46" result="element_1"></feTurbulence>
+        <feGaussianBlur stdDeviation="10" in="SourceGraphic" result="element_2"></feGaussianBlur>
+        <feDisplacementMap scale="70" in="element_2" in2="element_1" result="element_3"></feDisplacementMap>
+
+        <feTurbulence baseFrequency="0.001" type="fractalNoise" numOctaves="20" seed="46" result="turbulence"></feTurbulence>
+
+        <feComposite operator="in" in="SourceGraphic" in2="element_3" result="element_4"></feComposite>
+        <feComposite operator="in" in="element" in2="element_3" result="element_5"></feComposite>
+
+        <feMerge result="merged">
+          <feMergeNode in="element_4"></feMergeNode>
+          <feMergeNode in="element_5"></feMergeNode>
+          <feMergeNode in="turbulence"></feMergeNode>
+        </feMerge>
+      </filter>
+      <filter id="blur">
+        <feGaussianBlur in="merged" stdDeviation="2" result="MIDDLE-SPLASH_20"></feGaussianBlur>
+      </filter>
+      </defs>
+  </svg>
   <script type="text/javascript" src="./index.js"></script>
 </body>
 </html>
