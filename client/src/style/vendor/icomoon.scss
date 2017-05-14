@@ -24,16 +24,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-facebook:before {
+.icon-carret-down:before {
   content: "\e900";
 }
-.icon-instagram:before {
+.icon-carret-up:before {
   content: "\e901";
 }
-.icon-twitter:before {
+.icon-cross:before {
   content: "\e902";
 }
-.icon-youtube:before {
+.icon-facebook:before {
   content: "\e903";
 }
-
+.icon-instagram:before {
+  content: "\e904";
+}
+.icon-long-arrow-back:before {
+  content: "\e905";
+}
+.icon-refresh:before {
+  content: "\e906";
+}
+.icon-twitter:before {
+  content: "\e907";
+}
+.icon-youtube:before {
+  content: "\e908";
+}

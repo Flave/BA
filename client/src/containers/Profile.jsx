@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import FacebookPost from '../components/FacebookPost.jsx';
 import _find from 'lodash/find';
-import Header from '../components/profile/Header.jsx';
+import Sidebar from '../components/profile/Sidebar.jsx';
 import Predictions from '../components/profile/Predictions.jsx';
 import Feed from '../components/profile/Feed.jsx';
 
@@ -43,8 +43,7 @@ class Profile extends Component {
 
     return (
       <div>
-        <Header isMe={isMe} profile={profile} />
-        {/*profile.predictions && this.createPredictions(profile)*/}
+        <Sidebar isMe={isMe} profile={profile} />
         <Feed profile={profile} />
       </div>
     )

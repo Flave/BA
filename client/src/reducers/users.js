@@ -2,7 +2,6 @@ import _find from 'lodash/find';
 import { range as d3Range } from 'd3-array';
 
 
-const GRID_WIDTH = 360;
 const ITEM_WIDTH = 350;
 const GRID_PADDING = 20;
 
@@ -10,12 +9,13 @@ const GRID_PADDING = 20;
 [
   {
     id,
-    feed: {
-      url,
-      colIndex,
-      top
-    },
-    predictions
+    feed: [{
+          url,
+          colIndex,
+          top
+        }],
+    predictions,
+    loading
   }
 ]
 */
@@ -33,19 +33,30 @@ export default (state = null, action) => {
   }
 }
 
+/*function receiveAllUsers(state, action) {
+  return action.data.map((user) => {
+    return {
+      ...user,
+      loading: 
+    }
+  })
+}*/
+
 function receiveFeed(state, {data, id}) {
   // if there's no users yet simply put the new user in a new array
   if(state === null)
     return [{
       id: id,
-      feed: data
+      feed: data,
+      loading: true
     }];
   // else replaces the received user with the one in state
   return state.map((user) => {
     if(user.id !== id) return user;
     return {
       ...user,
-      feed: data
+      feed: data,
+      loading: true
     };
   });
 }
@@ -53,6 +64,8 @@ function receiveFeed(state, {data, id}) {
 function setFeedItemPosition(state, {height, itemUrl, profileId}) {
   return state.map((user) => {
     if(user.id !== profileId) return user;
+    const loadedItems = getLoadedItems(user.feed);
+    const loading = (user.feed.length - 1) !== loadedItems.length;
     let feed = user.feed.map((item) => {
       if(item.url !== itemUrl) return item;
       const {x, y} = generateScatterPosition(item, height, user.feed);
@@ -67,16 +80,20 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
 
     return {
       ...user,
-      feed
+      feed,
+      loading
     };
   });  
 }
 
 
+function getLoadedItems(items) {
+  return items.filter((item) => item.x !== undefined);
+}
+
 // SCATTER CALCULATION
 
-function generateScatterPosition(item, height, feed) {
-  const positionedItems = feed.filter((item) => item.x !== undefined);
+function generateScatterPosition(item, height, positionedItems) {
   return getNewPosition(item, height, positionedItems);
 }
 

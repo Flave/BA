@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions';
 import FacebookPost from '../FacebookPost.jsx';
+import Loader from '../Loader.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
 import { select as d3Select } from 'd3-selection';
 import { event as d3Event } from 'd3-selection';
@@ -56,23 +57,24 @@ class Feed extends Component {
     this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemUrl, id));
   }
 
-  createFeed(feed) {
+  createFeed(feed, allLoaded) {
     return feed.map((item, index) => {
       return (
-        <FacebookPost onLoad={this.handleItemLoad.bind(this)} key={index} item={item}/>
+        <FacebookPost allLoaded={allLoaded} onLoad={this.handleItemLoad.bind(this)} key={index} item={item}/>
       )
     })
   }
 
   render() {
-    const {feed} = this.props.profile;
+    const {feed, loading} = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
+    const allLoaded = feed && !loading;
 
     return (
       <div ref={(root) => this.root = root} className="feed">
-        {!feed && <div>Loading</div>}
+        {!allLoaded && <Loader />}
         <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
-          {feed && this.createFeed(feed)}
+          {feed && this.createFeed(feed, allLoaded)}
         </div>
       </div>
     )

@@ -4,6 +4,7 @@ import Intro from './containers/Intro.jsx';
 import Profile from './containers/Profile.jsx';
 import Others from './containers/Others.jsx';
 import *  as actions from './actions';
+import _throttle from 'lodash/throttle';
 
 import {
   Route,
@@ -11,6 +12,10 @@ import {
   Redirect,
   withRouter
 } from 'react-router-dom';
+
+const handleResize = _throttle((store) => {
+  store.dispatch(actions.setWindowDimensions([window.innerWidth, window.innerHeight]));
+}, 800, {leading: false});
 
 class App extends Component {
   componentDidMount() {
@@ -20,6 +25,8 @@ class App extends Component {
     });
 
     store.dispatch(actions.fetchUser());
+
+    window.addEventListener('resize', handleResize.bind(null, store));
   }
 
   componentWillUnmount() {

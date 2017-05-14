@@ -1,10 +1,10 @@
-import profile from './profile';
 import users from './users';
 import user from './user';
+import ui from './ui';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
   user: user,
-  users: users/*,
-  profile: profile*/
+  users: users,
+  ui: ui
 });

@@ -1,6 +1,6 @@
 var svg = d3.select("#canvas"),
-    minRadius = 20,
-    maxRadius = 100;
+    minRadius = 40,
+    maxRadius = 60;
 
 
 var colorScale = d3.scaleLinear()
@@ -11,11 +11,10 @@ var r2StrokeWidth = d3.scaleLinear()
   .domain([minRadius, maxRadius])
   .range([0.1, 1]);
 
-var circles = generateCircles(70);
+var circles = generateCircles(50);
 
 
 var root = svg.append('g')
-.attr("filter", "url(#bubble-filter-1)")
 
 var circle = root
   .selectAll("g")
@@ -49,13 +48,8 @@ var filter = svg
 
 circle.append("path")
   .attr("d", calculateBubblePath)
-  .style("fill", "#FF8AF2");
-
-circle.append("path")
-  .attr("d", calculateBubblePath)
-  .style("fill", "none")
-  .style("stroke-width", 1)
-  .style("stroke", "#fff");
+  .style("fill", "#FF8AF2")
+  .style("stroke", "#000")
 
 
 /*
@@ -83,11 +77,15 @@ function circleCollides(circle, circles) {
 }
 
 function generateRandomCircle() {
+  const centerX = 1440/2;
+  const centerY = 1024/2;
+  const angle = Math.random() * Math.PI * 2;
+  const radius = d3.randomNormal(500, 80)();
+
   return {
-    x: Math.random() * 1440,
-    y: Math.random() * 1024,
-    r: Math.random() * (maxRadius-minRadius) + minRadius,
-    col: "red"
+    x: Math.cos(angle) * radius + centerX,
+    y: Math.sin(angle) * radius + centerY,
+    r: Math.random() * (maxRadius-minRadius) + minRadius
   }
 }
 

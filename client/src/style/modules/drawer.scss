@@ -1,0 +1,13 @@
+.drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: #fff;
+  transition: all .3s;
+  transform: translateX(-100%);
+
+  &.is-open {
+    transform: translateX(0);
+  }
+}

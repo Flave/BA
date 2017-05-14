@@ -22,6 +22,16 @@ const receiveOneUser = (data, id) => ({
 });
 
 
+export const setWindowDimensions = (dimensions) => ({
+  type: 'SET_WINDOW_DIMENSIONS',
+  dimensions
+});
+
+export const toggleDrawer = (id) => ({
+  type: 'TOGGLE_DRAWER',
+  id
+});
+
 export const setFeedItemHeight = (height, itemUrl, profileId) => ({
   type: 'SET_FEED_ITEM_HEIGHT',
   height,
