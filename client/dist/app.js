@@ -20148,18 +20148,20 @@ function generateScatterPosition(item, height, feed) {
     return item.x !== undefined;
   });
   return getNewPosition(item, height, positionedItems);
-  //return bestCandidateGenerator()(item, height, positionedItems);
 }
 
+/*
+  Gets a random position based on the center of the screen that doesn't collide
+  with any of the existing positions.
+  Can be optimised by taking into account the center item instead of the center position
+  and then looking at the outer most items to calculate the initial spread
+*/
 function getNewPosition(item, height, items) {
   var windowWidth = window.innerWidth;
   var windowHeight = window.innerWidth;
   var centerX = windowWidth / 2;
   var centerY = windowHeight / 2;
   var spread = 0;
-  /*  let radius = 100;
-    let angle = 0;
-    let angleStep = Math.PI() / 5;*/
 
   function getPosition() {
     var newPos = {
@@ -20177,48 +20179,6 @@ function getNewPosition(item, height, items) {
   return getPosition();
 }
 
-function bestCandidateGenerator() {
-  var tries = 0;
-
-  return function getBestCandidate(item, height, items) {
-    var biggestDistance = 0;
-    var bestCandidate = void 0;
-    var windowWidth = window.innerWidth;
-    var windowHeight = window.innerWidth;
-    var centerX = windowWidth / 2;
-    var centerY = windowHeight / 2;
-
-    var candidates = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_d3_array__["a" /* range */])(10).map(function (i) {
-      return {
-        x: Math.random() * (windowWidth * 2 - ITEM_WIDTH),
-        y: Math.random() * (windowHeight * 2 - height),
-        height: height
-      };
-    });
-
-    candidates.forEach(function (candidate) {
-      if (doesItemCollide(candidate, items)) return;
-      if (!bestCandidate) bestCandidate = candidate;
-      var maxDistance = getMaxDistance(candidate, items);
-      if (maxDistance > biggestDistance) {
-        bestCandidate = candidate;
-        biggestDistance = maxDistance;
-      }
-    });
-
-    if (tries > 10) {
-      console.log("have to return random candidate");
-      return candidates[0];
-    }
-
-    if (!bestCandidate) {
-      tries++;
-      return getBestCandidate(item, height, items);
-    }
-    return bestCandidate;
-  };
-}
-
 function doesItemCollide(item1, items) {
   var doesCollide = false;
 
@@ -20229,60 +20189,6 @@ function doesItemCollide(item1, items) {
     }
   });
   return doesCollide;
-}
-
-function getDistance(a, b) {
-  var dx = a.x - b.x;
-  var dy = a.y - b.y;
-
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
-function getMaxDistance(candidate, items) {
-  var biggestDistance = 0;
-  items.forEach(function (item) {
-    var distance = getDistance(candidate, item);
-    if (distance > biggestDistance) biggestDistance = distance;
-  });
-  return biggestDistance;
-}
-
-// GRID CALCULATION
-
-function generateGridPosition(item, height, feed) {
-  var windowWidth = window.innerWidth;
-  var windowHeight = window.innerWidth;
-  var centerIndex = Math.floor(windowWidth / GRID_WIDTH / 2);
-  var positionedItems = feed.filter(function (item) {
-    return item.colIndex !== undefined;
-  });
-  var colIndex = Math.floor(d3RandomNormal(centerIndex, 5)());
-  var itemsInCol = positionedItems.filter(function (item) {
-    return item.colIndex === colIndex;
-  });
-
-  // if there are no items in this column yet, just define a top positions
-  if (itemsInCol === undefined || itemsInCol.length === 0) return {
-    colIndex: colIndex,
-    top: d3RandomNormal(windowHeight / 2, 10)() - height / 2,
-    left: colIndex * GRID_WIDTH + GRID_PADDING / 2
-  };
-
-  // else calculate top position based on other items in the column
-  itemsInCol = sortItemsByTopPos(itemsInCol);
-  var topItem = itemsInCol[0];
-  var bottomItem = itemsInCol[itemsInCol.length - 1];
-  return {
-    colIndex: colIndex,
-    top: bottomItem.top + bottomItem.height + GRID_PADDING,
-    left: colIndex * GRID_WIDTH + GRID_PADDING / 2
-  };
-}
-
-function sortItemsByTopPos(items) {
-  return items.sort(function (a, b) {
-    return a.top - b.top;
-  });
 }
 
 /***/ }),
@@ -23630,7 +23536,7 @@ function toComment(sourceMap) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__src_quantile__ = __webpack_require__(111);
 /* unused harmony reexport quantile */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__src_range__ = __webpack_require__(192);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_19__src_range__["a"]; });
+/* unused harmony reexport range */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__src_scan__ = __webpack_require__(380);
 /* unused harmony reexport scan */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__src_shuffle__ = __webpack_require__(381);

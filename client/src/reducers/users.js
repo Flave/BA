@@ -78,18 +78,20 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
 function generateScatterPosition(item, height, feed) {
   const positionedItems = feed.filter((item) => item.x !== undefined);
   return getNewPosition(item, height, positionedItems);
-  //return bestCandidateGenerator()(item, height, positionedItems);
 }
 
+/*
+  Gets a random position based on the center of the screen that doesn't collide
+  with any of the existing positions.
+  Can be optimised by taking into account the center item instead of the center position
+  and then looking at the outer most items to calculate the initial spread
+*/
 function getNewPosition(item, height, items) {
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerWidth;
   const centerX = windowWidth / 2;
   const centerY = windowHeight / 2;
   let spread = 0;
-/*  let radius = 100;
-  let angle = 0;
-  let angleStep = Math.PI() / 5;*/
 
   function getPosition() {
     var newPos = {
@@ -108,48 +110,6 @@ function getNewPosition(item, height, items) {
 }
 
 
-function bestCandidateGenerator() {
-  let tries = 0;
-
-  return function getBestCandidate(item, height, items) {
-    let biggestDistance = 0;
-    let bestCandidate;
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerWidth;
-    const centerX = windowWidth / 2;
-    const centerY = windowHeight / 2;
-
-    const candidates = d3Range(10).map((i) => {
-      return {
-        x: Math.random() * (windowWidth * 2 - ITEM_WIDTH),
-        y: Math.random() * (windowHeight * 2 - height),
-        height: height
-      }
-    });
-
-    candidates.forEach((candidate) => {
-      if(doesItemCollide(candidate, items)) return;
-      if(!bestCandidate) bestCandidate = candidate;
-      const maxDistance = getMaxDistance(candidate, items);
-      if(maxDistance > biggestDistance) {
-        bestCandidate = candidate;
-        biggestDistance = maxDistance;
-      }
-    });
-
-    if(tries > 10) {
-      console.log("have to return random candidate")
-      return candidates[0];
-    }
-
-    if(!bestCandidate) {
-      tries++;
-      return getBestCandidate(item, height, items);
-    }
-    return bestCandidate;
-  }
-}
-
 function doesItemCollide(item1,  items) {
   let doesCollide = false;
 
@@ -163,58 +123,4 @@ function doesItemCollide(item1,  items) {
     }
   });
   return doesCollide;
-}
-
-function getDistance(a, b) {
-  var dx = a.x - b.x;
-  var dy = a.y - b.y;
-
-  return Math.sqrt( dx*dx + dy*dy );
-}
-
-function getMaxDistance(candidate, items) {
-  let biggestDistance = 0;
-  items.forEach((item) => {
-    const distance = getDistance(candidate, item);
-    if(distance > biggestDistance)
-      biggestDistance = distance;
-  });
-  return biggestDistance;
-}
-
-
-
-// GRID CALCULATION
-
-function generateGridPosition(item, height, feed) {
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerWidth;
-  const centerIndex = Math.floor(windowWidth / GRID_WIDTH / 2);
-  const positionedItems = feed.filter((item) => item.colIndex !== undefined);
-  const colIndex = Math.floor(d3RandomNormal(centerIndex, 5)());
-  let itemsInCol = positionedItems.filter(item => item.colIndex === colIndex);
-
-  // if there are no items in this column yet, just define a top positions
-  if(itemsInCol === undefined || (itemsInCol.length === 0))
-    return {
-      colIndex: colIndex,
-      top: d3RandomNormal(windowHeight/2, 10)() - height/2,
-      left: colIndex * GRID_WIDTH + GRID_PADDING/2
-    }
-
-  // else calculate top position based on other items in the column
-  itemsInCol = sortItemsByTopPos(itemsInCol);
-  const topItem = itemsInCol[0];
-  const bottomItem = itemsInCol[itemsInCol.length - 1];
-  return {
-    colIndex: colIndex,
-    top: bottomItem.top + bottomItem.height + GRID_PADDING,
-    left: colIndex * GRID_WIDTH + GRID_PADDING/2
-  }
-}
-
-function sortItemsByTopPos(items) {
-  return items.sort((a, b) => {
-    return a.top - b.top;
-  });
 }
