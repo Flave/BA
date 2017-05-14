@@ -21,6 +21,7 @@ export default class FecebookPost extends Component {
     var iframe = d3Select(this.root).selectAll('iframe');
     iframe.on('load', () => {
       const height = parseInt(iframe.node().style.height.replace("px", ""));
+      console.log(iframe.node().style.height);
       this.props.onLoad(height, this.props.item.url);
     })
   }

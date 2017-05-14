@@ -79,10 +79,12 @@
             <feMergeNode in="MIDDLE-SPLASH_30"></feMergeNode>
             <!-- <feMergeNode in="TOP-SPLASH_40"></feMergeNode> -->
           </feMerge>
+
           <feColorMatrix type="matrix" values="0 0 0 0 0,
           0 0 0 0 0,
           0 0 0 0 0,
           0 0 0 1 0" in="LIGHT-EFFECTS_10" result="LIGHT-EFFECTS_20"></feColorMatrix>
+          
           <feGaussianBlur stdDeviation="2" in="LIGHT-EFFECTS_20" result="LIGHT-EFFECTS_30"></feGaussianBlur>
           <feSpecularLighting surfaceScale="5" specularConstant=".75" specularExponent="30" lighting-color="#white" in="LIGHT-EFFECTS_30" result="LIGHT-EFFECTS_40">
             <fePointLight x="-50" y="-100" z="400"></fePointLight>

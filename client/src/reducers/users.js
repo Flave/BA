@@ -77,8 +77,36 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
 
 function generateScatterPosition(item, height, feed) {
   const positionedItems = feed.filter((item) => item.x !== undefined);
-  return bestCandidateGenerator()(item, height, positionedItems);
+  return getNewPosition(item, height, positionedItems);
+  //return bestCandidateGenerator()(item, height, positionedItems);
 }
+
+function getNewPosition(item, height, items) {
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerWidth;
+  const centerX = windowWidth / 2;
+  const centerY = windowHeight / 2;
+  let spread = 0;
+/*  let radius = 100;
+  let angle = 0;
+  let angleStep = Math.PI() / 5;*/
+
+  function getPosition() {
+    var newPos = {
+      x: d3RandomNormal(centerX, spread)() - ITEM_WIDTH/2,
+      y: d3RandomNormal(centerY, spread)() - height/2,
+      height: height
+    }
+    if(!doesItemCollide(newPos, items)) {
+      return newPos;
+    }
+    spread += 4;
+    return getPosition();
+  }
+
+  return getPosition();
+}
+
 
 function bestCandidateGenerator() {
   let tries = 0;
@@ -91,10 +119,10 @@ function bestCandidateGenerator() {
     const centerX = windowWidth / 2;
     const centerY = windowHeight / 2;
 
-    const candidates = d3Range(50).map((i) => {
+    const candidates = d3Range(10).map((i) => {
       return {
-        x: Math.random() * windowWidth - ITEM_WIDTH,
-        y: Math.random() * windowHeight - height,
+        x: Math.random() * (windowWidth * 2 - ITEM_WIDTH),
+        y: Math.random() * (windowHeight * 2 - height),
         height: height
       }
     });
@@ -109,26 +137,27 @@ function bestCandidateGenerator() {
       }
     });
 
-    console.log(bestCandidate);
-
-    if(tries > 10)
+    if(tries > 10) {
+      console.log("have to return random candidate")
       return candidates[0];
+    }
 
     if(!bestCandidate) {
       tries++;
-      return getBestCandidate(item, height, items, tries);
+      return getBestCandidate(item, height, items);
     }
     return bestCandidate;
   }
 }
 
-function doesItemCollide(item1, items) {
+function doesItemCollide(item1,  items) {
   let doesCollide = false;
+
   items.forEach((item2) => {
     if(doesCollide) return;
     if(
-      ((item1.x < (item2.x + ITEM_WIDTH + GRID_PADDING) && (item1.x > (item2.x - GRID_PADDING))) && (item1.y < (item2.y + item2.height + GRID_PADDING) && (item1.y > (item2.y - GRID_PADDING)))) ||
-      ((item2.x < (item1.x + ITEM_WIDTH + GRID_PADDING) && (item2.x > (item1.x - GRID_PADDING))) && (item2.y < (item1.y + item1.height + GRID_PADDING) && (item2.y > (item1.y - GRID_PADDING))))
+      ((item2.x > (item1.x - ITEM_WIDTH - GRID_PADDING)) && (item2.x < (item1.x + ITEM_WIDTH + GRID_PADDING))) &&
+      ((item2.y > (item1.y - item2.height - GRID_PADDING)) && (item2.y < (item1.y + item1.height + GRID_PADDING)))
     ) {
       doesCollide = true;
     }
