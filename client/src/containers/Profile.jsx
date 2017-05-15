@@ -22,7 +22,7 @@ class Profile extends Component {
 
 
     store.dispatch(actions.resetFeed(profileId));
-    
+    store.dispatch(actions.setProfileVisited(profileId));
     if(!profile || !profile.feed)
       store.dispatch(actions.fetchFeed(profileId));
   }

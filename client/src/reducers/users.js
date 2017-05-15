@@ -30,19 +30,30 @@ export default (state = null, action) => {
       return setFeedItemPosition(state, action);
     case 'RESET_FEED':
       return resetFeed(state, action);
+    case 'SET_PROFILE_VISITED':
+      return setProfileVisited(state, action);
     default:
       return state;
   }
 }
 
-/*function receiveAllUsers(state, action) {
-  return action.data.map((user) => {
+function applyToUser(state, profileId, fn) {
+  if(!state) return null;
+  return state.map((user) => {
+    if(user.id !== profileId) return user;
+    return fn(user);
+  });  
+}
+
+function setProfileVisited(state, { profileId }) {
+  return applyToUser(state, profileId, (user) => {
     return {
       ...user,
-      loading: 
+      visited: true
     }
-  })
-}*/
+  });
+}
+
 
 function resetFeed(state, {profileId}) {
   if(!state) return null;

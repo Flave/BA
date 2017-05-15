@@ -6,9 +6,9 @@
   top: 0;
   left: 0;
   z-index: 999;
-  background: -moz-linear-gradient(left, rgba(255,255,255, .5) 80%, rgba(255,255,255,0) 100%);
-  background: -webkit-linear-gradient(left, rgba(255,255,255, .5) 80%,rgba(255,255,255,0) 100%);
-  background: linear-gradient(to right, rgba(255,255,255, .5) 80%,rgba(255,255,255,0) 100%);
+  background: -moz-linear-gradient(left, rgba(255,255,255, .85) 40%, rgba(255,255,255,0) 100%);
+  background: -webkit-linear-gradient(left, rgba(255,255,255, .85) 40%,rgba(255,255,255,0) 100%);
+  background: linear-gradient(to right, rgba(255,255,255, .85) 40%,rgba(255,255,255,0) 100%);
 }
 
 .sidebar__title {

@@ -20,25 +20,31 @@ class Others extends Component {
 
   componentDidMount() {
     const { store } = this.context;
-    const { users } = store.getState();
-    const { history } = this.props;
+    const { users, user } = store.getState();
+
     !users && store.dispatch(actions.fetchAll());
+    this.handleBubbleClick = this.handleBubbleClick.bind(this);
 
     bubbles
       .data(users)
-      .on('click', function(d) {
-        history.push('/someone/' + d.id);
-      })(this.bubbleContainer);
+      .me(user.login)
+      .on('click', this.handleBubbleClick)(this.bubbleContainer);
   }
 
   componentWillUnmount() {
   }
 
+  handleBubbleClick(d) {
+    this.props.history.push('/someone/' + d.id);
+  }
+
   componentDidUpdate() {
     const { store } = this.context;
-    const { users } = store.getState();
+    const { users, user } = store.getState();
 
-    bubbles.data(users)(this.bubbleContainer);
+    bubbles
+      .me(user.login)
+      .data(users)(this.bubbleContainer);
   }
 
   createUsersList() {
@@ -70,7 +76,11 @@ class Others extends Component {
         <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
         </Drawer>
-        <svg width={ui.windowDimensions[0]} height={ui.windowDimensions[1]} ref={(el) => this.bubbleContainer = el}></svg>
+        <svg 
+          width={ui.windowDimensions[0]} 
+          height={ui.windowDimensions[1]} 
+          ref={(el) => this.bubbleContainer = el} 
+          className="bubbles" />
       </div>
     )
   }

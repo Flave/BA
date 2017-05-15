@@ -15,12 +15,13 @@ import {
 function Bubbles() {
   let rootEnter, rootUpdate, root;
   let data;
-  let bubble;
+  let bubbleEnter, bubbleUpdate, bubble;
+  let me;
   let dispatch = d3Dispatch('click');
 
   function _bubbles(container) {
-    rootUpdate = d3Select(container)
-      .data([1]);
+    if(container)
+      rootUpdate = d3Select(container).data([1]);
 
     rootEnter = rootUpdate
       .enter()
@@ -32,24 +33,43 @@ function Bubbles() {
 
     if(!data) data = [];
 
-    bubble = root
+    bubbleUpdate = root
       .selectAll('g.bubble')
       .data(data);
 
-    bubble
+    bubbleEnter = bubbleUpdate
       .enter()
       .append('g')
       .classed('bubble', true)
+      .classed('is-me', d => d.id === me)
+      .classed('is-visited', d => d.visited)
       .on('click', handleClick)
       .append('circle')
+      .style('stroke', "#000")
       .attr('cx', (d, i) => Math.random() * 1440)
       .attr('cy', (d, i) => Math.random() * 1024)
       .attr('r', (d, i) => Math.random() * 60 + 20);
 
+    bubble = bubbleEnter.merge(bubbleUpdate);
+
     return _bubbles;
   }
 
+  function transitionOut(clickedBubble) {
+    return bubble
+      .transition()
+      .delay((d, i) => ((d.id === clickedBubble.id) ? 0 : Math.random() * 100 + 100) )
+      .style('transform', 'scale(4)')
+      .style('opacity', 0);
+  }
+
   function handleClick(d, i) {
+/*    transitionOut(d)
+      .on('end', () => {
+        console.log('transition ended');
+        
+      });*/
+
     dispatch.call('click', this, d, i);
   }
 
@@ -59,56 +79,14 @@ function Bubbles() {
     return _bubbles;
   }
 
+  _bubbles.me = function(_) {
+    if(!arguments.length) return me;
+    me = _;
+    return _bubbles;
+  }
+
   return rebind(_bubbles, dispatch, 'on');
 }
-/*
-class Bubbles extends Component {
-  constructor(props) {
-    super(props);
 
-    this.circles = [];
-  }
-
-  componentDidMount() {
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  static contextTypes = {
-    router: PropTypes.object
-  }
-
-  handleClick(user) {
-    this.context.router.history.push('/someone/' + user.id)
-  }
-
-  createUsersList() {
-    const { users, user } = this.props;
-
-    return users.map((bubbleUser, i) => {
-      const circle = {
-        x: Math.random() * 1440,
-        y: Math.random() * 1024,
-        r: Math.random() * 60 + 20
-      }
-      this.circles.push(circle);
-      return (
-        <circle 
-          cx={circle.x}
-          cy={circle.y}
-          r={circle.r}
-          key={i} 
-          onClick={this.handleClick.bind(this, bubbleUser)}></circle>
-      )
-    })
-  }
-
-  render() {
-    return (
-      <svg width="1440" height="1024" className="bubbles">
-        { this.createUsersList() }
-      </svg>
-    )
-  }
-}*/
 
 export default Bubbles;

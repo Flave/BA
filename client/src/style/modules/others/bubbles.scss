@@ -1,0 +1,16 @@
+.bubbles {
+
+}
+
+.bubble {
+  &.is-me circle,
+  &.is-me.is-visited circle {
+    fill: $c-accent;
+    stroke-width: 0;
+  }
+
+  &.is-visited circle {
+    fill: #fff;
+    stroke-width: 3px;
+  }
+}

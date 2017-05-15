@@ -44,6 +44,11 @@ export const resetFeed = (profileId) => ({
   profileId
 });
 
+export const setProfileVisited = (profileId) => ({
+  type: 'SET_PROFILE_VISITED',
+  profileId
+});
+
 export const fetchUser = () => {
   return api.fetchUser().then(response => {
     return receiveUser(response.data);
