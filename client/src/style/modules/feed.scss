@@ -17,14 +17,6 @@
 
 .feed__item {
   position: absolute;
-
-/*   > div {
-    opacity: 0;
-
-    &.feeeed_item {
-      width: 10px;
-      height: 10px;
-      background-color: #000;
-    }
-  } */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);
+  border-radius: 4px;
 }

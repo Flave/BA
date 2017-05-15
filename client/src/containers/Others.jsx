@@ -20,7 +20,7 @@ class Others extends Component {
 
   componentDidMount() {
     const { store } = this.context;
-    const { users, user } = store.getState();
+    const { users, user, ui } = store.getState();
 
     !users && store.dispatch(actions.fetchAll());
     this.handleBubbleClick = this.handleBubbleClick.bind(this);
@@ -28,10 +28,16 @@ class Others extends Component {
     bubbles
       .data(users)
       .me(user.login)
+      .dimensions(ui.windowDimensions)
       .on('click', this.handleBubbleClick)(this.bubbleContainer);
   }
 
   componentWillUnmount() {
+  }
+
+  getSimilarity() {
+    const { store } = this.context;
+    const { users, user } = store.getState();
   }
 
   handleBubbleClick(d) {
@@ -40,10 +46,11 @@ class Others extends Component {
 
   componentDidUpdate() {
     const { store } = this.context;
-    const { users, user } = store.getState();
+    const { users, user, ui } = store.getState();
 
     bubbles
       .me(user.login)
+      .dimensions(ui.windowDimensions)
       .data(users)(this.bubbleContainer);
   }
 

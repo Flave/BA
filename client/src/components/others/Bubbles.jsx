@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import _find from 'lodash/find';
 import { select as d3Select } from 'd3-selection';
 import { dispatch as d3Dispatch } from 'd3-dispatch';
-import { rebind } from '../../utility';
+import { rebind, getTranslation } from '../../utility';
+import { easeExp as d3EaseExp } from 'd3-ease';
 
 import {
   withRouter,
@@ -13,21 +14,25 @@ import {
 
 
 function Bubbles() {
+  let container;
   let rootEnter, rootUpdate, root;
   let data;
   let bubbleEnter, bubbleUpdate, bubble;
   let me;
+  let dimensions;
   let dispatch = d3Dispatch('click');
 
-  function _bubbles(container) {
-    if(container)
-      rootUpdate = d3Select(container).data([1]);
+  function _bubbles(_container) {
+    if(_container) {
+      container = d3Select(_container);
+      rootUpdate = d3Select(_container).data([1]);
+    }
 
     rootEnter = rootUpdate
       .enter()
       .append('svg')
-      .attr('height', 1440)
-      .attr('width', 1024);
+      .attr('height', dimensions[0])
+      .attr('width', dimensions[1]);
 
     root = rootEnter.merge(rootUpdate);
 
@@ -43,11 +48,12 @@ function Bubbles() {
       .classed('bubble', true)
       .classed('is-me', d => d.id === me)
       .classed('is-visited', d => d.visited)
+      .attr('transform', () => {
+        return `translate(${Math.random() * dimensions[0]}, ${Math.random() * dimensions[1]})`
+      })
       .on('click', handleClick)
       .append('circle')
       .style('stroke', "#000")
-      .attr('cx', (d, i) => Math.random() * 1440)
-      .attr('cy', (d, i) => Math.random() * 1024)
       .attr('r', (d, i) => Math.random() * 60 + 20);
 
     bubble = bubbleEnter.merge(bubbleUpdate);
@@ -55,27 +61,37 @@ function Bubbles() {
     return _bubbles;
   }
 
-  function transitionOut(clickedBubble) {
-    return bubble
+  function transitionCanvas(clickedBubble, start, end) {
+    const translation = getTranslation(d3Select(clickedBubble).attr('transform'));
+    const centerX = (translation[0] / dimensions[0]) * 100;
+    const centerY = (translation[1] / dimensions[1]) * 100;
+
+    return container
+      /*.attr('transform', `scale(${start})`)*/
+      .attr('transform-origin', `${centerX}% ${centerY}%`)
       .transition()
-      .delay((d, i) => ((d.id === clickedBubble.id) ? 0 : Math.random() * 100 + 100) )
-      .style('transform', 'scale(4)')
+      .duration(2500)
+      .ease(d3EaseExp)
+      .attr('transform', `scale(${3})`)
       .style('opacity', 0);
   }
 
   function handleClick(d, i) {
-/*    transitionOut(d)
+    transitionCanvas(this, 3)
       .on('end', () => {
-        console.log('transition ended');
-        
-      });*/
-
-    dispatch.call('click', this, d, i);
+        dispatch.call('click', this, d, i);
+      });
   }
 
   _bubbles.data = function(_) {
     if(!arguments.length) return data;
     data = _;
+    return _bubbles;
+  }
+
+  _bubbles.dimensions = function(_) {
+    if(!arguments.length) return dimensions;
+    dimensions = _;
     return _bubbles;
   }
 
