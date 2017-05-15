@@ -13,8 +13,8 @@ const Sidebar = ({ offset, onMenuClick, drawer }) => {
 
       <div style={style} className="sidebar__links">
         <div className="sidebar__link-group">
-          <div className="sidebar__link" onClick={onMenuClick.bind(null, 'options')}>Options</div>
-          <div className="sidebar__link" onClick={onMenuClick.bind(null, 'info')}>Info</div>
+          <div className="sidebar__link" onClick={ () => onMenuClick('options') }>Options</div>
+          <div className="sidebar__link" onClick={ () => onMenuClick('info') }>Info</div>
         </div>
       </div>
     </div>

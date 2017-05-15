@@ -33,6 +33,11 @@ class App extends Component {
     this.unsubscribe();
   }
 
+  testClick() {
+    console.log(this);
+    this.props.history.push("/Hy5eni1x-");
+  }
+
   render() {
     const state = this.context.store.getState();
     const { user } = state;

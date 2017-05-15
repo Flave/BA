@@ -6,6 +6,8 @@ import * as actions from '../../actions';
 const Sidebar = ({ isMe, profile }) => {
   const title = isMe ? <div>your<br/>internet</div> : <div>the internet of<br/>someone else</div>;
 
+  if(!profile) return <div/>
+
   return (
     <div className="sidebar">
       <span className="sidebar__title">{title}</span>

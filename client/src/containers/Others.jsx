@@ -7,18 +7,38 @@ import * as actions from '../actions';
 import _find from 'lodash/find';
 import Bubbles from '../components/others/Bubbles.jsx';
 
+import {
+  withRouter,
+  Route
+} from 'react-router-dom';
+
+const bubbles = Bubbles();
+
 const DRAWER_WIDTH = 350;
 
 class Others extends Component {
+
   componentDidMount() {
     const { store } = this.context;
     const { users } = store.getState();
-
+    const { history } = this.props;
     !users && store.dispatch(actions.fetchAll());
-    this.handleMenuClick = this.handleMenuClick.bind(this);
+
+    bubbles
+      .data(users)
+      .on('click', function(d) {
+        history.push('/someone/' + d.id);
+      })(this.bubbleContainer);
   }
 
   componentWillUnmount() {
+  }
+
+  componentDidUpdate() {
+    const { store } = this.context;
+    const { users } = store.getState();
+
+    bubbles.data(users)(this.bubbleContainer);
   }
 
   createUsersList() {
@@ -47,10 +67,10 @@ class Others extends Component {
 
     return (
       <div>
-        <Sidebar onMenuClick={this.handleMenuClick} drawer={ui.drawer} offset={DRAWER_WIDTH} />
+        <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
         </Drawer>
-        {users && <Bubbles users={users} user={user} />}
+        <svg width={ui.windowDimensions[0]} height={ui.windowDimensions[1]} ref={(el) => this.bubbleContainer = el}></svg>
       </div>
     )
   }
@@ -60,4 +80,4 @@ Others.contextTypes = {
   store: PropTypes.object
 }
 
-export default Others;
+export default withRouter(Others);

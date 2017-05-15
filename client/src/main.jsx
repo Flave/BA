@@ -6,6 +6,7 @@ import App from './App.jsx';
 import rootReducer from './reducers';
 import {
   BrowserRouter as Router,
+  Route,
   withRouter
 } from 'react-router-dom';
 

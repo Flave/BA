@@ -39,6 +39,11 @@ export const setFeedItemHeight = (height, itemUrl, profileId) => ({
   profileId
 });
 
+export const resetFeed = (profileId) => ({
+  type: 'RESET_FEED',
+  profileId
+});
+
 export const fetchUser = () => {
   return api.fetchUser().then(response => {
     return receiveUser(response.data);

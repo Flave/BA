@@ -8,14 +8,23 @@ import Sidebar from '../components/profile/Sidebar.jsx';
 import Predictions from '../components/profile/Predictions.jsx';
 import Feed from '../components/profile/Feed.jsx';
 
+import {
+  withRouter
+} from 'react-router-dom';
+
 class Profile extends Component {
   componentDidMount() {
     const { store } = this.context;
     const { users } = store.getState();
     const profileId = this.props.match.params.id;
-
+    const profile = _find(users, {id: profileId});
     !users && store.dispatch(actions.fetchAll());
-    store.dispatch(actions.fetchFeed(profileId));
+
+
+    store.dispatch(actions.resetFeed(profileId));
+    
+    if(!profile || !profile.feed)
+      store.dispatch(actions.fetchFeed(profileId));
   }
 
   createPredictions({ predictions }) {
@@ -36,11 +45,9 @@ class Profile extends Component {
     const profile = _find(users, {id: match.params.id});
     let isMe = false;
 
-    if(!profile)
-      return <div>Loading</div>
+    if(!profile) return <div/>;
 
     isMe = (user.login === profile.id);
-
     return (
       <div>
         <Sidebar isMe={isMe} profile={profile} />
@@ -54,4 +61,4 @@ Profile.contextTypes = {
   store: PropTypes.object
 }
 
-export default Profile;
+export default withRouter(Profile);

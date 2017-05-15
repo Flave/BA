@@ -28,6 +28,8 @@ export default (state = null, action) => {
       return receiveFeed(state, action);
     case 'SET_FEED_ITEM_HEIGHT':
       return setFeedItemPosition(state, action);
+    case 'RESET_FEED':
+      return resetFeed(state, action);
     default:
       return state;
   }
@@ -41,6 +43,31 @@ export default (state = null, action) => {
     }
   })
 }*/
+
+function resetFeed(state, {profileId}) {
+  if(!state) return null;
+  return state.map((user) => {
+    if(user.id !== profileId) return user;
+    if(!user.feed)
+      return {
+        ...user,
+        loading: true
+      }
+
+    let feed = user.feed.map((item) => {
+      return {
+        ...item,
+        height: undefined
+      }
+    });
+
+    return {
+      ...user,
+      feed,
+      loading: true
+    };
+  });  
+}
 
 function receiveFeed(state, {data, id}) {
   // if there's no users yet simply put the new user in a new array
@@ -65,7 +92,9 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
   return state.map((user) => {
     if(user.id !== profileId) return user;
     const loadedItems = getLoadedItems(user.feed);
-    const loading = (user.feed.length - 1) !== loadedItems.length;
+    // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
+    const loading = (loadedItems.length + 1) < user.feed.length;
+    console.log(loadedItems.length, user.feed.length, loading);
     let feed = user.feed.map((item) => {
       if(item.url !== itemUrl) return item;
       const {x, y} = generateScatterPosition(item, height, user.feed);
@@ -88,7 +117,7 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
 
 
 function getLoadedItems(items) {
-  return items.filter((item) => item.x !== undefined);
+  return items.filter((item) => item.height !== undefined);
 }
 
 // SCATTER CALCULATION
