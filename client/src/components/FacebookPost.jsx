@@ -8,8 +8,10 @@ export default class FecebookPost extends Component {
     FB.XFBML.parse();
     var iframe = d3Select(this.root).selectAll('iframe');
     iframe.on('load', () => {
-      const height = parseInt(iframe.node().style.height.replace("px", ""));
-      this.props.onLoad(height, this.props.item.url);
+      window.setTimeout(() => {
+        const height = parseInt(iframe.node().style.height.replace("px", ""));
+        this.props.onLoad(height, this.props.item.url);
+      }, 4);
     })
   }
 
