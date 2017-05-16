@@ -1,13 +1,24 @@
 .drawer {
   position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   height: 100%;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, .85);
   transition: all .3s;
   transform: translateX(-100%);
+  padding-top: 130px;
 
   &.is-open {
     transform: translateX(0);
   }
+}
+
+.drawer__content {
+  border-top: 1px solid rgba(0, 0, 0, .12);
+}
+
+.drawer__section {
+  border-bottom: 1px solid rgba(0, 0, 0, .12);
+  padding: 25px 35px;
 }

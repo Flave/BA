@@ -1,6 +1,6 @@
 const initialState = {
   windowDimensions: [window.innerWidth, window.innerHeight],
-  drawerId: null
+  drawer: null
 }
 
 export default (state = initialState, action) => {
@@ -14,6 +14,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         drawer: state.drawer === action.id ? null : action.id
+      }
+    case 'RESET_UI':
+      return {
+        ...state,
+        drawer: null
       }
     default:
       return state;

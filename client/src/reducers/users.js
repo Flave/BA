@@ -105,7 +105,6 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
     const loadedItems = getLoadedItems(user.feed);
     // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
     const loading = (loadedItems.length + 1) < user.feed.length;
-    console.log(height);
     let feed = user.feed.map((item) => {
       if(item.url !== itemUrl) return item;
       const {x, y} = generateScatterPosition(item, height, user.feed);

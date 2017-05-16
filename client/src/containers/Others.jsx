@@ -12,24 +12,31 @@ import {
   Route
 } from 'react-router-dom';
 
-const bubbles = Bubbles();
-
 const DRAWER_WIDTH = 350;
 
 class Others extends Component {
+
+  constructor(props) {
+    super(props);
+    this.bubbles = Bubbles();
+  }
 
   componentDidMount() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
 
-    !users && store.dispatch(actions.fetchAll());
     this.handleBubbleClick = this.handleBubbleClick.bind(this);
+    this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-    bubbles
+    this.context.store.dispatch(actions.resetUi());
+    !users && store.dispatch(actions.fetchAll());
+
+    this.bubbles
       .data(users)
       .me(user.login)
       .dimensions(ui.windowDimensions)
-      .on('click', this.handleBubbleClick)(this.bubbleContainer);
+      .on('click', this.handleBubbleClick)
+      .on('transitionstart', this.handleTransitionStart)(this.bubbleContainer);
   }
 
   componentWillUnmount() {
@@ -44,11 +51,15 @@ class Others extends Component {
     this.props.history.push('/someone/' + d.id);
   }
 
+  handleTransitionStart() {
+    this.context.store.dispatch(actions.resetUi());
+  }
+
   componentDidUpdate() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
 
-    bubbles
+    this.bubbles
       .me(user.login)
       .dimensions(ui.windowDimensions)
       .data(users)(this.bubbleContainer);
@@ -81,8 +92,7 @@ class Others extends Component {
     return (
       <div>
         <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />
-        <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
-        </Drawer>
+        <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}></Drawer>
         <svg 
           width={ui.windowDimensions[0]} 
           height={ui.windowDimensions[1]} 

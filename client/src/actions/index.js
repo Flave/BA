@@ -44,6 +44,10 @@ export const resetFeed = (profileId) => ({
   profileId
 });
 
+export const resetUi = () => ({
+  type: 'RESET_UI'
+});
+
 export const setProfileVisited = (profileId) => ({
   type: 'SET_PROFILE_VISITED',
   profileId

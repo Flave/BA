@@ -20,13 +20,18 @@ function Bubbles() {
   let bubbleEnter, bubbleUpdate, bubble;
   let me;
   let dimensions;
-  let dispatch = d3Dispatch('click');
+  let dispatch = d3Dispatch('click', 'transitionstart');
 
   function _bubbles(_container) {
-    if(_container) {
-      container = d3Select(_container);
-      rootUpdate = d3Select(_container).data([1]);
+    // if component is being rendered for the first time do transition
+    if(!container) {
+      const transitionOptions = {startOpacity: 0, endOpacity: 1, startScale: 4, endScale: 1};
+      transitionCanvas(d3Select(_container), transitionOptions);
     }
+
+    container = d3Select(_container);
+
+    rootUpdate = container.data([1]);
 
     rootEnter = rootUpdate
       .enter()
@@ -61,23 +66,32 @@ function Bubbles() {
     return _bubbles;
   }
 
-  function transitionCanvas(clickedBubble, start, end) {
-    const translation = getTranslation(d3Select(clickedBubble).attr('transform'));
-    const centerX = (translation[0] / dimensions[0]) * 100;
-    const centerY = (translation[1] / dimensions[1]) * 100;
+  function transitionCanvas(container, {startScale, endScale, startOpacity, endOpacity}, clickedBubble) {
+    let translation;
+    let centerX = 50;
+    let centerY = 50;
+
+    if(clickedBubble) {
+      translation = getTranslation(d3Select(clickedBubble).attr('transform'));
+      centerX = (translation[0] / dimensions[0]) * 100;
+      centerY = (translation[1] / dimensions[1]) * 100;
+    }
 
     return container
-      /*.attr('transform', `scale(${start})`)*/
+      .attr('transform', `scale(${startScale})`)
+      .style('opacity', startOpacity)
       .attr('transform-origin', `${centerX}% ${centerY}%`)
       .transition()
       .duration(2500)
       .ease(d3EaseExp)
-      .attr('transform', `scale(${3})`)
-      .style('opacity', 0);
+      .attr('transform', `scale(${endScale})`)
+      .style('opacity', endOpacity);
   }
 
   function handleClick(d, i) {
-    transitionCanvas(this, 3)
+    dispatch.call('transitionstart', this);
+    const transitionOptions = {startOpacity: 1, endOpacity: 0, startScale: 1, endScale: 34};
+    transitionCanvas(container, transitionOptions, this)
       .on('end', () => {
         dispatch.call('click', this, d, i);
       });
