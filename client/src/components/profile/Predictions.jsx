@@ -85,11 +85,11 @@ const Predictions = ({ isMe, profile }) => {
           </div>
           <div className="trait">
             <span className="trait__label">Religion</span>
-            <span className="trait__value">{religion.value}</span>
+            <span className="trait__value">{religion.trait}</span>
           </div>
           <div className="trait">
             <span className="trait__label">Politics</span>
-            <span className="trait__value">{politics.value}</span>
+            <span className="trait__value">{politics.trait}</span>
           </div>
         </div>
         <div className="personality">
