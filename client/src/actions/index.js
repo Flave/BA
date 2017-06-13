@@ -1,5 +1,6 @@
 import * as api from '../api';
 
+// API
 const receiveUser = (data) => ({
   type: 'RECEIVE_USER',
   data
@@ -19,38 +20,6 @@ const receiveFeed = (data, id) => ({
 const receiveOneUser = (data, id) => ({
   type: 'RECEIVE_ONE_USER',
   data
-});
-
-
-export const setWindowDimensions = (dimensions) => ({
-  type: 'SET_WINDOW_DIMENSIONS',
-  dimensions
-});
-
-export const toggleDrawer = (id) => ({
-  type: 'TOGGLE_DRAWER',
-  id
-});
-
-export const setFeedItemHeight = (height, itemUrl, profileId) => ({
-  type: 'SET_FEED_ITEM_HEIGHT',
-  height,
-  itemUrl,
-  profileId
-});
-
-export const resetFeed = (profileId) => ({
-  type: 'RESET_FEED',
-  profileId
-});
-
-export const resetUi = () => ({
-  type: 'RESET_UI'
-});
-
-export const setProfileVisited = (profileId) => ({
-  type: 'SET_PROFILE_VISITED',
-  profileId
 });
 
 export const fetchUser = () => {
@@ -73,3 +42,43 @@ export const fetchOneUser = (id) =>
   api.fetchOneUser(id).then(response => {
     return receiveOneUser(response.data);
   })
+
+
+
+// UI
+export const setWindowDimensions = (dimensions) => ({
+  type: 'SET_WINDOW_DIMENSIONS',
+  dimensions
+});
+
+export const toggleDrawer = (id) => ({
+  type: 'TOGGLE_DRAWER',
+  id
+});
+
+export const setFeedItemHeight = (height, itemUrl, profileId) => ({
+  type: 'SET_FEED_ITEM_HEIGHT',
+  height,
+  itemUrl,
+  profileId
+});
+
+export const setOthersPeopleOptions = (options) => ({
+  type: 'SET_OTHERS_PEOPLE_OPTIONS',
+  options
+});
+
+
+export const resetFeed = (profileId) => ({
+  type: 'RESET_FEED',
+  profileId
+});
+
+export const resetUi = () => ({
+  type: 'RESET_UI'
+});
+
+export const setProfileVisited = (profileId) => ({
+  type: 'SET_PROFILE_VISITED',
+  profileId
+});

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Predictions = () => {
+const Options = () => {
   console.log('rendering options');
   return (
     <div className="predictions">
@@ -9,4 +9,4 @@ const Predictions = () => {
   )
 };
 
-export default Predictions;
+export default Options;

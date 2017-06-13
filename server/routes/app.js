@@ -27,4 +27,10 @@ router.get('/', function(req, res) {
   }); // load the index.ejs files
 });
 
+router.get('/content', function(req, res) {
+  res.render('index.ejs', {
+    user: req.user
+  }); // load the index.ejs files
+});
+
 module.exports = router;

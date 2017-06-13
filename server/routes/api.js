@@ -43,19 +43,6 @@ router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
   User.findOne({_id: req.params.id })
     .then((user) => {
-/*      amsApi.getPrediction(user)
-        .then((predictions) => {
-          user.predictions = predictions;
-          user.save().then(() => {
-            log.blue("got new predictions and saved this dude");
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-        })
-        .then((err) => {
-          console.log(err);
-        });*/
       return fbApi.fetchFeed(user);
     })
     .then((feed) => {

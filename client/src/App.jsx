@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Intro from './containers/Intro.jsx';
 import Profile from './containers/Profile.jsx';
-import Others from './containers/Others.jsx';
+import OthersPeople from './containers/OthersPeople.jsx';
+import OthersContent from './containers/OthersContent.jsx';
 import *  as actions from './actions';
 import _throttle from 'lodash/throttle';
 
@@ -33,11 +34,6 @@ class App extends Component {
     this.unsubscribe();
   }
 
-  testClick() {
-    console.log(this);
-    this.props.history.push("/Hy5eni1x-");
-  }
-
   render() {
     const state = this.context.store.getState();
     const { user } = state;
@@ -58,7 +54,8 @@ class App extends Component {
     else {
       return (
         <div>
-          <Route path="/" exact component={Others} />
+          <Route path="/" exact component={OthersPeople} />
+          <Route path="/content" exact component={OthersContent} />
           <Route path="/someone/:id" component={Profile} />
         </div>
       )

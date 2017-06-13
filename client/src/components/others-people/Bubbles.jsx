@@ -53,12 +53,16 @@ function Bubbles() {
       .classed('bubble', true)
       .classed('is-me', d => d.id === me)
       .classed('is-visited', d => d.visited)
-      .attr('transform', () => {
-        return `translate(${Math.random() * dimensions[0]}, ${Math.random() * dimensions[1]})`
+      .attr('transform', (d, i) => {
+        const centerX = dimensions[0]/2;
+        const centerY = dimensions[1]/2;
+        const isMe = d.id === me.id;
+        const x = isMe ? centerX : centerX + (Math.random() * 400) - 200;
+        const y = isMe ? centerY : centerY + (Math.random() * 400) - 200;
+        return `translate(${x}, ${y})`
       })
       .on('click', handleClick)
       .append('circle')
-      .style('stroke', "#000")
       .attr('r', (d, i) => Math.random() * 60 + 20);
 
     bubble = bubbleEnter.merge(bubbleUpdate);
@@ -90,7 +94,7 @@ function Bubbles() {
 
   function handleClick(d, i) {
     dispatch.call('transitionstart', this);
-    const transitionOptions = {startOpacity: 1, endOpacity: 0, startScale: 1, endScale: 34};
+    const transitionOptions = {startOpacity: 1, endOpacity: 0, startScale: 1, endScale:5};
     transitionCanvas(container, transitionOptions, this)
       .on('end', () => {
         dispatch.call('click', this, d, i);

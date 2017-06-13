@@ -9,13 +9,7 @@ var userSchema = mongoose.Schema({
     type: String,
     'default': shortid.generate
   },
-  predictions: {
-    demographics: [{trait: String, value: Number}],
-    religion: [{trait: String, value: Number}],
-    politics: [{trait: String, value: Number}],
-    big5: [{trait: String, value: Number}],
-    religion: [{trait: String, value: Number}]
-  },
+  predictions: [{id: String, value: Number}],
   email: String,
   facebook : {
     id : String,

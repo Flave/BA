@@ -1,6 +1,13 @@
+import predictions from 'app/constants/predictions';
+import _find from 'lodash/find';
+
 const initialState = {
   windowDimensions: [window.innerWidth, window.innerHeight],
-  drawer: null
+  drawer: null,
+  othersPeopleOptions: predictions.map(({ id }) => (
+      id === 'age' ? {id, value: true} : {id, value: false}
+    )
+  )
 }
 
 export default (state = initialState, action) => {
@@ -20,7 +27,19 @@ export default (state = initialState, action) => {
         ...state,
         drawer: null
       }
+    case 'SET_OTHERS_PEOPLE_OPTIONS':
+      return {
+        ...state,
+        othersPeopleOptions: setOthersPeopleOptions(state, action)
+      }
     default:
       return state;
   }
+}
+
+function setOthersPeopleOptions(state, action) {
+  return state.othersPeopleOptions.map((option) => {
+    const newOption = _find(action.options, {id: option.id});
+    return newOption ? newOption : option;
+  });
 }

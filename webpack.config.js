@@ -11,6 +11,13 @@ module.exports = {
     publicPath: '/'
   },
 
+  resolve: {
+    extensions: ['.js', '.jsx'],
+    alias: {
+      app: path.resolve(__dirname, 'client/src/')
+    }
+  },
+
   module: {
 
     // apply loaders to files that meet given conditions

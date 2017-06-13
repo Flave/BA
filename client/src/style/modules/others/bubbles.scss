@@ -1,8 +1,12 @@
 .bubbles {
-
+  //background-color: #F5B3B3;
 }
 
 .bubble {
+  circle {
+    fill: #000;
+  }
+
   &.is-me circle,
   &.is-me.is-visited circle {
     fill: $c-accent;

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <style type="text/css">
+
+    .rim {
+      stroke: rgba(255, 255, 255, .1);
+      stroke-width: 5; 
+      fill: none;
+    }
+
+  </style>
+</head>
+<body>
+  <svg width="800" height="800">
+    <filter id="pixelate" x="0" y="0">
+    <feFlood x="4" y="4" height="2" width="2"/>
+    
+    <feComposite width="10" height="10"/>
+    
+    <feTile result="a"/>
+    
+    <feComposite in="SourceGraphic" in2="a" 
+                 operator="in"/>
+    
+    <feMorphology operator="dilate"
+                  radius="5"/>
+    </filter>
+
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="1"/>
+    </filter>
+
+    <filter id="watery" width="300" height="500" x="-50%" y="-50%">
+      <feFlood flood-color="rgba(160, 40, 200, .3)" result="element"></feFlood>
+
+      <feTurbulence baseFrequency="0.02" type="fractalNoise" numOctaves="20" seed="46" result="element_1"></feTurbulence>
+      <feGaussianBlur stdDeviation="10" in="SourceGraphic" result="element_2"></feGaussianBlur>
+      <feDisplacementMap scale="70" in="element_2" in2="element_1" result="element_3"></feDisplacementMap>
+
+      <feTurbulence baseFrequency="0.001" type="fractalNoise" numOctaves="20" seed="46" result="turbulence"></feTurbulence>
+
+      <feComposite operator="in" in="SourceGraphic" in2="element_3" result="element_4"></feComposite>
+      <feComposite operator="in" in="element" in2="element_3" result="element_5"></feComposite>
+
+      <feMerge result="merged">
+        <feMergeNode in="element_4"></feMergeNode>
+        <feMergeNode in="element_5"></feMergeNode>
+        <feMergeNode in="turbulence"></feMergeNode>
+      </feMerge>
+    </filter>
+
+
+
+    <radialGradient id="gradient-3" cx="0.5" cy="0.5" r=".55">
+      <stop offset="0%" stop-color="rgba(65, 119, 255, .3)"/>
+      <stop offset="100%" stop-color="rgba(65, 119, 255, 0)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-3-1" cx="0.4" cy="0.4" fx=".18" fy=".18" r=".4">
+      <stop offset="0%" stop-color="rgba(243, 146, 208, 1)"/>
+      <stop offset="100%" stop-color="rgba(243, 146, 208, 0)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-3-2" cx="0.6" cy="0.5" fx="1" fy="0.5" r=".4">
+      <stop offset="0%" stop-color="rgba(251, 206, 119, .8)"/>
+      <stop offset="100%" stop-color="rgba(251, 206, 119, 0)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-3-3" cx="0.5" cy="0.5" fx=".65" fy=".3" r=".4">
+      <stop offset="0%" stop-color="rgba(70, 151, 254, .3)"/>
+      <stop offset="100%" stop-color="rgba(70, 151, 254, 0)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-2-1" cx="0.5" cy="0.5" fx=".3" fy=".3" r=".35">
+      <stop offset="0%" stop-color="rgba(243, 146, 208, .4)"/>
+      <stop offset="100%" stop-color="rgba(243, 146, 208, 0)"/>
+    </radialGradient>
+
+
+    <radialGradient id="gradient-1-1" cx="0.5" cy="0.5" fx=".3" fy=".3" r=".7">
+      <stop offset="0%" stop-color="rgba(0, 0, 0, .4)"/>
+      <stop offset="100%" stop-color="rgba(0, 0, 0, 0)"/>
+    </radialGradient>
+
+
+
+    <radialGradient id="gradient-4-1" cx="0.5" cy="0.5" fx=".65" fy=".3" r=".4">
+      <stop offset="0%" stop-color="rgba(7, 35, 51, .8)"/>
+      <stop offset="100%" stop-color="rgba(7, 35, 51, 1)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-4-2" cx="0.5" cy="0.5" fx=".3" fy=".3" r=".35">
+      <stop offset="0%" stop-color="rgba(178, 251, 245, .4)"/>
+      <stop offset="100%" stop-color="rgba(178, 251, 245, 0)"/>
+    </radialGradient>
+
+    <radialGradient id="gradient-4-3" cx="0.5" cy="0.5" fx=".6" fy=".3" r=".6">
+      <stop offset="0%" stop-color="rgba(36, 140, 149, .6)"/>
+      <stop offset="100%" stop-color="rgba(36, 140, 149, 0)"/>
+    </radialGradient>
+
+
+    <defs>
+      <clipPath id="circle-1">
+        <circle cx="220" cy="220" r="90"></circle>
+      </clipPath>
+      <clipPath id="circle-2">
+        <circle cx="100" cy="100" r="50"></circle>
+      </clipPath>
+    </defs>
+
+<!-- 
+<stop offset="100%" stop-color="rgba(245, 217, 246, 0)"/>
+<stop offset="100%" stop-color="rgba(144, 288, 208, 0)"/>
+<stop offset="100%" stop-color="rgba(144, 288, 208, 0)"/>
+<stop offset="100%" stop-color="rgba(70, 151, 254, 0)"/>
+<stop offset="100%" stop-color="rgba(151, 217, 228, 0)"/>
+<stop offset="100%" stop-color="rgba(248, 222, 216, 0)"/> -->
+
+
+    <g filter="url(#pixelate)">
+      <circle cx="100" cy="100" r="50" clip-path="url(#circle-2)" filter="url(#watery)" fill="url(#gradient-1-1)"></circle>
+    </g>
+
+    <g filter="url(#pixelate)">
+      <circle cx="220" cy="220" r="90" clip-path="url(#circle-1)" fill="#072333"></circle>
+      <circle cx="230" cy="212" r="80" clip-path="url(#circle-1)" fill="#093E57"></circle>
+      <circle cx="240" cy="207" r="60" clip-path="url(#circle-1)" fill="#248C95"></circle>
+      <circle cx="250" cy="198" r="40" clip-path="url(#circle-1)" fill="#49C4C3"></circle>
+      <circle cx="260" cy="190" r="15" clip-path="url(#circle-1)" fill="#B2FCF5"></circle>
+    </g>
+
+    <g filter="url(#pixelate)">
+      <circle cx="420" cy="220" r="90" fill="url(#gradient-4-1)"></circle>
+      <circle cx="440" cy="207" r="60" fill="url(#gradient-4-3)"></circle>
+      <circle cx="460" cy="190" r="30" fill="url(#gradient-4-2)"></circle>
+    </g>
+
+  </svg>
+</body>
+</html>

@@ -2,33 +2,21 @@ const fs = require('fs');
 const path = require('path');
 const request = require('request-promise-native');
 const secrets = require('./secrets.json');
-const traits = "BIG5,Satisfaction_Life,Intelligence,Age,Female,Gay,Lesbian,Concentration,Politics,Religion,Relationship";
+const traits = "BIG5,Satisfaction_Life,Intelligence,Age,Female,Politics,Religion,Relationship";
 const uid = 1111111111; //e.g. 4 is Mark Zuckerberg's unique Facebook ID
 const log = require('../../log');
 const _ = require('lodash');
 
 // slightly hacky way to group predictions into groups of demographics, big5, politics and religion
-const processPredictions = (rawPredictions) => {
-  let refinedPredictions = {};
-  let groupedPredictions = _.groupBy(rawPredictions, (prediction) => {
-    let splitTrait = prediction.trait.split("_");
-    return splitTrait.length > 1 ? splitTrait[0].toLowerCase() : "demographics"
-  });
-
-  _.forEach(groupedPredictions, (predictionGroup, groupKey) => {
-    const refinedPredictionsGroup = _.map(predictionGroup, (prediction) => {
-      let splitTrait = prediction.trait.split("_");
-      return {
-        trait: splitTrait[splitTrait.length - 1].toLowerCase(),
+const processPredictions = (rawPredictions) => (
+  _.map(rawPredictions, (prediction) => (
+      {
+        id: prediction.trait.toLowerCase(),
         value: prediction.value
       }
-    });
-
-    refinedPredictions[groupKey] = refinedPredictionsGroup;
-  });
-
-  return refinedPredictions;
-}
+    )
+  )
+)
 
 const getPrediction = (user) => {
   var args = {
@@ -46,11 +34,12 @@ const getPrediction = (user) => {
 
   return new Promise(function (fulfill, reject){
     return request(args).then((response) => {
-      if(response.statusCode === 204)
+      if(response.statusCode === 204) {
         log.red("No prediction could be made based on like ids provided.");
-
+        fulfill(null);
+        return;
+      }
       log.rainbow("Got predictions");
-      console.log(processPredictions(response.body.predictions));
       fulfill(processPredictions(response.body.predictions));
     })
     .catch((err) => {

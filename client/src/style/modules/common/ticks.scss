@@ -1,0 +1,30 @@
+.tick-group {
+  margin-bottom: 20px;
+}
+
+.tick {
+  line-height: 28px;
+  cursor: pointer;
+
+  &--header {
+    font-weight: 800;
+  }
+
+  &.is-active {
+    color: $c-accent;
+
+    .tick__box {
+
+    }
+  }
+}
+
+.tick__box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+  border: 1px solid rgba(0, 0, 0, .5);
+}

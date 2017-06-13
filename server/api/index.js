@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const fbApi = require('../external/fb');
 const amsApi = require('../external/ams');
-const twitterApi = require('../external/twitter');
+//const twitterApi = require('../external/twitter');
 const log = require('../../log');
 
 module.exports.fetchPredictions = (user) => {
