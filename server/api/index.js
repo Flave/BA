@@ -1,18 +1,21 @@
 const _ = require('lodash');
 const fbApi = require('../external/fb');
 const amsApi = require('../external/ams');
-//const twitterApi = require('../external/twitter');
+const twitterApi = require('../external/twitter');
+const youtubeApi = require('../external/youtube');
+const instagramApi = require('../external/instagram');
 const log = require('../../log');
+
 
 module.exports.fetchPredictions = (user) => {
   return fbApi
     .fetchLikes(user)
     // then fetch the facebook likes
-    .then((likes) => {
-      let hasNewItems = !_.isEqual(user.facebook.likes.sort(), likes.sort());
+    .then((subs) => {
+      let hasNewItems = !_.isEqual(user.facebook.subs.sort(), subs.sort());
       // if there are new like items, save them and get new prediction
       if(hasNewItems) {
-        user.facebook.likes = likes;
+        user.facebook.subs = subs;
         return user.save()
           .then(() => {
             return amsApi.getPrediction(user);
@@ -49,4 +52,16 @@ module.exports.fetchTwitterPredictions = (user) => {
 
 module.exports.fetchFeed = (user) => {
 
+}
+
+module.exports.fetchTwitterFavs = (user) => {
+  return twitterApi.fetchFavs(user);
+}
+
+module.exports.fetchYoutubeSubscriptions = (user) => {
+  return youtubeApi.fetchSubscriptions(user);
+}
+
+module.exports.fetchInstagramLiked = (user) => {
+  return instagramApi.fetchLiked(user);
 }

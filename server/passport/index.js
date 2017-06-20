@@ -5,6 +5,8 @@
 // load all the things we need
 const FacebookStrategy = require('passport-facebook').Strategy;
 const TwitterStrategy = require('passport-twitter').Strategy;
+const YoutubeStrategy = require('passport-youtube-v3').Strategy;
+const InstagramStrategy = require('passport-instagram').Strategy;
 const User = require('../models/user');
 const configAuth = require('../../config/auth')[process.env.NODE_ENV];
 const api = require('../api');
@@ -186,13 +188,73 @@ module.exports = function(passport) {
     user.save((err) => {
       if (err)
         throw err;
-/*      api.fetchTwitterPredictions(user)
-        .then(() => {
-          return done(null, user);
-        })
-        .catch((err) => {
-          throw err;
-        });*/
+      return done(null, user);
+    });
+  }
+
+  // =========================================================================
+  // YOUTUBE =================================================================
+  // =========================================================================
+
+  passport.use(new YoutubeStrategy({
+    clientID : configAuth.youtubeAuth.clientID,
+    clientSecret : configAuth.youtubeAuth.clientSecret,
+    callbackURL : configAuth.youtubeAuth.callbackURL,
+    passReqToCallback : true
+
+  },
+    // twitter will send back the token and profile
+  function(req, token, tokenSecret, profile, done) {
+    // asynchronous
+    log.rainbow("YOUTUBE AUTORIZED");
+    process.nextTick(() => {
+        linkYoutubeAccount(req.user, token, tokenSecret, profile, done);
+    });
+
+  }));
+
+
+  function linkYoutubeAccount(user, token, tokenSecret, profile, done) {
+    user.youtube = {};
+    user.youtube.id    = profile.id;
+    user.youtube.token = token;
+    user.youtube.tokenSecret = tokenSecret;
+
+    user.save((err) => {
+      if (err)
+        throw err;
+      return done(null, user);
+    });
+  }
+
+
+  // =========================================================================
+  // INSTAGRAM ===============================================================
+  // =========================================================================
+
+  passport.use(new InstagramStrategy({
+      clientID : configAuth.instagramAuth.clientID,
+      clientSecret : configAuth.instagramAuth.clientSecret,
+      callbackURL : configAuth.instagramAuth.callbackURL,
+      passReqToCallback : true
+    },
+    function(req, token, tokenSecret, profile, done) {
+      log.rainbow("INSTAGRAM AUTORIZED");
+      process.nextTick(() => {
+          linkInstagramAccount(req.user, token, tokenSecret, profile, done);
+      });
+    }
+  ));
+
+  function linkInstagramAccount(user, token, tokenSecret, profile, done) {
+    user.instagram = {};
+    user.instagram.id    = profile.id;
+    user.instagram.token = token;
+    user.instagram.tokenSecret = tokenSecret;
+
+    user.save((err) => {
+      if (err)
+        throw err;
       return done(null, user);
     });
   }

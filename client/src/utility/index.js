@@ -29,3 +29,9 @@ export const getTranslation = function getTranslation(transform) {
   // As per definition values e and f are the ones for the translation.
   return [matrix.e, matrix.f];
 }
+
+export const getDistance = function(a, b) {
+  var dx = a.x - b.x;
+  var dy = a.y - b.y;
+  return Math.sqrt( dx*dx + dy*dy );
+}

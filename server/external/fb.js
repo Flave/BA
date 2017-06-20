@@ -3,11 +3,110 @@ const _ = require('lodash');
 const colors = require('colors');
 const Promise = require('promise');
 const axios = require('axios');
+const d3Array = require('d3-array');
+
+
+// First batch
+//
+// {
+//   likes: {
+//     data: [{page}]
+//   },
+//   paging: {
+//     next: url
+//   }
+// }
+
+// Subsequent batches
+//
+// {
+//   data: [{page}],
+//   paging: {
+//     next: url,
+//     previous: url
+//   }
+// }
+
+const fetchRankedPages = (user) => {
+  let pages = [];
+  let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes.limit(10){id,fan_count,posts.limit(3)}&access_token=' + user.facebook.token;
+
+  const fetchPagesBatch = (batchUri) => {
+    let opts = {
+      uri: batchUri,
+      json: true
+    }
+
+    if(batchUri) {
+      return request(opts)
+        .then((response) => {
+          // for some reason there is a last batch which is empty
+          if(!response.likes && !response.data.length)
+            return pages;
+
+          const pagesBatch = response.likes ? response.likes.data : response.data;
+          const nextUri = response.likes ? response.likes.paging.next : response.paging.next;
+          console.log("===> BATCH ")
+          pages = pages.concat(pagesBatch);
+          return fetchPagesBatch(nextUri);
+        })
+        .catch((err) => {
+          console.log(err);
+        });        
+    } else {
+      return pages;
+    }
+  }
+
+  return fetchPagesBatch(startUri)
+    .then(pages => {
+      return rankPages(pages);
+    })
+    .catch(err => console.log(err));
+}
+
+
+const rankPages = (pages) => {
+  const currencyWeight = 1;
+  const popularityWeight = 1;
+
+  // filter out all the pages that don't post and
+  // set the idleness of the pages
+  pages = _.filter(pages, 'posts');
+  _.forEach(pages, setAbsoluteIdleness);
+
+  const fanCountExtent = d3Array.extent(pages, page => page.fan_count);
+  const absoluteIdlenessExtent = d3Array.extent(pages, page => page.absolute_idleness);
+  const fanCountDelta = fanCountExtent[1] - fanCountExtent[0];
+  const absoluteIdlenessDelta = absoluteIdlenessExtent[1] - absoluteIdlenessExtent[0];
+
+  return _.chain(pages)
+    .forEach((page, i) => {
+      const {absolute_idleness, fan_count} = page;
+      page.currency = 1 - (absolute_idleness - absoluteIdlenessExtent[0]) / absoluteIdlenessDelta;
+      page.popularity = (fan_count - fanCountExtent[0]) / fanCountDelta;
+      page.relevance = (page.currency + page.popularity) / (currencyWeight + popularityWeight);
+    })
+    .sortBy(['relevance'])
+    .reverse()
+    .map(({id, relevance}) => ({id, relevance}))
+    .value();
+}
+
+// The absolute idleness determines how active a page is
+const setAbsoluteIdleness = (page) => {
+  const now = new Date();
+  const {data} = page.posts;
+  const total = _.reduce(data, (total, post) => {
+    return total + (now - new Date(post.created_time))
+  }, 0);
+  page.absolute_idleness = total / data.length;
+}
+
 
 const fetchLikes = (user) => {
   let likes = [];
-  let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes{id}&access_token=' + user.facebook.token;
-  colors.blue('Fetching likes');
+  let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes{id,fan_count}&access_token=' + user.facebook.token;
   const fetchLikesBatch = (batchUri) => {
     let opts = {
       uri: batchUri,
@@ -66,41 +165,9 @@ const fetchFeed = (user) => {
 
 
 
-/*const fetchFeed = (user) => {
-  let likeIds = user.facebook.likes.slice(0, 2).toString();
-  let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url&ids=${likeIds}`;
-
-  return request({
-    uri: startUri,
-    json: true
-  })
-  .then((response) => {
-    const promises = _.map(response, post => {
-      return axios.get(`https://www.facebook.com/plugins/post/oembed.json/?url=${post.data[0].permalink_url}&omitscript=true`);
-    });
-    return Promise.all(promises)
-  })
-  .then((responses) => {
-    responses = _.map(responses, (response) => response.data);
-    console.log(responses);
-    return responses;
-  })
-  .catch(err => colors.red('Feed fail'))
-}*/
 
 module.exports = {
   fetchLikes,
+  fetchRankedPages,
   fetchFeed
 }
-
-/*{ 
-  '100440753329511': 
-  { data: [ [Object] ],
-    paging: 
-    { 
-      cursors: [Object],
-      next: 'https://graph.facebook.com/v2.9/100440753329511/posts?access_token=EAAJfZCEYlqRMBAH7wLVLa9vfZAK0z2p4eidyo6SyBDslZC9jh3CF8a7noipm8NOXHqn9jwgEpsluW7Q0IiZB7D6EzjZA18fGij2RVnZCEIdwGaSr6E1jAUEXTLI4lvDIwGUzHd837Y6NZAOtZB3CRAXZAZA7jnscIxZCdEZD&fields=permalink_url&limit=1&after=Q2c4U1pXNTBYM0YxWlhKNVgzTjBiM0o1WDJsa0R5UXhNREEwTkRBM05UTXpNamsxTVRFNkxURXpNRGN3TXpjeU5ETXpOemt6TXpBMk1USVBER0ZA3YVY5emRHOXllVjlwWkE4ZA01UQXdORFF3TnpVek16STVOVEV4WHpFMk5EZAzVOREl5TWpVeE5EWXdNVFVQQkhScGJXVUdXUWRHeEFFPQZDZD' 
-    } 
-  },
-  '103155833057501': { data: [] }
-}*/

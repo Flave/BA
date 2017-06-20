@@ -9,7 +9,7 @@ export default [
   },
   { 
     id: 'female',
-    label: 'Female'
+    label: 'Psychological Gender'
   },
   { 
     id: 'satisfaction_life',

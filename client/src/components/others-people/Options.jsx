@@ -4,7 +4,7 @@ import * as actions from 'app/actions';
 import _find from 'lodash/find';
 import predictionGroups from 'app/constants/predictionGroups';
 import predictions from 'app/constants/predictions';
-import TickGroup from 'app/components/generic/TickGroup.jsx';
+import CheckGroup from 'app/components/common/CheckGroup.jsx';
 
 import {
   withRouter,
@@ -33,7 +33,7 @@ class Others extends Component {
               return _find(predictions, {'id': property})
             });
 
-            return <TickGroup 
+            return <CheckGroup 
               key={group.id}
               group={group}
               onChange={this.handleOptionsChange.bind(this)}

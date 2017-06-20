@@ -102,6 +102,7 @@ function Bubbles() {
   }
 
   _bubbles.data = function(_) {
+    console.log("svg", arguments);
     if(!arguments.length) return data;
     data = _;
     return _bubbles;

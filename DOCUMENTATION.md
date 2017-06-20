@@ -1,0 +1,3 @@
+## Calculation of similarity
+
+The trickiest question when calculating similarity for positioning or sizing is, what should be the domain for scaling. If we take [0, 1] as the range for calculating similarity, we will get values that might always be very close to each other if the profiles are very similar to each other. If we always take the maximum and the minimum difference as the range, we will always get values ranging from 0 to 1 which might be visually pleasing, but it is not as informative about where I stand in the group.

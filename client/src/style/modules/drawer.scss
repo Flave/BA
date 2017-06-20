@@ -4,10 +4,11 @@
   left: 0;
   top: 0;
   height: 100%;
-  background-color: rgba(255, 255, 255, .85);
+  background-color: rgba(255, 255, 255, .98);
   transition: all .3s;
   transform: translateX(-100%);
   padding-top: 130px;
+  border-right: 1px solid $c-shade-superlight;
 
   &.is-open {
     transform: translateX(0);
@@ -15,10 +16,106 @@
 }
 
 .drawer__content {
-  border-top: 1px solid rgba(0, 0, 0, .12);
+  border-top: 1px solid $c-shade-superlight;
 }
 
 .drawer__section {
-  border-bottom: 1px solid rgba(0, 0, 0, .12);
-  padding: 25px 35px;
+  border-bottom: 1px solid $c-shade-superlight;
+  padding: 25px 35px 0 35px;
+
+  &--full {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.drawer__section-header {
+  border-bottom: 1px solid $c-shade-superlight;
+  padding: 10px 35px 25px 35px;
+  margin-top: -10px;
+  font-weight: bold;
+}
+
+/* 
+  DRAWER ITEM
+*/
+
+.drawer__item {
+  border-bottom: 1px solid $c-shade-superlight;
+  padding: 10px 35px;
+  position: relative;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.is-connected {
+    .drawer__item-icon {
+      background-color: $c-accent;
+    }
+  }
+}
+
+.drawer__item-icon {
+  background-color: #AFAFAF;
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding-top: 6px;
+  margin-right: 12px;
+  border-radius: 100%;
+  color: #fff;
+  font-size: 17px;
+  vertical-align: middle;
+}
+
+.drawer__item-meta {
+  transition: all .2s;
+  position: absolute;
+  right: 35px;
+  line-height: 28px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  color: $c-shade-light;
+  transform: translateY(0);
+  transition: all .2s;
+  font-style: italic;
+  cursor: default;
+
+  &.is-inactive {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  &--01 {
+    &.is-inactive {
+      transform: translateY(10px);
+    }
+  }
+
+  &--02 {
+    &.is-inactive {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+
+.drawer__item-info {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.drawer__item-action {
+  color: $c-accent;
+  font-style: normal;
+  cursor: pointer;
+  display: inline-block;
+  margin-left: 10px;
+
+  &--plain {
+    color: $c-shade-light;
+  }
 }

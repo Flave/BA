@@ -1,5 +1,6 @@
 const express = require('express');
 const fbApi = require('../external/fb');
+const twitterApi = require('../external/twitter');
 const amsApi = require('../external/ams');
 const api = require('../api');
 const User = require('../models/user');
@@ -38,6 +39,43 @@ router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
     })
 });
 
+// ALL
+router.get('/api/all', isLoggedInAjax, (req, res) => {
+  User.find({}).then((users) => {
+    let strippedUsers = _(users).map(user => {
+      if(!user.predictions) return;
+      let platforms = _(['facebook', 'twitter', 'youtube', 'instagram'])
+        .map(platform => user[platform] && user[platform].token ? platform : null)
+        .compact()
+        .value();
+
+      return {
+        id: user._id,
+        predictions: user.predictions,
+        platforms: platforms
+      }
+    })
+    .compact()
+    .value();
+
+    log.rainbow('Sending ALL');
+    res.json(strippedUsers);
+  });
+});
+
+// API TEST
+router.get('/api/test', isLoggedInAjax, (req, res) => {
+  twitterApi
+    .fetchRankedSubscriptions(req.user)
+    .then(subscriptions => {
+      console.log(subscriptions);
+    })
+/*  fbApi
+    .fetchRankedPages(req.user)
+    .then((pages) => {
+      console.log(pages);
+    })*/
+});
 
 // FEED
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
@@ -55,29 +93,6 @@ router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
 });
 
 //User.find({}, {_id: true, predictions: true}).then((users) => {
-
-// ALL
-router.get('/api/all', isLoggedInAjax, (req, res) => {
-  User.find({}).then((users) => {
-    let strippedUsers = _.map(users, user => {
-      let accounts = _.map(['facebook', 'twitter', 'youtube', 'instagram'], platform => (
-        { 
-          name: platform,
-          isConnected: user[platform] && (user[platform].token !== undefined)
-        }
-      ));
-
-      return {
-        id: user._id,
-        predictions: user.predictions,
-        accounts: accounts
-      }
-    });
-
-    log.rainbow('Sending ALL');
-    res.json(strippedUsers);
-  });
-});
 
 // route middleware to make sure
 function isLoggedInAjax(req, res, next) {

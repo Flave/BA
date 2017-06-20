@@ -54,7 +54,10 @@ function setProfileVisited(state, { profileId }) {
   });
 }
 
-
+/*
+  Reset feed, so it gets loaded properly the next time the profile
+  is visited
+*/
 function resetFeed(state, {profileId}) {
   if(!state) return null;
   return state.map((user) => {

@@ -35,7 +35,7 @@ module.exports = function(passport) {
       }));
 
   // route for unlinking facebook
-  router.get('/unlink/facebook', function(req, res) {
+  router.get('/disconnect/facebook', function(req, res) {
       var user = req.user;
       user.facebook.token = undefined;
       user.save(function(err) {
@@ -63,9 +63,56 @@ module.exports = function(passport) {
       }));
 
   // route for unlinking twitter
-  router.get('/unlink/twitter', function(req, res) {
+  router.get('/disconnect/twitter', function(req, res) {
       var user           = req.user;
       user.twitter.token = undefined;
+      user.save(function(err) {
+         res.redirect('/');
+      });
+  });
+
+
+    // gogle --------------------------------
+
+  // send to gogle to do the authorization
+  router.get('/connect/youtube', passport.authorize('youtube', { scope : ['https://www.googleapis.com/auth/youtube.readonly'] }));
+
+
+  router.get('/connect/youtube/callback', 
+    passport.authorize('youtube', { failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/');
+    });
+
+  // route for unlinking google
+  router.get('/disconnect/youtube', function(req, res) {
+      var user           = req.user;
+      user.youtube.token = undefined;
+      user.youtube.tokenSecret = undefined;
+      user.save(function(err) {
+         res.redirect('/');
+      });
+  });
+
+
+    // instagram --------------------------------
+
+  // send to instagram to do the authorization
+  router.get('/connect/instagram', passport.authorize('instagram', { scope : ['basic', 'follower_list', 'public_content'] }));
+
+
+  router.get('/connect/instagram/callback', 
+    passport.authorize('instagram', { failureRedirect: '/login' }),
+    function(req, res) {
+      res.redirect('/');
+    });
+
+
+  // route for unlinking instagram
+  router.get('/disconnect/instagram', function(req, res) {
+      var user = req.user;
+      user.instagram.token = undefined;
+      user.instagram.tokenSecret = undefined;
       user.save(function(err) {
          res.redirect('/');
       });

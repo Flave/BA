@@ -16,11 +16,5 @@ To DEPLOY on Uberspace do:
 2. Push to uberspace
 3. run `$ svc -du ~/service/ba-service` on uberspace
 
-## TODO
--[ ] Configure some webpack stuff to compress for production
--[ ] Set up uberspace with git?
--[ ] Run mongodb on uberspace?
--[ ] Check out babel-plugin-lodash to reduce filesize ([tutorial](http://knpw.rs/blog/using-lodash))
--[ ] Clean up npm packages
--[ ] Set up hooks for when someone revokes fb access n stuff
-  -> If you don't do this, the URL is still (with the particular id) accessible but no feed can be fetched. Alternatively you could check for errors ("code":190,"error_subcode":460) in the facebook response
+## IMPORTANT
+`passport-youtube-v3` depends on an old version of passport-oauth which uses `arguments.callee` which is deprecated in ES6. Edit files in `/node_modules/passport-youtube-v3/node_modules/passport-oauth/lib/errors` to use this.constructor instead.

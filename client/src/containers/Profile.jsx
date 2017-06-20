@@ -2,22 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import _find from 'lodash/find';
-import Drawer from '../components/Drawer.jsx';
-import Sidebar from '../components/profile/Sidebar.jsx';
-import Feed from '../components/profile/Feed.jsx';
-import Predictions from '../components/profile/Predictions.jsx';
-import Options from '../components/profile/Options.jsx';
+import Drawer from 'app/components/Drawer.jsx';
+import Sidebar from 'app/components/profile/Sidebar.jsx';
+import Feed from 'app/components/profile/Feed.jsx';
+import PredictionsDrawer from 'app/components/profile/PredictionsDrawer.jsx';
+import SettingsDrawer from 'app/components/profile/SettingsDrawer.jsx';
+import SourcesDrawer from 'app/components/profile/SourcesDrawer.jsx';
+import ComparisonDrawer from 'app/components/profile/ComparisonDrawer.jsx';
+import * as api from '../api';
 
 import {
   withRouter
 } from 'react-router-dom';
 
 const DRAWER_WIDTH = 350;
-const drawerContent = {
-  options: Options,
-  predictions: Predictions
-}
-
 
 class Profile extends Component {
 
@@ -33,17 +31,6 @@ class Profile extends Component {
     store.dispatch(actions.setProfileVisited(profileId));
     if(!profile || !profile.feed)
       store.dispatch(actions.fetchFeed(profileId));
-  }
-
-  createPredictions({ predictions }) {
-    return predictions.map((prediction, key) => {
-      return (
-        <div key={key}>
-          <span>{prediction.trait}: </span>
-          <span>{prediction.value}</span>
-        </div>
-      )
-    })
   }
 
   handleMenuClick(menuId) {
@@ -63,16 +50,20 @@ class Profile extends Component {
     isMe = (user.login === profile.id);
 
     return (
-      <div>
+      <div
+      onClick={() => {api.fetchTest(); console.log('fetched')}}>
         <Sidebar 
           profile={profile} 
           isMe={isMe} 
           onMenuClick={this.handleMenuClick.bind(this)} 
           drawer={ui.drawer} 
-          offset={DRAWER_WIDTH} />
+          offset={DRAWER_WIDTH}
+          />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
-          {(ui.drawer === 'options') && <Options />}
-          {(ui.drawer === 'predictions') && <Predictions profile={profile} isMe={isMe} />}
+          {(ui.drawer === 'predictions') && <PredictionsDrawer />}
+          {(ui.drawer === 'user_settings') && <SettingsDrawer user={me} currentPath={match.url} />}
+          {(ui.drawer === 'profile_sources') && <SourcesDrawer user={me} />}
+          {(ui.drawer === 'profile_comparison') && <ComparisonDrawer />}
         </Drawer>
         <Feed profile={profile} />
       </div>

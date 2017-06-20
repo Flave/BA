@@ -23,3 +23,7 @@ export const fetchAll = () => {
 export const fetchOneUser = (id) => {
   return get(`/api/user/${id}`);
 }
+
+export const fetchTest = (id) => {
+  return get(`/api/test`);
+}

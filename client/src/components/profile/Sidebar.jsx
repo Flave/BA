@@ -1,20 +1,37 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const options = [
-  {
-    id: 'options',
-    label: 'Options'
-  },
-  {
-    id: 'predictions',
-    label: 'Predictions'
-  }
-]
+const optionsConfig = {
+  user: [
+    {
+      id: 'user_settings',
+      label: 'Settings'
+    },
+    {
+      id: 'predictions',
+      label: 'Predictions'
+    }
+  ],
+  profile: [
+    {
+      id: 'profile_sources',
+      label: 'Sources'
+    },
+    {
+      id: 'profile_comparison',
+      label: 'Comparison'
+    },
+    {
+      id: 'predictions',
+      label: 'Predictions'
+    }
+  ]
+}
 
 
 const Sidebar = ({ drawer, offset, isMe, profile, onMenuClick }) => {
   const title = isMe ? <div>your<br/>internet</div> : <div>the internet of<br/>someone else</div>;
+  const options = isMe ? optionsConfig.user : optionsConfig.profile;
   const elStyle = {
     transform: `translateX(${drawer ? offset : 0}px)`
   }

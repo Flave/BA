@@ -16,10 +16,15 @@ module.exports = {
       'callbackURL'     : 'http://localhost:8080/auth/twitter/callback'
     },
 
-    'googleAuth' : {
-      'clientID'    : 'your-secret-clientID-here',
-      'clientSecret'  : 'your-client-secret-here',
-      'callbackURL'   : 'http://localhost:8080/auth/google/callback'
+    'youtubeAuth' : {
+      'clientID'    : '857220500454-9jn970oo0p9mg46obsoluj2loh91q8jf.apps.googleusercontent.com',
+      'clientSecret'  : 'v65JjLv1TSLjtreL3_OajpCg',
+      'callbackURL'   : 'http://localhost:8080/connect/youtube/callback'
+    },
+    'instagramAuth' : {
+      'clientID'    : 'a9310c9330b742a4bf37f33fba868283',
+      'clientSecret'  : 'c998f0640dd94f9e8a79c0819561cf32',
+      'callbackURL'   : 'http://localhost:8080/connect/instagram/callback'
     }
   },
   production: {
@@ -36,10 +41,15 @@ module.exports = {
       'callbackURL'     : 'http://flavioba.capella.uberspace.de/auth/twitter/callback'
     },
 
-    'googleAuth' : {
-      'clientID'    : 'your-secret-clientID-here',
-      'clientSecret'  : 'your-client-secret-here',
-      'callbackURL'   : 'http://flavioba.capella.uberspace.de/auth/google/callback'
+    'youtubeAuth' : {
+      'clientID'    : '857220500454-nheu8d83hv076le1gk7bb7m746kl218i.apps.googleusercontent.com',
+      'clientSecret'  : 'aW4iPuGz2iohPxjeewo3owyQ',
+      'callbackURL'   : 'http://flavioba.capella.uberspace.de/connect/youtube/callback'
+    },
+    'instagramAuth' : {
+      'clientID'    : 'a9310c9330b742a4bf37f33fba868283',
+      'clientSecret'  : 'c998f0640dd94f9e8a79c0819561cf32',
+      'callbackURL'   : 'http://flavioba.capella.uberspace.de/connect/instagram/callback'
     }
   }
 };

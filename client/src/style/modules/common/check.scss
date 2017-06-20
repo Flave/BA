@@ -1,26 +1,36 @@
-.tick-group {
+.check-group {
   margin-bottom: 20px;
 }
 
-.tick {
+.check {
   line-height: 28px;
-  cursor: pointer;
 
   &--header {
     font-weight: 800;
+    .check__label {
+      cursor: pointer;
+    }
   }
 
   &.is-active {
     color: $c-accent;
 
-    .tick__box {
-
+    .check__box {
+      border: 1px solid $c-accent;
     }
   }
 }
 
-.tick__box {
+.check__collapse-icon {
+  font-size: 20px;
+  float: right;
+  cursor: pointer;
+}
+
+
+.check__box {
   display: inline-block;
+  cursor: pointer;
   width: 15px;
   height: 15px;
   margin-right: 10px;
