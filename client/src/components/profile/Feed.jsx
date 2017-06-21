@@ -47,10 +47,6 @@ class Feed extends Component {
     this.setState({zooming: true});
   }
 
-  wheel() {
-    console.log("wheeeled");
-  }
-
 
   handleItemLoad(itemHeight, itemUrl) {
     const { id } = this.props.profile;
@@ -68,7 +64,7 @@ class Feed extends Component {
   render() {
     const {feed, loading} = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
-    const allLoaded = feed && !loading;
+    const allLoaded = (feed && !loading) ? true : false;
 
     return (
       <div ref={(root) => this.root = root} className="feed">

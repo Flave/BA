@@ -21063,11 +21063,6 @@ var Feed = function (_Component) {
       this.setState({ zooming: true });
     }
   }, {
-    key: 'wheel',
-    value: function wheel() {
-      console.log("wheeeled");
-    }
-  }, {
     key: 'handleItemLoad',
     value: function handleItemLoad(itemHeight, itemUrl) {
       var id = this.props.profile.id;
@@ -21093,7 +21088,7 @@ var Feed = function (_Component) {
           loading = _props$profile.loading;
 
       var zoomClass = this.state.zooming ? "is-zooming" : "";
-      var allLoaded = feed && !loading;
+      var allLoaded = feed && !loading ? true : false;
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -21850,7 +21845,10 @@ var Profile = function (_Component) {
         'div',
         {
           onClick: function onClick() {
-            __WEBPACK_IMPORTED_MODULE_11__api__["a" /* fetchTest */]();console.log('fetched');
+            __WEBPACK_IMPORTED_MODULE_11__api__["a" /* fetchTest */]().then(function (res) {
+              return console.log(res);
+            });
+            console.log('fetched');
           } },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_profile_Sidebar_jsx__["a" /* default */], {
           profile: profile,
@@ -22056,7 +22054,8 @@ var GRID_PADDING = 20;
           top
         }],
     predictions,
-    loading
+    loading,
+    platforms
   }
 ]
 */
@@ -22067,7 +22066,7 @@ var GRID_PADDING = 20;
 
   switch (action.type) {
     case 'RECEIVE_ALL_USERS':
-      return action.data;
+      return receiveAllUsers(state, action);
     case 'RECEIVE_FEED':
       return receiveFeed(state, action);
     case 'SET_FEED_ITEM_HEIGHT':
@@ -22099,6 +22098,19 @@ function setProfileVisited(state, _ref) {
   });
 }
 
+// Checks if there is already a user with data
+// if not, just returns the actions data if a user is already
+// set, it means that the feed request returned before
+// the all users request
+function receiveAllUsers(state, action) {
+  if (!state.length) return action.data;
+  return action.data.map(function (profile) {
+    var existingUser = __WEBPACK_IMPORTED_MODULE_0_lodash_find___default()(state, { id: profile.id });
+    if (existingUser) return _extends({}, profile, existingUser);
+    return profile;
+  });
+}
+
 /*
   Reset feed, so it gets loaded properly the next time the profile
   is visited
@@ -22106,7 +22118,9 @@ function setProfileVisited(state, _ref) {
 function resetFeed(state, _ref2) {
   var profileId = _ref2.profileId;
 
+  // don't do this for initialisation
   if (!state) return null;
+  // only reset feed of specified user
   return state.map(function (user) {
     if (user.id !== profileId) return user;
     if (!user.feed) return _extends({}, user, {

@@ -15,7 +15,8 @@ const GRID_PADDING = 20;
           top
         }],
     predictions,
-    loading
+    loading,
+    platforms
   }
 ]
 */
@@ -23,7 +24,7 @@ const GRID_PADDING = 20;
 export default (state = null, action) => {
   switch(action.type) {
     case 'RECEIVE_ALL_USERS':
-      return action.data;
+    return receiveAllUsers(state, action);
     case 'RECEIVE_FEED':
       return receiveFeed(state, action);
     case 'SET_FEED_ITEM_HEIGHT':
@@ -54,12 +55,31 @@ function setProfileVisited(state, { profileId }) {
   });
 }
 
+// Checks if there is already a user with data
+// if not, just returns the actions data if a user is already
+// set, it means that the feed request returned before
+// the all users request
+function receiveAllUsers(state, action) {
+  if(!state.length) return action.data;
+  return action.data.map(profile => {
+    const existingUser = _find(state, {id: profile.id});
+    if(existingUser)
+      return {
+        ...profile,
+        ...existingUser
+      }
+    return profile;
+  });
+}
+
 /*
   Reset feed, so it gets loaded properly the next time the profile
   is visited
 */
 function resetFeed(state, {profileId}) {
+  // don't do this for initialisation
   if(!state) return null;
+  // only reset feed of specified user
   return state.map((user) => {
     if(user.id !== profileId) return user;
     if(!user.feed)
