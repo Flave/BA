@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from 'app/actions';
 import _find from 'lodash/find';
-import predictionGroups from 'app/constants/predictionGroups';
-import predictions from 'app/constants/predictions';
+import predictionGroups from 'root/constants/predictionGroups';
+import predictions from 'root/constants/predictions';
 import CheckGroup from 'app/components/common/CheckGroup.jsx';
 
 import {

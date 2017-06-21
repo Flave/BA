@@ -41,7 +41,8 @@ const fetchRankedSubs = (user) => {
         name: sub.full_name,
         username: sub.username,
         id: sub.id,
-        thumb: sub.profile_picture
+        thumb: sub.profile_picture,
+        relevance: 0.5
       }));
     })
     .catch(err => {

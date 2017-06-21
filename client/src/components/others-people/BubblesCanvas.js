@@ -9,7 +9,7 @@ import { max as d3Max } from 'd3-array';
 
 import Bubble from './Bubble';
 import _find from 'lodash/find';
-import predictions from 'app/constants/predictions';
+import predictions from 'root/constants/predictions';
 
 // PIXELATION CODE
 // http://jsfiddle.net/epistemex/u6apxgfk/

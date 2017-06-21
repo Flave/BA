@@ -60,8 +60,14 @@ const fetchRankedSubs = (user) => {
         })
         .sortBy(['relevance'])
         .reverse()
-        .map(({id_str, relevance}) => (
-          {id: id_str, relevance}
+        .map(sub => (
+          {
+            id: sub.id_str,
+            username: sub.screen_name,
+            name: sub.name,
+            relevance: sub.relevance,
+            thumb: sub.profile_image_url
+          }
         ))
         .value();
     })

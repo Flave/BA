@@ -1,4 +1,4 @@
-import predictions from 'app/constants/predictions';
+import predictions from 'root/constants/predictions';
 import _find from 'lodash/find';
 
 const initialState = {

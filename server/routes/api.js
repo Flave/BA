@@ -77,7 +77,7 @@ router.get('/api/test', isLoggedInAjax, (req, res) => {
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
   User.findOne({_id: req.params.id })
     .then((user) => {
-      return fbApi.fetchFeed(user);
+      return fbApi.fetchFeed(user, 10);
     })
     .then((feed) => {
       log.rainbow('Sending FEED');

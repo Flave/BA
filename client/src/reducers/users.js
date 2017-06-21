@@ -60,7 +60,7 @@ function setProfileVisited(state, { profileId }) {
 // set, it means that the feed request returned before
 // the all users request
 function receiveAllUsers(state, action) {
-  if(!state.length) return action.data;
+  if(!state || !state.length) return action.data;
   return action.data.map(profile => {
     const existingUser = _find(state, {id: profile.id});
     if(existingUser)

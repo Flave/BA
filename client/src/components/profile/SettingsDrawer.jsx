@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import platforms from 'app/constants/platforms';
+import platforms from 'root/constants/platforms';
 import _find from 'lodash/find';
 
 class SettingsDrawer extends Component {

@@ -52,8 +52,8 @@ class Profile extends Component {
     return (
       <div
       onClick={() => {
-        api.fetchTest().then((res) => console.log(res)); 
-        console.log('fetched');
+       /* api.fetchTest().then((res) => console.log(res)); 
+        console.log('fetched');*/
       }}>
         <Sidebar 
           profile={profile} 
