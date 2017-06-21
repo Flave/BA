@@ -66,6 +66,7 @@ module.exports = function(passport) {
   router.get('/disconnect/twitter', function(req, res) {
       var user           = req.user;
       user.twitter.token = undefined;
+      user.twitter.subs = undefined;
       user.save(function(err) {
          res.redirect('/');
       });
@@ -89,6 +90,7 @@ module.exports = function(passport) {
       var user           = req.user;
       user.youtube.token = undefined;
       user.youtube.tokenSecret = undefined;
+      user.youtube.subs = undefined;
       user.save(function(err) {
          res.redirect('/');
       });
@@ -113,6 +115,7 @@ module.exports = function(passport) {
       var user = req.user;
       user.instagram.token = undefined;
       user.instagram.tokenSecret = undefined;
+      user.instagram.subs = undefined;
       user.save(function(err) {
          res.redirect('/');
       });

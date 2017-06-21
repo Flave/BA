@@ -16,7 +16,9 @@ var userSchema = mongoose.Schema({
     token : String,
     email : String,
     name : String,
-    subs: [{id: String, relevance: Number}]
+    subs: [{
+      id: String, name: String, username: String, thumb: String
+    }]
   },
   twitter : {
     id : String,
@@ -25,17 +27,25 @@ var userSchema = mongoose.Schema({
     email : String,
     displayName : String,
     username : String,
-    subs: [{id: String, relevance: Number}]
+    subs: [{
+      id: String, name: String, username: String, thumb: String
+    }]
   },
   youtube : {
     id : String,
     token : String,
-    tokenSecret: String
+    tokenSecret: String,
+    subs: [{
+      id: String, name: String, username: String, thumb: String
+    }]
   },
   instagram : {
     id : String,
     token : String,
-    tokenSecret: String
+    tokenSecret: String,
+    subs: [{
+      id: String, name: String, username: String, thumb: String
+    }]
   }
 });
 

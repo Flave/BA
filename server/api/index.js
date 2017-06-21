@@ -1,3 +1,9 @@
+// API does everything that has to do with creating/updating/deleting data stored in the database
+// it uses external APIs to fetch data for the user such as predictions, subscriptions or feed data
+
+// TODO: it should be a bit more structured/modularized into specific concerns
+// TODO: it should be responsible for initially creating the users and linking new accounts
+
 const _ = require('lodash');
 const fbApi = require('../external/fb');
 const amsApi = require('../external/ams');
@@ -9,7 +15,7 @@ const log = require('../../log');
 
 module.exports.fetchPredictions = (user) => {
   return fbApi
-    .fetchLikes(user)
+    .fetchRankedSubs(user)
     // then fetch the facebook likes
     .then((subs) => {
       let hasNewItems = !_.isEqual(user.facebook.subs.sort(), subs.sort());
@@ -50,18 +56,26 @@ module.exports.fetchTwitterPredictions = (user) => {
     });
 }
 
-module.exports.fetchFeed = (user) => {
-
+module.exports.updateTwitterSubs = (user) => {
+  return twitterApi.fetchRankedSubs(user)
+    .then((subs) => {
+      user.twitter.subs = subs;
+      return user.save();
+    });
 }
 
-module.exports.fetchTwitterFavs = (user) => {
-  return twitterApi.fetchFavs(user);
+module.exports.updateYoutubeSubs = (user) => {
+  return youtubeApi.fetchRankedSubs(user)
+    .then((subs) => {
+      user.youtube.subs = subs;
+      return user.save();
+    });
 }
 
-module.exports.fetchYoutubeSubscriptions = (user) => {
-  return youtubeApi.fetchSubscriptions(user);
-}
-
-module.exports.fetchInstagramLiked = (user) => {
-  return instagramApi.fetchLiked(user);
+module.exports.updateInstagramSubs = (user) => {
+  return instagramApi.fetchRankedSubs(user)
+    .then((subs) => {
+      user.instagram.subs = subs;
+      return user.save();
+    });
 }

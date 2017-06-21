@@ -34,7 +34,7 @@ const fetchTweets = (user) => {
   });
 }
 
-const fetchRankedSubscriptions = (user) => {
+const fetchRankedSubs = (user) => {
   const favsWeight = 2;
   const followersWeight = 1;
 
@@ -126,6 +126,6 @@ const apiRequest = (user, endpoint, options) => {
 
 module.exports = {
   fetchTweets,
-  fetchRankedSubscriptions,
+  fetchRankedSubs,
   fetchFavs
 }

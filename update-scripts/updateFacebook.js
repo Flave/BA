@@ -7,16 +7,13 @@ mongoose.connect(configDB.url); // connect to our database
 
 User.find({}).then((users) => {
   users.forEach((user, i) => {
-    user.facebook.likes = undefined;
-    user.save(() => console.log("Done with user: " + user.id));
-
-/*    fbApi
+    fbApi
     .fetchRankedPages(user)
     .then((subs, i) => {
       user.facebook.subs = subs;
       user.save().then(() => {
         console.log("Done with user: " + user.id)
       });
-    });*/
+    });
   })
 });

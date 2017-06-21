@@ -20,7 +20,7 @@ const processPredictions = (rawPredictions) => (
 
 const getPrediction = (user) => {
   var args = {
-    body: user.facebook.likes,
+    body: _.map(user.facebook.subs, 'id'),
     headers: {
       "X-Auth-Token": secrets.token,
       "Content-Type": "application/json",

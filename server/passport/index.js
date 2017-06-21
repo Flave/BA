@@ -164,18 +164,16 @@ module.exports = function(passport) {
     newUser.twitter.email = profile.emails[0].value;
     newUser.email = profile.emails[0].value;
 
-    newUser.save((err, user) => {
-      if (err)
-        throw err;
-/*      api.fetchTwitterPredictions(user)
+    newUser.save().then((user) => {
+      api
+        .updateTwitterSubs(user)
         .then(() => {
-          return done(null, user);
-        })
-        .catch((err) => {
-          throw err;
-        });*/
-      return done(null, newUser);
-    });
+          return done(null, newUser);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
   }
 
   function linkTwitterAccount(user, token, tokenSecret, profile, done) {
@@ -185,10 +183,15 @@ module.exports = function(passport) {
     user.twitter.name  = profile.name;
     user.twitter.email = profile.emails[0].value;
 
-    user.save((err) => {
-      if (err)
-        throw err;
-      return done(null, user);
+    user.save().then((user) => {
+      api
+        .updateTwitterSubs(user)
+        .then(() => {
+          return done(null, user);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -205,12 +208,9 @@ module.exports = function(passport) {
   },
     // twitter will send back the token and profile
   function(req, token, tokenSecret, profile, done) {
-    // asynchronous
-    log.rainbow("YOUTUBE AUTORIZED");
     process.nextTick(() => {
         linkYoutubeAccount(req.user, token, tokenSecret, profile, done);
     });
-
   }));
 
 
@@ -220,10 +220,15 @@ module.exports = function(passport) {
     user.youtube.token = token;
     user.youtube.tokenSecret = tokenSecret;
 
-    user.save((err) => {
-      if (err)
-        throw err;
-      return done(null, user);
+    user.save().then((user) => {
+      api
+        .updateYoutubeSubs(user)
+        .then(() => {
+          return done(null, user);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 
@@ -239,7 +244,6 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, token, tokenSecret, profile, done) {
-      log.rainbow("INSTAGRAM AUTORIZED");
       process.nextTick(() => {
           linkInstagramAccount(req.user, token, tokenSecret, profile, done);
       });
@@ -252,10 +256,15 @@ module.exports = function(passport) {
     user.instagram.token = token;
     user.instagram.tokenSecret = tokenSecret;
 
-    user.save((err) => {
-      if (err)
-        throw err;
-      return done(null, user);
+    user.save().then((user) => {
+      api
+        .updateInstagramSubs(user)
+        .then(() => {
+          return done(null, user);
+        });
+    })
+    .catch((err) => {
+      console.log(err);
     });
   }
 

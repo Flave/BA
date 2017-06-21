@@ -27,7 +27,7 @@ const d3Array = require('d3-array');
 //   }
 // }
 
-const fetchRankedPages = (user) => {
+const fetchRankedSubs = (user) => {
   let pages = [];
   let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes.limit(10){id,fan_count,posts.limit(3)}&access_token=' + user.facebook.token;
 
@@ -138,7 +138,7 @@ const fetchLikes = (user) => {
 }
 
 const fetchFeed = (user) => {
-  let likeIds = user.facebook.likes.slice(0, 15).toString();
+  let likeIds = _.map(user.facebook.subs.slice(0, 1), 'id').toString();
   // DOC Multiple ID Read Requests: https://developers.facebook.com/docs/graph-api/using-graph-api
   // DOC /post: https://developers.facebook.com/docs/graph-api/reference/v2.9/post/
   let startUri = `https://graph.facebook.com/v2.8/posts?access_token=${user.facebook.token}&limit=1&fields=permalink_url,type,privacy&ids=${likeIds}`;
@@ -168,6 +168,6 @@ const fetchFeed = (user) => {
 
 module.exports = {
   fetchLikes,
-  fetchRankedPages,
+  fetchRankedSubs,
   fetchFeed
 }

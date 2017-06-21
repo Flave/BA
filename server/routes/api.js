@@ -1,6 +1,6 @@
 const express = require('express');
 const fbApi = require('../external/fb');
-const twitterApi = require('../external/twitter');
+const instagramApi = require('../external/instagram');
 const amsApi = require('../external/ams');
 const api = require('../api');
 const User = require('../models/user');
@@ -65,16 +65,12 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
 
 // API TEST
 router.get('/api/test', isLoggedInAjax, (req, res) => {
-  twitterApi
-    .fetchRankedSubscriptions(req.user)
-    .then(subscriptions => {
-      console.log(subscriptions);
+  instagramApi
+    .fetchRankedSubs(req.user)
+    .then(subs => {
+      res.json(subs);
     })
-/*  fbApi
-    .fetchRankedPages(req.user)
-    .then((pages) => {
-      console.log(pages);
-    })*/
+    .catch(err => console.log(err));
 });
 
 // FEED

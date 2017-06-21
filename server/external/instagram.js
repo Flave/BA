@@ -25,6 +25,30 @@ const fetchLiked = (user) => {
           });
 }
 
+const fetchRankedSubs = (user) => {
+  let favs = [];
+  const baseUri = "https://api.instagram.com/v1/users/self/follows";
+  const opts = {
+    params: {
+      access_token: user.instagram.token
+    }
+  }
+  log.rainbow("FETCHING subs");
+  return axios.get(baseUri, opts)
+    .then(response => {
+      log.rainbow("GOT subs");
+      return _.map(response.data.data, sub => ({
+        name: sub.full_name,
+        username: sub.username,
+        id: sub.id,
+        thumb: sub.profile_picture
+      }));
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 module.exports = {
-  fetchLiked
+  fetchRankedSubs
 }
