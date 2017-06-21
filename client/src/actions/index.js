@@ -17,9 +17,10 @@ const receiveFeed = (data, id) => ({
   id
 });
 
-const receiveOneUser = (data, id) => ({
-  type: 'RECEIVE_ONE_USER',
-  data
+const receiveProfile = (data, id) => ({
+  type: 'RECEIVE_PROFILE',
+  data,
+  id
 });
 
 export const fetchUser = () => {
@@ -38,9 +39,9 @@ export const fetchFeed = (id) =>
     return receiveFeed(response.data, id);
   })
 
-export const fetchOneUser = (id) =>
-  api.fetchOneUser(id).then(response => {
-    return receiveOneUser(response.data);
+export const fetchProfile = (id) =>
+  api.fetchProfile(id).then(response => {
+    return receiveProfile(response.data, id);
   })
 
 

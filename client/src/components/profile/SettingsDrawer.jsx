@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import platforms from 'root/constants/platforms';
+import PLATFORMS from 'root/constants/platforms';
 import _find from 'lodash/find';
 
 class SettingsDrawer extends Component {
@@ -70,8 +70,8 @@ class SettingsDrawer extends Component {
 
   render() {
     const { user } = this.props;
-    const connectedPlatforms = platforms.filter(platform => user.platforms.indexOf(platform.id) !== -1);
-    const disconnectedPlatforms = platforms.filter(platform => user.platforms.indexOf(platform.id) === -1);
+    const connectedPlatforms = PLATFORMS.filter(({id}) => _find(user.platforms, {id: id}));
+    const disconnectedPlatforms = PLATFORMS.filter(({id}) => !_find(user.platforms, {id: id}));
     return (
       <div className="drawer__content">
         <div className="drawer__section drawer__section--full">

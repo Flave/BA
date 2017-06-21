@@ -27,6 +27,8 @@ export default (state = null, action) => {
     return receiveAllUsers(state, action);
     case 'RECEIVE_FEED':
       return receiveFeed(state, action);
+    case 'RECEIVE_PROFILE':
+      return receiveProfile(state, action);
     case 'SET_FEED_ITEM_HEIGHT':
       return setFeedItemPosition(state, action);
     case 'RESET_FEED':
@@ -70,6 +72,20 @@ function receiveAllUsers(state, action) {
       }
     return profile;
   });
+}
+
+function receiveProfile(state, { profileId, data }) {
+  // if state not initialized, just wrap the profile in an array
+  if(!state) return [data];
+  // if profile already exists, just add the received profile data to it
+  const containsProfile = _find(state, {id: profileId}) !== undefined;
+  if(containsProfile)
+    return applyToUser(state, profileId, user => ({
+      ...user, 
+      ...data
+    }))
+  // else push the new profile data into the state array
+  return state.concat(data);
 }
 
 /*

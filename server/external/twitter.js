@@ -6,34 +6,6 @@ const axios = require('axios');
 const Twitter = require('twitter');
 const twitterAuth = require('../../config/auth')[process.env.NODE_ENV].twitterAuth;
 
-const fetchTweets = (user) => {
-  let likes = [];
-  let baseUri = 'https://api.twitter.com/1.1/statuses/user_timeline.json?';
-  let opts = {
-    count: 100,
-    user_id: user.twitter.id,
-    trim_user: true,
-    exclude_replies: true,
-    include_rts: false
-  }
-
-  let client = new Twitter({
-    consumer_key: twitterAuth.consumerKey,
-    consumer_secret: twitterAuth.consumerSecret,
-    access_token_key: user.token,
-    access_token_secret: user.tokenSecret
-  });
-
-  return new Promise((success, failure) => {
-    client.get('statuses/user_timeline', opts, (err, tweets, response) => {
-      if(err)
-        failure(err);
-      else
-        success(tweets);
-    });
-  });
-}
-
 const fetchRankedSubs = (user) => {
   const favsWeight = 2;
   const followersWeight = 1;
@@ -114,6 +86,25 @@ const fetchFavs = (user) => {
   return apiRequest(user, 'favorites/list', opts);
 }
 
+const fetchFeed = (user) => {
+  return fetchHomeTimeline(user)
+    .then(tweets => {
+      console.log("GOT TWEEEEETS");
+    });
+}
+
+const fetchHomeTimeline = (user, count) => {
+  const opts = {
+    count: count,
+    trim_user: true,
+    user_id: user.twitter.id,
+    exclude_replies: true,
+    include_entities: false
+  }
+
+  return apiRequest(user, 'statuses/home_timeline', opts);  
+}
+
 const apiRequest = (user, endpoint, options) => {
   let client = new Twitter({
     consumer_key: twitterAuth.consumerKey,
@@ -131,7 +122,6 @@ const apiRequest = (user, endpoint, options) => {
 }
 
 module.exports = {
-  fetchTweets,
   fetchRankedSubs,
-  fetchFavs
+  fetchFeed
 }

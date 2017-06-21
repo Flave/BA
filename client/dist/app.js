@@ -2675,16 +2675,16 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(104);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return fetchAll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return fetchFeed; });
-/* unused harmony export fetchOneUser */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return fetchProfile; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setWindowDimensions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return toggleDrawer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return setFeedItemHeight; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return setOthersPeopleOptions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return resetFeed; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return setOthersPeopleOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return resetFeed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return resetUi; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return setProfileVisited; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return setProfileVisited; });
 
 
 // API
@@ -2710,10 +2710,11 @@ var receiveFeed = function receiveFeed(data, id) {
   };
 };
 
-var receiveOneUser = function receiveOneUser(data, id) {
+var receiveProfile = function receiveProfile(data, id) {
   return {
-    type: 'RECEIVE_ONE_USER',
-    data: data
+    type: 'RECEIVE_PROFILE',
+    data: data,
+    id: id
   };
 };
 
@@ -2735,9 +2736,9 @@ var fetchFeed = function fetchFeed(id) {
   });
 };
 
-var fetchOneUser = function fetchOneUser(id) {
-  return __WEBPACK_IMPORTED_MODULE_0__api__["d" /* fetchOneUser */](id).then(function (response) {
-    return receiveOneUser(response.data);
+var fetchProfile = function fetchProfile(id) {
+  return __WEBPACK_IMPORTED_MODULE_0__api__["d" /* fetchProfile */](id).then(function (response) {
+    return receiveProfile(response.data, id);
   });
 };
 
@@ -7376,7 +7377,7 @@ module.exports = defaults;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fetchUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchFeed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchAll; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return fetchOneUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return fetchProfile; });
 /* unused harmony export fetchTest */
 
 
@@ -7400,8 +7401,8 @@ var fetchAll = function fetchAll() {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/all');
 };
 
-var fetchOneUser = function fetchOneUser(id) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/user/' + id);
+var fetchProfile = function fetchProfile(id) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/profile/' + id);
 };
 
 var fetchTest = function fetchTest(id) {
@@ -20952,7 +20953,7 @@ var Others = function (_Component) {
   _createClass(Others, [{
     key: 'handleOptionsChange',
     value: function handleOptionsChange(options) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["j" /* setOthersPeopleOptions */](options));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["k" /* setOthersPeopleOptions */](options));
     }
   }, {
     key: 'render',
@@ -21354,11 +21355,13 @@ var SettingsDrawer = function (_Component) {
     value: function render() {
       var user = this.props.user;
 
-      var connectedPlatforms = __WEBPACK_IMPORTED_MODULE_1_root_constants_platforms___default.a.filter(function (platform) {
-        return user.platforms.indexOf(platform.id) !== -1;
+      var connectedPlatforms = __WEBPACK_IMPORTED_MODULE_1_root_constants_platforms___default.a.filter(function (_ref) {
+        var id = _ref.id;
+        return __WEBPACK_IMPORTED_MODULE_2_lodash_find___default()(user.platforms, { id: id });
       });
-      var disconnectedPlatforms = __WEBPACK_IMPORTED_MODULE_1_root_constants_platforms___default.a.filter(function (platform) {
-        return user.platforms.indexOf(platform.id) === -1;
+      var disconnectedPlatforms = __WEBPACK_IMPORTED_MODULE_1_root_constants_platforms___default.a.filter(function (_ref2) {
+        var id = _ref2.id;
+        return !__WEBPACK_IMPORTED_MODULE_2_lodash_find___default()(user.platforms, { id: id });
       });
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
@@ -21722,7 +21725,7 @@ var Others = function (_Component) {
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
       this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["i" /* resetUi */]());
-      !users && store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["c" /* fetchAll */]());
+      !users && store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["j" /* fetchAll */]());
 
       this.bubblesCanvas.data(users).dimensions(ui.windowDimensions).initialize(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function () {
         return console.log('mouseenter');
@@ -21863,14 +21866,18 @@ var Profile = function (_Component) {
       var store = this.context.store;
 
       var _store$getState = store.getState(),
-          users = _store$getState.users;
+          users = _store$getState.users,
+          user = _store$getState.user;
 
       var profileId = this.props.match.params.id;
       var profile = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(users, { id: profileId });
-      !users && store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["c" /* fetchAll */]());
+      var userProfile = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(users, { id: user.login });
+      var isMe = user.login === profileId;
 
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* resetFeed */](profileId));
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* setProfileVisited */](profileId));
+      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["c" /* resetFeed */](profileId));
+      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* setProfileVisited */](profileId));
+      if (!userProfile) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](user.login));
+      if (!profile && !isMe) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](profileId));
       if (!profile || !profile.feed) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["f" /* fetchFeed */](profileId));
     }
   }, {
@@ -21894,7 +21901,11 @@ var Profile = function (_Component) {
       var me = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(users, { id: user.login });
       var isMe = false;
 
-      if (!profile) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', null);
+      if (!profile || !profile.feed) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        null,
+        'Loading Profile'
+      );
 
       isMe = user.login === profile.id;
 
@@ -22124,6 +22135,8 @@ var GRID_PADDING = 20;
       return receiveAllUsers(state, action);
     case 'RECEIVE_FEED':
       return receiveFeed(state, action);
+    case 'RECEIVE_PROFILE':
+      return receiveProfile(state, action);
     case 'SET_FEED_ITEM_HEIGHT':
       return setFeedItemPosition(state, action);
     case 'RESET_FEED':
@@ -22166,12 +22179,27 @@ function receiveAllUsers(state, action) {
   });
 }
 
+function receiveProfile(state, _ref2) {
+  var profileId = _ref2.profileId,
+      data = _ref2.data;
+
+  // if state not initialized, just wrap the profile in an array
+  if (!state) return [data];
+  // if profile already exists, just add the received profile data to it
+  var containsProfile = __WEBPACK_IMPORTED_MODULE_0_lodash_find___default()(state, { id: profileId }) !== undefined;
+  if (containsProfile) return applyToUser(state, profileId, function (user) {
+    return _extends({}, user, data);
+  });
+  // else push the new profile data into the state array
+  return state.concat(data);
+}
+
 /*
   Reset feed, so it gets loaded properly the next time the profile
   is visited
 */
-function resetFeed(state, _ref2) {
-  var profileId = _ref2.profileId;
+function resetFeed(state, _ref3) {
+  var profileId = _ref3.profileId;
 
   // don't do this for initialisation
   if (!state) return null;
@@ -22195,9 +22223,9 @@ function resetFeed(state, _ref2) {
   });
 }
 
-function receiveFeed(state, _ref3) {
-  var data = _ref3.data,
-      id = _ref3.id;
+function receiveFeed(state, _ref4) {
+  var data = _ref4.data,
+      id = _ref4.id;
 
   // if there's no users yet simply put the new user in a new array
   if (state === null) return [{
@@ -22215,10 +22243,10 @@ function receiveFeed(state, _ref3) {
   });
 }
 
-function setFeedItemPosition(state, _ref4) {
-  var height = _ref4.height,
-      itemUrl = _ref4.itemUrl,
-      profileId = _ref4.profileId;
+function setFeedItemPosition(state, _ref5) {
+  var height = _ref5.height,
+      itemUrl = _ref5.itemUrl,
+      profileId = _ref5.profileId;
 
   return state.map(function (user) {
     if (user.id !== profileId) return user;

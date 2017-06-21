@@ -20,8 +20,8 @@ export const fetchAll = () => {
   return get('/api/all');
 }
 
-export const fetchOneUser = (id) => {
-  return get(`/api/user/${id}`);
+export const fetchProfile = (id) => {
+  return get(`/api/profile/${id}`);
 }
 
 export const fetchTest = (id) => {

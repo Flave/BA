@@ -7,9 +7,17 @@ const User = require('../models/user');
 const log = require('../../log');
 const _ = require('lodash');
 const Promise = require('promise');
+const PLATFORMS = require('../../constants/platforms');
 
 const router = new express.Router();
 
+
+const getPlatforms = (user) => {
+  return _(PLATFORMS)
+    .map(platform => user[platform.id] && user[platform.id].token ? platform : null)
+    .compact()
+    .value();
+}
 
 // USER
 
@@ -23,15 +31,15 @@ router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
 
 
 // PROFILE
-
-router.get('/api/user/:id', isLoggedInAjax, (req, res) => {
+router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
   User.findOne({_id: req.params.id })
-    .then(fbApi.fetchFeed)
-    .then((feed) => {
-
+    .then(user => {
       log.rainbow('Sending PROFILE');
       res.json({
-        feed: feed
+        id: user.id,
+        predictions: user.predictions,
+        subs: user.facebook.subs,
+        platforms: getPlatforms(user)
       });
     })
     .catch((err) => {
@@ -44,15 +52,10 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
   User.find({}).then((users) => {
     let strippedUsers = _(users).map(user => {
       if(!user.predictions) return;
-      let platforms = _(['facebook', 'twitter', 'youtube', 'instagram'])
-        .map(platform => user[platform] && user[platform].token ? platform : null)
-        .compact()
-        .value();
-
       return {
         id: user._id,
         predictions: user.predictions,
-        platforms: platforms
+        platforms: getPlatforms(user)
       }
     })
     .compact()
@@ -75,17 +78,12 @@ router.get('/api/test', isLoggedInAjax, (req, res) => {
 
 // FEED
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
-  User.findOne({_id: req.params.id })
-    .then((user) => {
-      return fbApi.fetchFeed(user, 10);
-    })
-    .then((feed) => {
+  api.fetchFeed(req.params.id)
+    .then(feed => {
       log.rainbow('Sending FEED');
       res.json(feed);
     })
-    .catch((err) => {
-      console.log(err);
-    })
+    .catch(err => console.log(err));
 });
 
 //User.find({}, {_id: true, predictions: true}).then((users) => {

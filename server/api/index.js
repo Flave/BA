@@ -11,6 +11,7 @@ const twitterApi = require('../external/twitter');
 const youtubeApi = require('../external/youtube');
 const instagramApi = require('../external/instagram');
 const log = require('../../log');
+const User = require('../models/user');
 
 
 module.exports.fetchPredictions = (user) => {
@@ -56,6 +57,20 @@ module.exports.fetchTwitterPredictions = (user) => {
     });
 }
 
+// Fetching the main feed for a profile
+module.exports.fetchFeed = (profileId) => {
+  return User.findOne({_id: profileId})
+    .then((user) => {
+      twitterApi
+        .fetchFeed(user, 20)
+        .catch(err => {
+          console.log(err);
+        })
+      return fbApi.fetchFeed(user, 10);
+    });
+}
+
+// UPDATING SUBS
 module.exports.updateTwitterSubs = (user) => {
   return twitterApi.fetchRankedSubs(user)
     .then((subs) => {

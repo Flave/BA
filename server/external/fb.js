@@ -1,8 +1,8 @@
 const request = require('request-promise-native');
 const _ = require('lodash');
 const d3Array = require('d3-array');
-const d3RandomNormal = require('d3-random').randomNormal;
 const platforms = require('../../constants/platforms');
+const getRandomItems = require('../util').getRandomItems;
 
 
 // First batch
@@ -168,24 +168,9 @@ const getConnectedPlatforms = (user) =>
     user[platform.id] && user[platform.id].token
   )
 
-const getRandomSubs = (allSubs, count) => {
-  let subs = _.clone(allSubs);
-  let selection = [];
-
-  return _.range(count).map(i => {
-    // get a normal distributed index to select a sub
-    let spread = subs.length/15;
-    let index = Math.abs(Math.floor(d3RandomNormal(0, spread)()));
-    // make sure the index is not out of bounds
-    index = index > (allSubs.length - 1) ? allSubs.length - 1 : index;
-    console.log(index, subs.length);
-    return subs.splice(index, 1)[0];
-  });
-}
-
 const fetchFeed = (user, maxItems) => {
   let allSubs = user.facebook.subs;
-  let subs = allSubs.length < maxItems ? allSubs : getRandomSubs(allSubs, maxItems);
+  let subs = allSubs.length < maxItems ? allSubs : getRandomItems(allSubs, maxItems);
   let subIds = _.map(subs, sub => sub.id);
   // DOC Multiple ID Read Requests: https://developers.facebook.com/docs/graph-api/using-graph-api
   // DOC /post: https://developers.facebook.com/docs/graph-api/reference/v2.9/post/

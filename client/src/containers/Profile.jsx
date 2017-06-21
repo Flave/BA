@@ -21,14 +21,18 @@ class Profile extends Component {
 
   componentDidMount() {
     const { store } = this.context;
-    const { users } = store.getState();
+    const { users, user } = store.getState();
     const profileId = this.props.match.params.id;
     const profile = _find(users, {id: profileId});
-    !users && store.dispatch(actions.fetchAll());
-
+    const userProfile = _find(users, {id: user.login});
+    const isMe = user.login === profileId;
 
     store.dispatch(actions.resetFeed(profileId));
     store.dispatch(actions.setProfileVisited(profileId));
+    if(!userProfile)
+      store.dispatch(actions.fetchProfile(user.login));
+    if(!profile && !isMe)
+      store.dispatch(actions.fetchProfile(profileId));
     if(!profile || !profile.feed)
       store.dispatch(actions.fetchFeed(profileId));
   }
@@ -45,7 +49,7 @@ class Profile extends Component {
     const me = _find(users, {id: user.login});
     let isMe = false;
 
-    if(!profile) return <div/>;
+    if(!profile || !profile.feed) return <div>Loading Profile</div>;
 
     isMe = (user.login === profile.id);
 
