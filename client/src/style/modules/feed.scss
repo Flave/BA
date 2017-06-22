@@ -19,4 +19,28 @@
   position: absolute;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);
   border-radius: 4px;
+  transition: all .1s;
+
+  &:hover {
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19);
+  }
+
+  &--instagram {
+    iframe {
+      margin: 0 !important;
+      width: 100% !important;
+    }
+  }
+
+  &--twitter {
+    twitterwidget {
+      margin: 0 !important;
+    }
+  }
+
+  &--youtube {
+    &:hover {
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23);
+    }
+  }
 }

@@ -207,18 +207,19 @@ module.exports = function(passport) {
 
   },
     // twitter will send back the token and profile
-  function(req, token, tokenSecret, profile, done) {
+  function(req, token, refreshToken, profile, done) {
     process.nextTick(() => {
-        linkYoutubeAccount(req.user, token, tokenSecret, profile, done);
+        linkYoutubeAccount(req.user, token, refreshToken, profile, done);
     });
   }));
 
 
-  function linkYoutubeAccount(user, token, tokenSecret, profile, done) {
+  function linkYoutubeAccount(user, token, refreshToken, profile, done) {
+    console.log()
     user.youtube = {};
     user.youtube.id    = profile.id;
     user.youtube.token = token;
-    user.youtube.tokenSecret = tokenSecret;
+    user.youtube.refreshToken = refreshToken;
 
     user.save().then((user) => {
       api

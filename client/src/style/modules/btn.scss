@@ -37,4 +37,10 @@
     display: inline-block;
     margin-right: 5px;
   }
+
+  &--load-more {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+  }
 }

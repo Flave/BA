@@ -7,7 +7,10 @@ const initialState = {
   othersPeopleOptions: predictions.map(({ id }) => (
       id === 'age' ? {id, value: true} : {id, value: false}
     )
-  )
+  ),
+  itemsShown: 2,
+  maxItems: null,
+  userCount: Infinity
 }
 
 export default (state = initialState, action) => {
@@ -32,6 +35,21 @@ export default (state = initialState, action) => {
         ...state,
         othersPeopleOptions: setOthersPeopleOptions(state, action)
       }
+    case 'RECEIVE_USER':
+      return {
+        ...state,
+        userCount: action.data && action.data.userCount
+      }
+    case 'SHOW_MORE_ITEMS':
+      return {
+        ...state,
+        itemsShown: increaseItemsShown(state)
+      }
+    case 'RECEIVE_FEED':
+      return {
+        ...state,
+        maxItems: action.data.length
+      }
     default:
       return state;
   }
@@ -42,4 +60,8 @@ function setOthersPeopleOptions(state, action) {
     const newOption = _find(action.options, {id: option.id});
     return newOption ? newOption : option;
   });
+}
+
+function increaseItemsShown({ itemsShown, maxItems }) {
+  return (itemsShown + 2) > maxItems ? maxItems : itemsShown + 2;
 }

@@ -33,7 +33,9 @@ const addPromiseSupportToDispatch = (store) => {
   const rawDispatch = store.dispatch;
   return (action) => {
     if(typeof action.then === 'function') {
-      return action.then(rawDispatch)
+      return action
+        .then(rawDispatch, err => console.log(err))
+        .catch(err => console.log(err))
     }
     return rawDispatch(action);
   }

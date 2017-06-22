@@ -13,13 +13,18 @@ const router = new express.Router();
 
 
 // USER
-
 router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
-  log.rainbow('Sending USER');
-  res.json({
-    name: user.facebook.name,
-    login: user._id
-  });
+  User.find()
+    .count()
+    .then(count => {
+      log.rainbow('Sending USER');
+      res.json({
+        name: user.facebook.name,
+        login: user._id,
+        userCount: count
+      });
+    })
+    .catch(err => console.log(err));
 });
 
 
@@ -47,8 +52,7 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
       if(!user.predictions) return;
       return {
         id: user._id,
-        predictions: user.predictions,
-        platforms: getConnectedPlatforms(user)
+        predictions: user.predictions
       }
     })
     .compact()
@@ -103,11 +107,5 @@ function isLoggedIn(req, res, next) {
   res.redirect('/');
 }
 
-
-function test() {
-  User.find({}, (err, users) => {
-    
-  })
-}
 
 module.exports = router;

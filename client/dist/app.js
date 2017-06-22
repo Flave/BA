@@ -2628,15 +2628,16 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(75);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return fetchAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return fetchAll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return fetchFeed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return fetchProfile; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setWindowDimensions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return toggleDrawer; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return setFeedItemHeight; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return setOthersPeopleOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return setFeedItemHeight; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return setOthersPeopleOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return showMoreItems; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return resetFeed; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return resetUi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return resetUi; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return setProfileVisited; });
 
 
@@ -2723,6 +2724,12 @@ var setOthersPeopleOptions = function setOthersPeopleOptions(options) {
   return {
     type: 'SET_OTHERS_PEOPLE_OPTIONS',
     options: options
+  };
+};
+
+var showMoreItems = function showMoreItems(dimensions) {
+  return {
+    type: 'SHOW_MORE_ITEMS'
   };
 };
 
@@ -18695,7 +18702,7 @@ var FecebookPost = function (_Component) {
         'div',
         { style: style, ref: function ref(root) {
             return _this3.root = root;
-          }, className: 'feed__item' },
+          }, className: 'feed__item feed__item--facebook' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { className: 'fb-post', 'data-width': options.width, 'data-href': this.props.item.id })
       );
     }
@@ -18821,7 +18828,7 @@ var TweetEmbed = function (_React$Component) {
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { style: style, ref: function ref(root) {
           return _this3.root = root;
-        }, className: 'feed__item' });
+        }, className: 'feed__item feed__item--twitter' });
     }
   }]);
 
@@ -19080,6 +19087,7 @@ function BubblesCanvas() {
   _bubblesCanvas.update = function () {
     if (!data) return;
     if (!bubbles) initializeBubbles();
+    console.log("Updating bubbles");
     updateBubbles();
     restartSimulation();
     return _bubblesCanvas;
@@ -19121,6 +19129,7 @@ function BubblesCanvas() {
   };
 
   function initializeBubbles() {
+    console.log("Initializing bubbles");
     var getSimilarity = calculateSimilarity(user, data, properties);
 
     bubbles = data.map(function (profile) {
@@ -19284,7 +19293,7 @@ var Others = function (_Component) {
   _createClass(Others, [{
     key: 'handleOptionsChange',
     value: function handleOptionsChange(options) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["k" /* setOthersPeopleOptions */](options));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["l" /* setOthersPeopleOptions */](options));
     }
   }, {
     key: 'render',
@@ -19406,12 +19415,13 @@ var ComparisonDrawer = function ComparisonDrawer() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_components_common_FacebookPost_jsx__ = __webpack_require__(258);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_common_Tweet_jsx__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_components_common_InstagramPost_jsx__ = __webpack_require__(659);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__Loader_jsx__ = __webpack_require__(255);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_d3_zoom__ = __webpack_require__(412);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_d3_selection__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash_compact__ = __webpack_require__(520);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_lodash_compact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_lodash_compact__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_d3_random__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_common_YoutubeVideo_jsx__ = __webpack_require__(668);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__Loader_jsx__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_d3_zoom__ = __webpack_require__(412);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_d3_selection__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_lodash_compact__ = __webpack_require__(520);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_lodash_compact___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_lodash_compact__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_d3_random__ = __webpack_require__(160);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19433,7 +19443,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-window.d3RandomNormal = __WEBPACK_IMPORTED_MODULE_10_d3_random__["a" /* randomNormal */];
+
+window.d3RandomNormal = __WEBPACK_IMPORTED_MODULE_11_d3_random__["a" /* randomNormal */];
 
 var Feed = function (_Component) {
   _inherits(Feed, _Component);
@@ -19455,18 +19466,18 @@ var Feed = function (_Component) {
   _createClass(Feed, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.zoom = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_d3_zoom__["a" /* zoom */])().scaleExtent([0.1, 1]).on('zoom', this.zoomed).on('start', this.zoomStart).on('end', this.zoomEnd);
+      this.zoom = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_d3_zoom__["a" /* zoom */])().scaleExtent([0.1, 1]).on('zoom', this.zoomed).on('start', this.zoomStart).on('end', this.zoomEnd);
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_d3_selection__["a" /* select */])(this.root).call(this.zoom);
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9_d3_selection__["a" /* select */])(this.root).call(this.zoom);
 
       this.startTimer = new Date();
     }
   }, {
     key: 'zoomed',
     value: function zoomed() {
-      var transform = __WEBPACK_IMPORTED_MODULE_8_d3_selection__["b" /* event */].transform;
+      var transform = __WEBPACK_IMPORTED_MODULE_9_d3_selection__["b" /* event */].transform;
 
-      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_d3_selection__["a" /* select */])(this.canvas).style("transform", "translate(" + transform.x + "px," + transform.y + "px) scale(" + transform.k + ")");
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_9_d3_selection__["a" /* select */])(this.canvas).style("transform", "translate(" + transform.x + "px," + transform.y + "px) scale(" + transform.k + ")");
     }
   }, {
     key: 'zoomEnd',
@@ -19482,8 +19493,10 @@ var Feed = function (_Component) {
     key: 'handleLoadSuccess',
     value: function handleLoadSuccess(itemHeight, itemId) {
       var id = this.props.profile.id;
+      // TODO: find a more elegant way to determine whether all items are loaded other than passing
+      // "itemsShown" to this update call
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["h" /* setFeedItemHeight */](itemHeight, itemId, id));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["i" /* setFeedItemHeight */](itemHeight, itemId, id, this.props.itemsShown));
     }
   }, {
     key: 'createFeed',
@@ -19491,22 +19504,29 @@ var Feed = function (_Component) {
       var _this2 = this;
 
       return feed.map(function (item, index) {
+        if (!item) return;
         if (item.platform === 'twitter') return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_app_components_common_Tweet_jsx__["a" /* default */], {
           item: item,
-          key: index,
-          allLoaded: allLoaded,
+          key: item.id,
+          allLoaded: true,
           onLoadSuccess: _this2.handleLoadSuccess.bind(_this2),
           options: { width: 350 } });
         if (item.platform === 'facebook') return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3_app_components_common_FacebookPost_jsx__["a" /* default */], {
           item: item,
-          key: index,
-          allLoaded: allLoaded,
+          key: item.id,
+          allLoaded: true,
           onLoadSuccess: _this2.handleLoadSuccess.bind(_this2),
           options: { width: 350 } });
         if (item.platform === 'instagram') return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_common_InstagramPost_jsx__["a" /* default */], {
           item: item,
-          key: index,
-          allLoaded: allLoaded,
+          key: item.id,
+          allLoaded: true,
+          onLoadSuccess: _this2.handleLoadSuccess.bind(_this2),
+          options: { width: 350 } });
+        if (item.platform === 'youtube') return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_app_components_common_YoutubeVideo_jsx__["a" /* default */], {
+          item: item,
+          key: item.id,
+          allLoaded: true,
           onLoadSuccess: _this2.handleLoadSuccess.bind(_this2),
           options: { width: 350 } });
       });
@@ -19529,18 +19549,20 @@ var Feed = function (_Component) {
         this.startTimer = undefined;
       }
 
+      console.log("Creating feed");
+
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { ref: function ref(root) {
             return _this3.root = root;
           }, className: 'feed' },
-        !allLoaded && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__Loader_jsx__["a" /* default */], null),
+        !allLoaded && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Loader_jsx__["a" /* default */], null),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { ref: function ref(canvas) {
               return _this3.canvas = canvas;
             }, className: 'feed__canvas ' + zoomClass },
-          feed && this.createFeed(feed, allLoaded)
+          feed && this.createFeed(feed.slice(0, this.props.itemsShown), allLoaded)
         )
       );
     }
@@ -20081,13 +20103,16 @@ var Others = function (_Component) {
           user = _store$getState.user,
           ui = _store$getState.ui;
 
+      var allLoaded = users && users.length === ui.userCount;
+
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["i" /* resetUi */]());
-      !users && store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["j" /* fetchAll */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["j" /* resetUi */]());
+      // if user landed on profile there will be already 1-2 profiles
+      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["k" /* fetchAll */]());
 
-      this.bubblesCanvas.data(users).dimensions(ui.windowDimensions).initialize(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function () {
+      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).initialize(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function () {
         return console.log('mouseenter');
       }).on('mouseleave', function () {
         return console.log('mouseleave');
@@ -20101,7 +20126,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleTransitionStart',
     value: function handleTransitionStart() {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["i" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_9_app_actions__["j" /* resetUi */]());
     }
   }, {
     key: 'componentDidUpdate',
@@ -20113,7 +20138,9 @@ var Others = function (_Component) {
           user = _store$getState2.user,
           ui = _store$getState2.ui;
 
-      this.bubblesCanvas.dimensions(ui.windowDimensions).data(users).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_10_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
+      var allLoaded = users && users.length === ui.userCount;
+
+      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_10_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
     }
   }, {
     key: 'handleMenuClick',
@@ -20236,14 +20263,22 @@ var Profile = function (_Component) {
 
       store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["c" /* resetFeed */](profileId));
       store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* setProfileVisited */](profileId));
-      if (!userProfile) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](user.login));
-      if (!profile && !isMe) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](profileId));
+
+      // Bit of an annoying way to make sure the necessary things are
+      // being loaded but not too much
+      if (!userProfile || !userProfile.platforms) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](user.login));
+      if ((!profile || !profile.platforms) && !isMe) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* fetchProfile */](profileId));
       if (!profile || !profile.feed) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["f" /* fetchFeed */](profileId));
     }
   }, {
     key: 'handleMenuClick',
     value: function handleMenuClick(menuId) {
       this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["g" /* toggleDrawer */](menuId));
+    }
+  }, {
+    key: 'handleLoadMoreClick',
+    value: function handleLoadMoreClick() {
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["h" /* showMoreItems */]());
     }
   }, {
     key: 'render',
@@ -20291,7 +20326,14 @@ var Profile = function (_Component) {
           ui.drawer === 'profile_sources' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_app_components_profile_SourcesDrawer_jsx__["a" /* default */], { user: me }),
           ui.drawer === 'profile_comparison' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_app_components_profile_ComparisonDrawer_jsx__["a" /* default */], null)
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_app_components_profile_Feed_jsx__["a" /* default */], { profile: profile })
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_app_components_profile_Feed_jsx__["a" /* default */], { itemsShown: ui.itemsShown, profile: profile }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          {
+            className: 'btn btn--raised btn--load-more',
+            onClick: this.handleLoadMoreClick.bind(this) },
+          'Load More'
+        )
       );
     }
   }]);
@@ -20353,7 +20395,11 @@ var addPromiseSupportToDispatch = function addPromiseSupportToDispatch(store) {
   var rawDispatch = store.dispatch;
   return function (action) {
     if (typeof action.then === 'function') {
-      return action.then(rawDispatch);
+      return action.then(rawDispatch, function (err) {
+        return console.log(err);
+      }).catch(function (err) {
+        return console.log(err);
+      });
     }
     return rawDispatch(action);
   };
@@ -20401,7 +20447,10 @@ var initialState = {
   othersPeopleOptions: __WEBPACK_IMPORTED_MODULE_0_root_constants_predictions__["a" /* default */].map(function (_ref) {
     var id = _ref.id;
     return id === 'age' ? { id: id, value: true } : { id: id, value: false };
-  })
+  }),
+  itemsShown: 2,
+  maxItems: null,
+  userCount: Infinity
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (function () {
@@ -20425,6 +20474,18 @@ var initialState = {
       return _extends({}, state, {
         othersPeopleOptions: setOthersPeopleOptions(state, action)
       });
+    case 'RECEIVE_USER':
+      return _extends({}, state, {
+        userCount: action.data && action.data.userCount
+      });
+    case 'SHOW_MORE_ITEMS':
+      return _extends({}, state, {
+        itemsShown: increaseItemsShown(state)
+      });
+    case 'RECEIVE_FEED':
+      return _extends({}, state, {
+        maxItems: action.data.length
+      });
     default:
       return state;
   }
@@ -20435,6 +20496,13 @@ function setOthersPeopleOptions(state, action) {
     var newOption = __WEBPACK_IMPORTED_MODULE_1_lodash_find___default()(action.options, { id: option.id });
     return newOption ? newOption : option;
   });
+}
+
+function increaseItemsShown(_ref2) {
+  var itemsShown = _ref2.itemsShown,
+      maxItems = _ref2.maxItems;
+
+  return itemsShown + 2 > maxItems ? maxItems : itemsShown + 2;
 }
 
 /***/ }),
@@ -20607,14 +20675,16 @@ function receiveFeed(state, _ref4) {
 function setFeedItemPosition(state, _ref5) {
   var height = _ref5.height,
       itemId = _ref5.itemId,
-      id = _ref5.id;
+      id = _ref5.id,
+      itemsShown = _ref5.itemsShown;
 
   return state.map(function (user) {
     if (user.id !== id) return user;
     var loadedItems = getLoadedItems(user.feed);
+    var shownItems = user.feed.slice(0, itemsShown);
     // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
-    var loading = loadedItems.length + 1 < user.feed.length;
-    var feed = user.feed.map(function (item) {
+    var loading = loadedItems.length + 1 < itemsShown;
+    var feed = shownItems.map(function (item) {
       if (item.id !== itemId) return item;
 
       var _generateScatterPosit = generateScatterPosition(item, height, user.feed),
@@ -22615,7 +22685,7 @@ exports = module.exports = __webpack_require__(283)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(173) + ");\n  src: url(" + __webpack_require__(173) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(432) + ") format(\"truetype\"), url(" + __webpack_require__(433) + ") format(\"woff\"), url(" + __webpack_require__(431) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-cross:before {\n  content: \"\\E902\"; }\n\n.icon-facebook:before {\n  content: \"\\E903\"; }\n\n.icon-instagram:before {\n  content: \"\\E904\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E905\"; }\n\n.icon-refresh:before {\n  content: \"\\E906\"; }\n\n.icon-twitter:before {\n  content: \"\\E907\"; }\n\n.icon-youtube:before {\n  content: \"\\E908\"; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"Inconsolata\", monospace; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.others-nav {\n  position: fixed;\n  left: 50%;\n  z-index: 1; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active {\n    color: #3163FF; }\n    .check.is-active .check__box {\n      border: 1px solid #3163FF; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right;\n  cursor: pointer; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 15px;\n  height: 15px;\n  margin-right: 10px;\n  position: relative;\n  top: 2px;\n  border: 1px solid rgba(0, 0, 0, 0.5); }\n\n.intro {\n  text-align: center;\n  max-width: 900px;\n  margin: 0 auto; }\n\n.intro__slide {\n  padding-top: 200px; }\n\n.intro__lead {\n  font-size: 38px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  font-size: 16px;\n  font-family: \"Inconsolata\", monospace;\n  border-radius: 24px;\n  padding: 10px 20px;\n  margin-right: 20px; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--facebook {\n    background: #4962B5;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s; }\n\n.sidebar__links {\n  position: absolute;\n  top: 50%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  margin-left: -20px;\n  margin-top: -20px; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(255, 255, 255, 0.98);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(173) + ");\n  src: url(" + __webpack_require__(173) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(432) + ") format(\"truetype\"), url(" + __webpack_require__(433) + ") format(\"woff\"), url(" + __webpack_require__(431) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-cross:before {\n  content: \"\\E902\"; }\n\n.icon-facebook:before {\n  content: \"\\E903\"; }\n\n.icon-instagram:before {\n  content: \"\\E904\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E905\"; }\n\n.icon-refresh:before {\n  content: \"\\E906\"; }\n\n.icon-twitter:before {\n  content: \"\\E907\"; }\n\n.icon-youtube:before {\n  content: \"\\E908\"; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"Inconsolata\", monospace; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.others-nav {\n  position: fixed;\n  left: 50%;\n  z-index: 1; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active {\n    color: #3163FF; }\n    .check.is-active .check__box {\n      border: 1px solid #3163FF; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right;\n  cursor: pointer; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 15px;\n  height: 15px;\n  margin-right: 10px;\n  position: relative;\n  top: 2px;\n  border: 1px solid rgba(0, 0, 0, 0.5); }\n\n.intro {\n  text-align: center;\n  max-width: 900px;\n  margin: 0 auto; }\n\n.intro__slide {\n  padding-top: 200px; }\n\n.intro__lead {\n  font-size: 38px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  font-size: 16px;\n  font-family: \"Inconsolata\", monospace;\n  border-radius: 24px;\n  padding: 10px 20px;\n  margin-right: 20px; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--facebook {\n    background: #4962B5;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.85) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s; }\n\n.sidebar__links {\n  position: absolute;\n  top: 50%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: all .1s; }\n  .feed__item:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  margin-left: -20px;\n  margin-top: -20px; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(255, 255, 255, 0.98);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n", ""]);
 
 // exports
 
@@ -46737,7 +46807,7 @@ var InstagramPost = function (_React$Component) {
         'div',
         { style: style, ref: function ref(root) {
             return _this2.root = root;
-          }, className: 'feed__item' },
+          }, className: 'feed__item feed__item--instagram' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_react_instagram_embed___default.a, { onSuccess: this.handleSuccess.bind(this), url: item.id, maxWidth: options.width })
       );
     }
@@ -47853,6 +47923,84 @@ module.exports = function (str) {
 	});
 };
 
+
+/***/ }),
+/* 668 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_selection__ = __webpack_require__(8);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var ASPECT_RATIO = 1.777777778;
+
+var FecebookPost = function (_Component) {
+  _inherits(FecebookPost, _Component);
+
+  function FecebookPost() {
+    _classCallCheck(this, FecebookPost);
+
+    return _possibleConstructorReturn(this, (FecebookPost.__proto__ || Object.getPrototypeOf(FecebookPost)).apply(this, arguments));
+  }
+
+  _createClass(FecebookPost, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var iframe = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_d3_selection__["a" /* select */])(this.root).selectAll('iframe');
+      iframe.on('load', function () {
+        _this2.props.onLoadSuccess(_this2.props.options.width / ASPECT_RATIO, _this2.props.item.id);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var _props = this.props,
+          item = _props.item,
+          allLoaded = _props.allLoaded,
+          options = _props.options;
+
+      var style = {
+        top: item.y,
+        left: item.x,
+        opacity: allLoaded ? 1 : 0,
+        height: options.width / ASPECT_RATIO
+      };
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { style: style, ref: function ref(root) {
+            return _this3.root = root;
+          }, className: 'feed__item feed__item--youtube' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('iframe', {
+          width: options.width,
+          height: options.width / ASPECT_RATIO,
+          src: 'https://www.youtube.com/embed/' + item.id,
+          frameBorder: '0',
+          autoPlay: 'false',
+          allowFullScreen: true })
+      );
+    }
+  }]);
+
+  return FecebookPost;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (FecebookPost);
 
 /***/ })
 /******/ ]);

@@ -46,7 +46,7 @@ class TweetEmbed extends React.Component {
     }
 
     return (
-      <div style={style} ref={(root) => this.root = root} className="feed__item"></div>
+      <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--twitter"></div>
     );
   }
 }

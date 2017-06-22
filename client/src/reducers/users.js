@@ -139,13 +139,14 @@ function receiveFeed(state, {data, id}) {
   });
 }
 
-function setFeedItemPosition(state, {height, itemId, id}) {
+function setFeedItemPosition(state, {height, itemId, id, itemsShown}) {
   return state.map((user) => {
     if(user.id !== id) return user;
     const loadedItems = getLoadedItems(user.feed);
+    const shownItems = user.feed.slice(0, itemsShown);
     // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
-    const loading = (loadedItems.length + 1) < user.feed.length;
-    let feed = user.feed.map((item) => {
+    const loading = (loadedItems.length + 1) < itemsShown;
+    let feed = shownItems.map((item) => {
       if(item.id !== itemId) return item;
       const {x, y} = generateScatterPosition(item, height, user.feed);
 

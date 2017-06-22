@@ -73,7 +73,7 @@ module.exports = function(passport) {
   });
 
 
-    // gogle --------------------------------
+    // google --------------------------------
 
   // send to gogle to do the authorization
   router.get('/connect/youtube', passport.authorize('youtube', { scope : ['https://www.googleapis.com/auth/youtube.readonly'] }));

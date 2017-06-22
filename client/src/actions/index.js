@@ -69,6 +69,9 @@ export const setOthersPeopleOptions = (options) => ({
   options
 });
 
+export const showMoreItems = (dimensions) => ({
+  type: 'SHOW_MORE_ITEMS'
+});
 
 export const resetFeed = (id) => ({
   type: 'RESET_FEED',

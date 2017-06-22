@@ -18,7 +18,7 @@ class InstagramPost extends React.Component {
     }
 
     return (
-      <div style={style} ref={(root) => this.root = root} className="feed__item">
+      <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--instagram">
         <InstagramEmbed onSuccess={this.handleSuccess.bind(this)} url={item.id} maxWidth={options.width}/>
       </div>
     );

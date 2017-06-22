@@ -34,7 +34,7 @@ var userSchema = mongoose.Schema({
   youtube : {
     id : String,
     token : String,
-    tokenSecret: String,
+    refreshToken: String,
     subs: [{
       id: String, name: String, thumb: String, relevance: Number
     }]

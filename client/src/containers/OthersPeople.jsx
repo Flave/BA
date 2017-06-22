@@ -27,15 +27,17 @@ class Others extends Component {
   componentDidMount() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
+    const allLoaded = users && (users.length === ui.userCount);
 
     this.handleBubbleClick = this.handleBubbleClick.bind(this);
     this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
     this.context.store.dispatch(actions.resetUi());
-    !users && store.dispatch(actions.fetchAll());
+    // if user landed on profile there will be already 1-2 profiles
+    !allLoaded && store.dispatch(actions.fetchAll());
 
     this.bubblesCanvas
-      .data(users)
+      .data(allLoaded ? users : null)
       .dimensions(ui.windowDimensions)
       .initialize(this.bubbleContainer)
       .on('click', this.handleBubbleClick)
@@ -54,10 +56,12 @@ class Others extends Component {
   componentDidUpdate() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
+    const allLoaded = users && (users.length === ui.userCount);
+
 
     this.bubblesCanvas
       .dimensions(ui.windowDimensions)
-      .data(users)
+      .data(allLoaded ? users : null)
       .margins({left: ui.drawer ? DRAWER_WIDTH : 0})
       .user(_find(users, {id: user.login}))
       .properties(ui.othersPeopleOptions)

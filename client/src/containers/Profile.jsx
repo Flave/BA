@@ -29,9 +29,12 @@ class Profile extends Component {
 
     store.dispatch(actions.resetFeed(profileId));
     store.dispatch(actions.setProfileVisited(profileId));
-    if(!userProfile)
+
+    // Bit of an annoying way to make sure the necessary things are
+    // being loaded but not too much
+    if(!userProfile || !userProfile.platforms)
       store.dispatch(actions.fetchProfile(user.login));
-    if(!profile && !isMe)
+    if((!profile || !profile.platforms) && !isMe)
       store.dispatch(actions.fetchProfile(profileId));
     if(!profile || !profile.feed)
       store.dispatch(actions.fetchFeed(profileId));
@@ -41,6 +44,10 @@ class Profile extends Component {
     this.context.store.dispatch(actions.toggleDrawer(menuId));
   }
 
+  handleLoadMoreClick() {
+    this.context.store.dispatch(actions.showMoreItems())
+  }
+
   render() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
@@ -48,6 +55,7 @@ class Profile extends Component {
     const profile = _find(users, {id: match.params.id});
     const me = _find(users, {id: user.login});
     let isMe = false;
+
 
     if(!profile || !profile.feed) return <div>Loading Profile</div>;
 
@@ -72,7 +80,10 @@ class Profile extends Component {
           {(ui.drawer === 'profile_sources') && <SourcesDrawer user={me} />}
           {(ui.drawer === 'profile_comparison') && <ComparisonDrawer />}
         </Drawer>
-        <Feed profile={profile} />
+        <Feed itemsShown={ui.itemsShown} profile={profile} />
+        <div
+          className="btn btn--raised btn--load-more" 
+          onClick={this.handleLoadMoreClick.bind(this)}>Load More</div>
       </div>
     )
   }

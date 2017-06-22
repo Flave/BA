@@ -25,7 +25,7 @@ export default class FecebookPost extends Component {
     }
 
     return (
-      <div style={style} ref={(root) => this.root = root} className="feed__item">
+      <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--facebook">
         <div className="fb-post" data-width={options.width} data-href={this.props.item.id}></div>
       </div>
     );

@@ -65,7 +65,7 @@ module.exports.fetchFeed = (profileId) => {
   return User.findOne({_id: profileId})
     .then((user) => {
       let promises = _.map(getConnectedPlatforms(user), platform => {
-        return platformApis[platform.id].fetchFeed(user, 10)
+        return platformApis[platform.id].fetchFeed(user, 8)
       });
       return Promise.all(promises)
         .then(_.flatten);
@@ -82,7 +82,7 @@ module.exports.updateTwitterSubs = (user) => {
 }
 
 module.exports.updateYoutubeSubs = (user) => {
-  return youtubeApi.fetchRankedSubs(user)
+  return platformApis.youtube.fetchRankedSubs(user)
     .then((subs) => {
       user.youtube.subs = subs;
       return user.save();

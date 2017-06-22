@@ -45,7 +45,8 @@ function BubblesCanvas() {
 
   _bubblesCanvas.update = function() {
     if(!data) return;
-    if(!bubbles) initializeBubbles();    
+    if(!bubbles) initializeBubbles();
+    console.log("Updating bubbles");   
     updateBubbles();
     restartSimulation();
     return _bubblesCanvas;
@@ -87,6 +88,7 @@ function BubblesCanvas() {
   }
 
   function initializeBubbles() {
+    console.log("Initializing bubbles");
     const getSimilarity = calculateSimilarity(user, data, properties);
 
     bubbles = data.map((profile) => {
