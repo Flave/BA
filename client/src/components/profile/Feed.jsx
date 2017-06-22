@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions';
-import FacebookPost from '../FacebookPost.jsx';
+import FacebookPost from 'app/components/common/FacebookPost.jsx';
+import Tweet from 'app/components/common/Tweet.jsx';
+import InstagramPost from 'app/components/common/InstagramPost.jsx';
 import Loader from '../Loader.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
 import { select as d3Select } from 'd3-selection';
@@ -32,6 +34,8 @@ class Feed extends Component {
 
     d3Select(this.root)
       .call(this.zoom);
+
+    this.startTimer = new Date();
   }
 
   zoomed() {
@@ -48,16 +52,34 @@ class Feed extends Component {
   }
 
 
-  handleItemLoad(itemHeight, itemUrl) {
+  handleLoadSuccess(itemHeight, itemId) {
     const { id } = this.props.profile;
-    this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemUrl, id));
+    this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemId, id));
   }
 
   createFeed(feed, allLoaded) {
     return feed.map((item, index) => {
-      return (
-        <FacebookPost allLoaded={allLoaded} onLoad={this.handleItemLoad.bind(this)} key={index} item={item}/>
-      )
+      if(item.platform === 'twitter')
+        return <Tweet 
+          item={item}
+          key={index} 
+          allLoaded={allLoaded}
+          onLoadSuccess={this.handleLoadSuccess.bind(this)} 
+          options={{width: 350}} />
+      if(item.platform === 'facebook')
+        return <FacebookPost  
+          item={item}
+          key={index}
+          allLoaded={allLoaded} 
+          onLoadSuccess={this.handleLoadSuccess.bind(this)} 
+          options={{width: 350}} />
+      if(item.platform === 'instagram')
+        return <InstagramPost
+          item={item}
+          key={index}
+          allLoaded={allLoaded} 
+          onLoadSuccess={this.handleLoadSuccess.bind(this)} 
+          options={{width: 350}} />
     })
   }
 
@@ -65,6 +87,12 @@ class Feed extends Component {
     const {feed, loading} = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
     const allLoaded = (feed && !loading) ? true : false;
+
+    if(allLoaded && this.startTimer) {
+      const endTimer = new Date();
+      console.log("Loading time: " + (endTimer - this.startTimer));
+      this.startTimer = undefined;
+    }
 
     return (
       <div ref={(root) => this.root = root} className="feed">

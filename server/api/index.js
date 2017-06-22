@@ -5,17 +5,20 @@
 // TODO: it should be responsible for initially creating the users and linking new accounts
 
 const _ = require('lodash');
-const fbApi = require('../external/fb');
 const amsApi = require('../external/ams');
-const twitterApi = require('../external/twitter');
-const youtubeApi = require('../external/youtube');
-const instagramApi = require('../external/instagram');
 const log = require('../../log');
 const User = require('../models/user');
+const { getConnectedPlatforms } = require('../util');
 
+const platformApis = {
+  facebook: require('../external/fb'),
+  twitter: require('../external/twitter'),
+  youtube: require('../external/youtube'),
+  instagram: require('../external/instagram')
+}
 
 module.exports.fetchPredictions = (user) => {
-  return fbApi
+  return platformApis.facebook
     .fetchRankedSubs(user)
     // then fetch the facebook likes
     .then((subs) => {
@@ -47,7 +50,7 @@ module.exports.fetchPredictions = (user) => {
 }
 
 module.exports.fetchTwitterPredictions = (user) => {
-  return twitterApi.fetchTweets(user)
+  return platformApis.twitter.fetchTweets(user)
     .then((tweets) => {
       console.log(tweets);
     })
@@ -61,18 +64,17 @@ module.exports.fetchTwitterPredictions = (user) => {
 module.exports.fetchFeed = (profileId) => {
   return User.findOne({_id: profileId})
     .then((user) => {
-      twitterApi
-        .fetchFeed(user, 20)
-        .catch(err => {
-          console.log(err);
-        })
-      return fbApi.fetchFeed(user, 10);
+      let promises = _.map(getConnectedPlatforms(user), platform => {
+        return platformApis[platform.id].fetchFeed(user, 10)
+      });
+      return Promise.all(promises)
+        .then(_.flatten);
     });
 }
 
 // UPDATING SUBS
 module.exports.updateTwitterSubs = (user) => {
-  return twitterApi.fetchRankedSubs(user)
+  return platformApis.twitter.fetchRankedSubs(user)
     .then((subs) => {
       user.twitter.subs = subs;
       return user.save();
@@ -88,7 +90,7 @@ module.exports.updateYoutubeSubs = (user) => {
 }
 
 module.exports.updateInstagramSubs = (user) => {
-  return instagramApi.fetchRankedSubs(user)
+  return platformApis.instagram.fetchRankedSubs(user)
     .then((subs) => {
       user.instagram.subs = subs;
       return user.save();

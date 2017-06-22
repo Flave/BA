@@ -7,17 +7,10 @@ const User = require('../models/user');
 const log = require('../../log');
 const _ = require('lodash');
 const Promise = require('promise');
-const PLATFORMS = require('../../constants/platforms');
+const { getConnectedPlatforms } = require('../util');
 
 const router = new express.Router();
 
-
-const getPlatforms = (user) => {
-  return _(PLATFORMS)
-    .map(platform => user[platform.id] && user[platform.id].token ? platform : null)
-    .compact()
-    .value();
-}
 
 // USER
 
@@ -39,7 +32,7 @@ router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
         id: user.id,
         predictions: user.predictions,
         subs: user.facebook.subs,
-        platforms: getPlatforms(user)
+        platforms: getConnectedPlatforms(user)
       });
     })
     .catch((err) => {
@@ -55,7 +48,7 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
       return {
         id: user._id,
         predictions: user.predictions,
-        platforms: getPlatforms(user)
+        platforms: getConnectedPlatforms(user)
       }
     })
     .compact()
@@ -67,14 +60,14 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
 });
 
 // API TEST
-router.get('/api/test', isLoggedInAjax, (req, res) => {
+/*router.get('/api/test', isLoggedInAjax, (req, res) => {
   instagramApi
     .fetchRankedSubs(req.user)
     .then(subs => {
       res.json(subs);
     })
     .catch(err => console.log(err));
-});
+});*/
 
 // FEED
 router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {

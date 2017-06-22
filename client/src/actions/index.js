@@ -57,11 +57,11 @@ export const toggleDrawer = (id) => ({
   id
 });
 
-export const setFeedItemHeight = (height, itemUrl, profileId) => ({
+export const setFeedItemHeight = (height, itemId, id) => ({
   type: 'SET_FEED_ITEM_HEIGHT',
   height,
-  itemUrl,
-  profileId
+  itemId,
+  id
 });
 
 export const setOthersPeopleOptions = (options) => ({
@@ -70,16 +70,16 @@ export const setOthersPeopleOptions = (options) => ({
 });
 
 
-export const resetFeed = (profileId) => ({
+export const resetFeed = (id) => ({
   type: 'RESET_FEED',
-  profileId
+  id
 });
 
 export const resetUi = () => ({
   type: 'RESET_UI'
 });
 
-export const setProfileVisited = (profileId) => ({
+export const setProfileVisited = (id) => ({
   type: 'SET_PROFILE_VISITED',
-  profileId
+  id
 });

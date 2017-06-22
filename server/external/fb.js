@@ -186,7 +186,8 @@ const fetchFeed = (user, maxItems) => {
       const privacy = posts.data[0].privacy.value;
       if(privacy === 'EVERYONE' || privacy === '')
         return {
-          url: posts.data[0].permalink_url
+          platform: 'facebook',
+          id: posts.data[0].permalink_url
         }
     })
     .compact()

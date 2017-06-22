@@ -10,9 +10,10 @@ const GRID_PADDING = 20;
   {
     id,
     feed: [{
-          url,
+          id,
           colIndex,
-          top
+          top,
+          height
         }],
     predictions,
     loading,
@@ -40,16 +41,16 @@ export default (state = null, action) => {
   }
 }
 
-function applyToUser(state, profileId, fn) {
+function applyToUser(state, id, fn) {
   if(!state) return null;
   return state.map((user) => {
-    if(user.id !== profileId) return user;
+    if(user.id !== id) return user;
     return fn(user);
   });  
 }
 
-function setProfileVisited(state, { profileId }) {
-  return applyToUser(state, profileId, (user) => {
+function setProfileVisited(state, { id }) {
+  return applyToUser(state, id, (user) => {
     return {
       ...user,
       visited: true
@@ -74,13 +75,13 @@ function receiveAllUsers(state, action) {
   });
 }
 
-function receiveProfile(state, { profileId, data }) {
+function receiveProfile(state, { id, data }) {
   // if state not initialized, just wrap the profile in an array
   if(!state) return [data];
   // if profile already exists, just add the received profile data to it
-  const containsProfile = _find(state, {id: profileId}) !== undefined;
+  const containsProfile = _find(state, {id: id}) !== undefined;
   if(containsProfile)
-    return applyToUser(state, profileId, user => ({
+    return applyToUser(state, id, user => ({
       ...user, 
       ...data
     }))
@@ -92,12 +93,12 @@ function receiveProfile(state, { profileId, data }) {
   Reset feed, so it gets loaded properly the next time the profile
   is visited
 */
-function resetFeed(state, {profileId}) {
+function resetFeed(state, {id}) {
   // don't do this for initialisation
   if(!state) return null;
   // only reset feed of specified user
   return state.map((user) => {
-    if(user.id !== profileId) return user;
+    if(user.id !== id) return user;
     if(!user.feed)
       return {
         ...user,
@@ -138,14 +139,14 @@ function receiveFeed(state, {data, id}) {
   });
 }
 
-function setFeedItemPosition(state, {height, itemUrl, profileId}) {
+function setFeedItemPosition(state, {height, itemId, id}) {
   return state.map((user) => {
-    if(user.id !== profileId) return user;
+    if(user.id !== id) return user;
     const loadedItems = getLoadedItems(user.feed);
     // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
     const loading = (loadedItems.length + 1) < user.feed.length;
     let feed = user.feed.map((item) => {
-      if(item.url !== itemUrl) return item;
+      if(item.id !== itemId) return item;
       const {x, y} = generateScatterPosition(item, height, user.feed);
 
       return {
@@ -168,6 +169,7 @@ function setFeedItemPosition(state, {height, itemUrl, profileId}) {
 function getLoadedItems(items) {
   return items.filter((item) => item.height !== undefined);
 }
+
 
 // SCATTER CALCULATION
 

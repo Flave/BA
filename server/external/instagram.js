@@ -33,7 +33,7 @@ const fetchRankedSubs = (user) => {
       access_token: user.instagram.token
     }
   }
-  log.rainbow("FETCHING subs");
+
   return axios.get(baseUri, opts)
     .then(response => {
       log.rainbow("GOT subs");
@@ -50,6 +50,28 @@ const fetchRankedSubs = (user) => {
     });
 }
 
+const fetchFeed = (user, count) => {
+  const subs = user.instagram.subs.length <= count ? user.instagram.subs : user.instagram.subs.slice(0, 5);
+  const opts = {
+    params: {
+      access_token: user.instagram.token,
+      count: 1
+    }
+  }
+
+  const promises = _.map(subs, sub => axios.get("https://api.instagram.com/v1/users/" + sub.id + "/media/recent", opts))
+  return Promise.all(promises)
+    .then(responses =>
+      _.map(responses, response => (
+        {
+          id: response.data.data[0].link,
+          platform: "instagram"
+        }
+      ))
+    )
+}
+
 module.exports = {
-  fetchRankedSubs
+  fetchRankedSubs,
+  fetchFeed
 }

@@ -7,7 +7,7 @@ const Twitter = require('twitter');
 const twitterAuth = require('../../config/auth')[process.env.NODE_ENV].twitterAuth;
 
 const fetchRankedSubs = (user) => {
-  const favsWeight = 2;
+  const favsWeight = 1;
   const followersWeight = 1;
 
   return Promise.all([fetchSubscriptions(user), fetchFavs(user)])
@@ -62,15 +62,30 @@ const sortFavsByUser = (favs, subscriptions) => (
 )
 
 const fetchSubscriptions = user => {
-  const opts = {
+  let subs = [];
+  const MAX_SUBS = 1000;
+  let opts = {
     count: 200,
     user_id: user.twitter.id,
     skip_status: true,
     include_user_entities: false
   }
 
-  return apiRequest(user, 'friends/list', opts)
-    .then(subscriptions => subscriptions.users);
+  const fetchSubscriptionsBatch = (cursor) => {
+    opts.cursor = cursor;
+
+    return apiRequest(user, 'friends/list', opts)
+      .then(subsBatch => {
+        subs = subs.concat(subsBatch.users)
+        if(subsBatch.next_cursor_str === '0' || subs.length >= MAX_SUBS) {
+          return subs;
+        }
+
+        return fetchSubscriptionsBatch(subsBatch.next_cursor_str);
+      });
+  }
+
+  return fetchSubscriptionsBatch()
 }
 
 // { "errors": [ { "code": 88, "message": "Rate limit exceeded" } ] } 
@@ -86,10 +101,23 @@ const fetchFavs = (user) => {
   return apiRequest(user, 'favorites/list', opts);
 }
 
-const fetchFeed = (user) => {
-  return fetchHomeTimeline(user)
+
+const fetchFeed = (user, count) => {
+  return fetchHomeTimeline(user, count)
     .then(tweets => {
-      console.log("GOT TWEEEEETS");
+      return _(tweets)
+      // QUESTION: Should some filtering take place if a tweet is only a retweet (determined by tweet.retweeted_status)?
+      // QUESTION: How should sorting happen if a tweet is a retweet?
+      .sort(tweet => _.findIndex(user.twitter.subs, {id: tweet.user.id_str}))
+      .reverse()
+      .map(tweet => {
+        let sub = _.find(user.twitter.subs, {id: tweet.user.id_str})
+        return {
+          platform: 'twitter',
+          id: tweet.id_str
+        }
+      })
+      .value();
     });
 }
 
