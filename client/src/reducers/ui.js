@@ -9,8 +9,10 @@ const initialState = {
     )
   ),
   itemsShown: 2,
+  itemsIncrement: 2,
   maxItems: null,
-  userCount: Infinity
+  userCount: Infinity,
+  loading: true
 }
 
 export default (state = initialState, action) => {
@@ -43,16 +45,27 @@ export default (state = initialState, action) => {
     case 'SHOW_MORE_ITEMS':
       return {
         ...state,
-        itemsShown: increaseItemsShown(state)
+        itemsShown: increaseItemsShown(state),
+        loading: true
       }
     case 'RECEIVE_FEED':
       return {
         ...state,
         maxItems: action.data.length
       }
+    case 'RECEIVE_FEED_ITEM':
+      return {
+        ...state,
+        loading: setLoading(state, action)
+      }
     default:
       return state;
   }
+}
+
+function setLoading(state, { profile }) {
+  const loadedItems = profile.feed.filter(item => item.loaded);
+  return loadedItems.length < state.itemsShown - 1;
 }
 
 function setOthersPeopleOptions(state, action) {
@@ -62,6 +75,6 @@ function setOthersPeopleOptions(state, action) {
   });
 }
 
-function increaseItemsShown({ itemsShown, maxItems }) {
-  return (itemsShown + 2) > maxItems ? maxItems : itemsShown + 2;
+function increaseItemsShown({ itemsShown, maxItems, itemsIncrement }) {
+  return (itemsShown + 2) > maxItems ? maxItems : itemsShown + itemsIncrement;
 }

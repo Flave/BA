@@ -29,6 +29,7 @@
     "ejs": "^2.5.6",
     "express": "^4.15.2",
     "express-session": "^1.15.2",
+    "facebook-plugins": "^1.0.5",
     "googleapis": "^19.0.0",
     "history": "^4.6.1",
     "jsonwebtoken": "^7.3.0",
@@ -54,8 +55,7 @@
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
     "shortid": "^2.2.8",
-    "twitter": "^1.7.0",
-    "youtube-embed-video": "^1.0.2"
+    "twitter": "^1.7.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

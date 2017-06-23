@@ -21,7 +21,7 @@ class TweetEmbed extends React.Component {
         const { item, options, onLoadSuccess, onLoadError } = this.props;
         widgets.createTweetEmbed(item.id, this.root, options)
           .then((el) => {
-            onLoadSuccess(el.clientHeight, item.id);
+            onLoadSuccess(el.clientHeight, item);
           })
           .catch(onLoadError);
       });
@@ -38,11 +38,11 @@ class TweetEmbed extends React.Component {
   }
 
   render() {
-    const { item, allLoaded } = this.props;
+    const { item, show } = this.props;
     let style = {
       top: item.y,
       left: item.x,
-      opacity: allLoaded ? 1 : 0
+      opacity: show ? 1 : 0
     }
 
     return (

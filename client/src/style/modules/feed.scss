@@ -19,7 +19,7 @@
   position: absolute;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);
   border-radius: 4px;
-  transition: all .1s;
+  transition: box-shadow .1s, opacity .5s;
 
   &:hover {
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19);

@@ -6,15 +6,15 @@ class InstagramPost extends React.Component {
   }
 
   handleSuccess(item) {
-    this.props.onLoadSuccess(this.root.clientHeight, this.props.item.id);
+    this.props.onLoadSuccess(this.root.clientHeight, this.props.item);
   }
 
   render() {
-    const { item, allLoaded, options } = this.props;
+    const { item, show, options } = this.props;
     let style = {
       top: item.y,
       left: item.x,
-      opacity: allLoaded ? 1 : 0
+      opacity: show ? 1 : 0
     }
 
     return (

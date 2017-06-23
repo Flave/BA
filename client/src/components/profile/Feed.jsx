@@ -35,8 +35,6 @@ class Feed extends Component {
 
     d3Select(this.root)
       .call(this.zoom);
-
-    this.startTimer = new Date();
   }
 
   zoomed() {
@@ -53,64 +51,59 @@ class Feed extends Component {
   }
 
 
-  handleLoadSuccess(itemHeight, itemId) {
-    const { id } = this.props.profile;
-    // TODO: find a more elegant way to determine whether all items are loaded other than passing
-    // "itemsShown" to this update call
-    this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemId, id, this.props.itemsShown));
-    //this.context.store.dispatch(actions.receiveFeedItem(item, itemHeight, id));
+  handleLoadSuccess(itemHeight, item) {
+    const { profile } = this.props;
+    this.context.store.dispatch(actions.receiveFeedItem(item, itemHeight, profile.id, profile));
   }
 
-  createFeed(feed, allLoaded) {
+  createFeed() {
+    const { profile, itemsShown, batchStartIndex, loading } = this.props;
+    const feed = profile.feed.slice(0, itemsShown);
+
     return feed.map((item, index) => {
-      if(!item) return;
+      const show = index < batchStartIndex || !loading;
+
       if(item.platform === 'twitter')
         return <Tweet 
           item={item}
           key={item.id} 
-          allLoaded={true}
+          show={show}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'facebook')
         return <FacebookPost  
           item={item}
           key={item.id}
-          allLoaded={true} 
+          show={show} 
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'instagram')
         return <InstagramPost
           item={item}
           key={item.id}
-          allLoaded={true} 
+          show={show} 
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'youtube')
         return <YoutubeVideo
           item={item}
           key={item.id}
-          allLoaded={true}
+          show={show}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
     })
   }
 
   render() {
-    const {feed, loading} = this.props.profile;
+    const { loading } = this.props;
+    const { feed } = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
-    const allLoaded = (feed && !loading) ? true : false;
-
-    if(allLoaded && this.startTimer) {
-      const endTimer = new Date();
-      console.log("Loading time: " + (endTimer - this.startTimer));
-      this.startTimer = undefined;
-    }
 
     return (
       <div ref={(root) => this.root = root} className="feed">
-        {!allLoaded && <Loader />}
+        {loading && <Loader />}
         <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
-          {feed && this.createFeed(feed.slice(0, this.props.itemsShown), allLoaded)}
+          {feed && this.createFeed()}
         </div>
       </div>
     )

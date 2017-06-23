@@ -44,8 +44,9 @@ class Profile extends Component {
     this.context.store.dispatch(actions.toggleDrawer(menuId));
   }
 
-  handleLoadMoreClick() {
-    this.context.store.dispatch(actions.showMoreItems())
+  handleLoadMoreClick(maxItems, itemsShown) {
+    if(maxItems > itemsShown)
+      this.context.store.dispatch(actions.showMoreItems())
   }
 
   render() {
@@ -55,7 +56,6 @@ class Profile extends Component {
     const profile = _find(users, {id: match.params.id});
     const me = _find(users, {id: user.login});
     let isMe = false;
-
 
     if(!profile || !profile.feed) return <div>Loading Profile</div>;
 
@@ -80,10 +80,14 @@ class Profile extends Component {
           {(ui.drawer === 'profile_sources') && <SourcesDrawer user={me} />}
           {(ui.drawer === 'profile_comparison') && <ComparisonDrawer />}
         </Drawer>
-        <Feed itemsShown={ui.itemsShown} profile={profile} />
+        <Feed 
+          itemsShown={ui.itemsShown}
+          batchStartIndex={ui.itemsShown - ui.itemsIncrement}
+          loading={ui.loading} 
+          profile={profile} />
         <div
           className="btn btn--raised btn--load-more" 
-          onClick={this.handleLoadMoreClick.bind(this)}>Load More</div>
+          onClick={this.handleLoadMoreClick.bind(this, ui.maxItems, ui.itemsShown)}>Load More</div>
       </div>
     )
   }

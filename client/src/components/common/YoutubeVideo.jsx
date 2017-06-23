@@ -7,16 +7,16 @@ export default class FecebookPost extends Component {
   componentDidMount() {
     var iframe = d3Select(this.root).selectAll('iframe');
     iframe.on('load', () => {
-      this.props.onLoadSuccess(this.props.options.width / ASPECT_RATIO, this.props.item.id);
+      this.props.onLoadSuccess(this.props.options.width / ASPECT_RATIO, this.props.item);
     });
   }
 
   render() {
-    const { item, allLoaded, options } = this.props;
+    const { item, show, options } = this.props;
     let style = {
       top: item.y,
       left: item.x,
-      opacity: allLoaded ? 1 : 0,
+      opacity: show ? 1 : 0,
       height: options.width / ASPECT_RATIO
     }
 

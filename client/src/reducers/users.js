@@ -30,7 +30,7 @@ export default (state = null, action) => {
       return receiveFeed(state, action);
     case 'RECEIVE_PROFILE':
       return receiveProfile(state, action);
-    case 'SET_FEED_ITEM_HEIGHT':
+    case 'RECEIVE_FEED_ITEM':
       return setFeedItemPosition(state, action);
     case 'RESET_FEED':
       return resetFeed(state, action);
@@ -101,8 +101,7 @@ function resetFeed(state, {id}) {
     if(user.id !== id) return user;
     if(!user.feed)
       return {
-        ...user,
-        loading: true
+        ...user
       }
 
     let feed = user.feed.map((item) => {
@@ -114,8 +113,7 @@ function resetFeed(state, {id}) {
 
     return {
       ...user,
-      feed,
-      loading: true
+      feed
     };
   });  
 }
@@ -125,43 +123,37 @@ function receiveFeed(state, {data, id}) {
   if(state === null)
     return [{
       id: id,
-      feed: data,
-      loading: true
+      feed: data
     }];
   // else replaces the received user with the one in state
   return state.map((user) => {
     if(user.id !== id) return user;
     return {
       ...user,
-      feed: data,
-      loading: true
+      feed: data
     };
   });
 }
 
-function setFeedItemPosition(state, {height, itemId, id, itemsShown}) {
-  return state.map((user) => {
-    if(user.id !== id) return user;
-    const loadedItems = getLoadedItems(user.feed);
-    const shownItems = user.feed.slice(0, itemsShown);
-    // const loading = ((user.feed.length - 1) !== loadedItems.length) || ((user.feed.length) !== loadedItems.length);
-    const loading = (loadedItems.length + 1) < itemsShown;
-    let feed = shownItems.map((item) => {
-      if(item.id !== itemId) return item;
-      const {x, y} = generateScatterPosition(item, height, user.feed);
+function setFeedItemPosition(state, {height, item: loadedItem, id}) {
+  return state.map((profile) => {
+    if(profile.id !== id) return profile;
+    let feed = profile.feed.map((item) => {
+      if(item.id !== loadedItem.id) return item;
+      const {x, y} = generateScatterPosition(item, height, profile.feed);
 
       return {
         ...item,
         x,
         y,
-        height
+        height,
+        loaded: true
       }
     });
 
     return {
-      ...user,
-      feed,
-      loading
+      ...profile,
+      feed
     };
   });  
 }

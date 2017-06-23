@@ -64,11 +64,12 @@ export const setFeedItemHeight = (height, itemId, id) => ({
   id
 });
 
-export const receiveFeedItem = (item, height, id) => ({
+export const receiveFeedItem = (item, height, id, profile) => ({
   type: 'RECEIVE_FEED_ITEM',
   item,
   height,
-  id
+  id,
+  profile // TODO
 });
 
 export const setOthersPeopleOptions = (options) => ({
