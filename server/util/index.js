@@ -19,7 +19,7 @@ module.exports = {
 
   getConnectedPlatforms: (user) => {
     return _(PLATFORMS)
-      .map(platform => user[platform.id] && user[platform.id].token ? platform : null)
+      .map(platform => user[platform.id] && user[platform.id].token && platform.id !== "youtube" ? platform : null)
       .compact()
       .value();
   }

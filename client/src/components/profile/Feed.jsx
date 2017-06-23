@@ -58,6 +58,7 @@ class Feed extends Component {
     // TODO: find a more elegant way to determine whether all items are loaded other than passing
     // "itemsShown" to this update call
     this.context.store.dispatch(actions.setFeedItemHeight(itemHeight, itemId, id, this.props.itemsShown));
+    //this.context.store.dispatch(actions.receiveFeedItem(item, itemHeight, id));
   }
 
   createFeed(feed, allLoaded) {
@@ -104,8 +105,6 @@ class Feed extends Component {
       console.log("Loading time: " + (endTimer - this.startTimer));
       this.startTimer = undefined;
     }
-
-    console.log("Creating feed");
 
     return (
       <div ref={(root) => this.root = root} className="feed">

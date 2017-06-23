@@ -2634,6 +2634,7 @@ function getPooledWarningPropertyDefinition(propName, getVal) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setWindowDimensions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return toggleDrawer; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return setFeedItemHeight; });
+/* unused harmony export receiveFeedItem */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return setOthersPeopleOptions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return showMoreItems; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return resetFeed; });
@@ -2716,6 +2717,15 @@ var setFeedItemHeight = function setFeedItemHeight(height, itemId, id) {
     type: 'SET_FEED_ITEM_HEIGHT',
     height: height,
     itemId: itemId,
+    id: id
+  };
+};
+
+var receiveFeedItem = function receiveFeedItem(item, height, id) {
+  return {
+    type: 'RECEIVE_FEED_ITEM',
+    item: item,
+    height: height,
     id: id
   };
 };
@@ -19497,6 +19507,7 @@ var Feed = function (_Component) {
       // "itemsShown" to this update call
 
       this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["i" /* setFeedItemHeight */](itemHeight, itemId, id, this.props.itemsShown));
+      //this.context.store.dispatch(actions.receiveFeedItem(item, itemHeight, id));
     }
   }, {
     key: 'createFeed',
@@ -19548,8 +19559,6 @@ var Feed = function (_Component) {
         console.log("Loading time: " + (endTimer - this.startTimer));
         this.startTimer = undefined;
       }
-
-      console.log("Creating feed");
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
