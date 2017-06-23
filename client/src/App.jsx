@@ -46,11 +46,12 @@ class App extends Component {
       localStorage.setItem("redirectTo", currentPath);
       return <Redirect from={currentPath} to="/" />
     } else if(!user || !user.login) {
-      return <Route path="/" component={Intro} />
+      return <Intro user={user} />
     } else if(redirectTo) {
       localStorage.removeItem("redirectTo");
       return <Redirect from="/" to={redirectTo} />
     }
+
     else {
       return (
         <div>

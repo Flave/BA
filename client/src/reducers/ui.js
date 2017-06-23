@@ -12,7 +12,11 @@ const initialState = {
   itemsIncrement: 2,
   maxItems: null,
   userCount: Infinity,
-  loading: true
+
+  userLoading: true,
+  profileLoading: true,
+  feedLoading: true,
+  usersLoading: true
 }
 
 export default (state = initialState, action) => {
@@ -22,48 +26,63 @@ export default (state = initialState, action) => {
         ...state,
         windowDimensions: action.dimensions
       }
+
     case 'TOGGLE_DRAWER':
       return {
         ...state,
         drawer: state.drawer === action.id ? null : action.id
       }
+
     case 'RESET_UI':
       return {
         ...state,
         drawer: null
       }
+
     case 'SET_OTHERS_PEOPLE_OPTIONS':
       return {
         ...state,
         othersPeopleOptions: setOthersPeopleOptions(state, action)
       }
+
     case 'RECEIVE_USER':
       return {
         ...state,
         userCount: action.data && action.data.userCount
       }
+
     case 'SHOW_MORE_ITEMS':
       return {
         ...state,
         itemsShown: increaseItemsShown(state),
-        loading: true
+        feedLoading: true
       }
-    case 'RECEIVE_FEED':
+
+    case 'RECEIVE_PROFILE':
       return {
         ...state,
-        maxItems: action.data.length
+        maxItems: action.data.feed.length
       }
+
     case 'RECEIVE_FEED_ITEM':
       return {
         ...state,
-        loading: setLoading(state, action)
+        feedLoading: setFeedLoading(state, action)
       }
+
+    case 'RESET_FEED':
+      return {
+        ...state,
+        feedLoading: true,
+        itemsShown: initialState.itemsShown,
+        maxItems: action.profile && action.profile.feed ? action.profile.feed.length : null
+      };
     default:
       return state;
   }
 }
 
-function setLoading(state, { profile }) {
+function setFeedLoading(state, { profile }) {
   const loadedItems = profile.feed.filter(item => item.loaded);
   return loadedItems.length < state.itemsShown - 1;
 }

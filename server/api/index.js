@@ -17,6 +17,15 @@ const platformApis = {
   instagram: require('../external/instagram')
 }
 
+// Fetching the main feed for a profile
+function fetchFeed(user) {
+  let promises = _.map(getConnectedPlatforms(user), platform => {
+    return platformApis[platform.id].fetchFeed(user, 4)
+  });
+  return Promise.all(promises)
+    .then(_.flatten);
+}
+
 module.exports.fetchPredictions = (user) => {
   return platformApis.facebook
     .fetchRankedSubs(user)
@@ -60,15 +69,19 @@ module.exports.fetchTwitterPredictions = (user) => {
     });
 }
 
-// Fetching the main feed for a profile
-module.exports.fetchFeed = (profileId) => {
-  return User.findOne({_id: profileId})
-    .then((user) => {
-      let promises = _.map(getConnectedPlatforms(user), platform => {
-        return platformApis[platform.id].fetchFeed(user, 8)
-      });
-      return Promise.all(promises)
-        .then(_.flatten);
+module.exports.fetchProfile = (profileId) => {
+  return User.findOne({_id: profileId })
+    .then(user => {
+      return fetchFeed(user)
+        .then(feed => {
+          return {
+            id: user.id,
+            predictions: user.predictions,
+            subs: user.facebook.subs,
+            platforms: getConnectedPlatforms(user),
+            feed: feed
+          }
+        })
     });
 }
 

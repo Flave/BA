@@ -4,6 +4,7 @@ import * as actions from '../actions';
 import _find from 'lodash/find';
 import Drawer from 'app/components/Drawer.jsx';
 import Sidebar from 'app/components/profile/Sidebar.jsx';
+import LoadMoreBtn from 'app/components/profile/LoadMoreBtn.jsx';
 import Feed from 'app/components/profile/Feed.jsx';
 import PredictionsDrawer from 'app/components/profile/PredictionsDrawer.jsx';
 import SettingsDrawer from 'app/components/profile/SettingsDrawer.jsx';
@@ -27,17 +28,19 @@ class Profile extends Component {
     const userProfile = _find(users, {id: user.login});
     const isMe = user.login === profileId;
 
-    store.dispatch(actions.resetFeed(profileId));
+    store.dispatch(actions.resetFeed(profile));
     store.dispatch(actions.setProfileVisited(profileId));
 
     // Bit of an annoying way to make sure the necessary things are
     // being loaded but not too much
-    if(!userProfile || !userProfile.platforms)
+    if(!userProfile || !userProfile.platforms) {
+      console.log("fetching user profile");
       store.dispatch(actions.fetchProfile(user.login));
-    if((!profile || !profile.platforms) && !isMe)
+    }
+    if((!profile || !profile.platforms) && !isMe) {
+      console.log("fetching profile profile");
       store.dispatch(actions.fetchProfile(profileId));
-    if(!profile || !profile.feed)
-      store.dispatch(actions.fetchFeed(profileId));
+    }
   }
 
   handleMenuClick(menuId) {
@@ -45,8 +48,7 @@ class Profile extends Component {
   }
 
   handleLoadMoreClick(maxItems, itemsShown) {
-    if(maxItems > itemsShown)
-      this.context.store.dispatch(actions.showMoreItems())
+    this.context.store.dispatch(actions.showMoreItems())
   }
 
   render() {
@@ -57,7 +59,7 @@ class Profile extends Component {
     const me = _find(users, {id: user.login});
     let isMe = false;
 
-    if(!profile || !profile.feed) return <div>Loading Profile</div>;
+    if(!profile) return <div>Loading Profile</div>;
 
     isMe = (user.login === profile.id);
 
@@ -69,7 +71,7 @@ class Profile extends Component {
       }}>
         <Sidebar 
           profile={profile} 
-          isMe={isMe} 
+          isMe={isMe}
           onMenuClick={this.handleMenuClick.bind(this)} 
           drawer={ui.drawer} 
           offset={DRAWER_WIDTH}
@@ -83,11 +85,11 @@ class Profile extends Component {
         <Feed 
           itemsShown={ui.itemsShown}
           batchStartIndex={ui.itemsShown - ui.itemsIncrement}
-          loading={ui.loading} 
+          loading={ui.feedLoading} 
           profile={profile} />
-        <div
-          className="btn btn--raised btn--load-more" 
-          onClick={this.handleLoadMoreClick.bind(this, ui.maxItems, ui.itemsShown)}>Load More</div>
+        <LoadMoreBtn 
+          onClick={this.handleLoadMoreClick.bind(this)}
+          more={ui.maxItems > ui.itemsShown} />
       </div>
     )
   }

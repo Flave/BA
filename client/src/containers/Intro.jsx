@@ -8,6 +8,10 @@ import { receiveLogin } from '../actions';
 
 class Intro extends Component {
   render() {
+    const { user } = this.props;
+    if(!user)
+      return <div>Loading App</div>
+
     return (
       <div className="intro">
         <LoginSlide />

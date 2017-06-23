@@ -37,16 +37,10 @@ function BubblesCanvas() {
       .force("y", forceY)
       .on("tick", render);
 
-  _bubblesCanvas.initialize = function(_canvas) {
-    canvas = _canvas;
-    ctx = canvas.getContext('2d');
-    return _bubblesCanvas;
-  }
 
-  _bubblesCanvas.update = function() {
-    if(!data) return;
+  _bubblesCanvas.update = function(_canvas) {
+    if(!data || !canvas) return;
     if(!bubbles) initializeBubbles();
-    console.log("Updating bubbles");   
     updateBubbles();
     restartSimulation();
     return _bubblesCanvas;
@@ -55,6 +49,13 @@ function BubblesCanvas() {
   _bubblesCanvas.destroy = function() {
     canvas.removeEventListener('mousemove', handleMouseMove);
     canvas.removeEventListener('click', handleClick);
+  }
+
+  _bubblesCanvas.canvas = function(_canvas) {
+    if(!_canvas) return _bubblesCanvas;
+    canvas = _canvas;
+    ctx = canvas.getContext('2d');
+    return _bubblesCanvas;
   }
 
   _bubblesCanvas.data = function(_) {
@@ -88,7 +89,6 @@ function BubblesCanvas() {
   }
 
   function initializeBubbles() {
-    console.log("Initializing bubbles");
     const getSimilarity = calculateSimilarity(user, data, properties);
 
     bubbles = data.map((profile) => {
@@ -113,6 +113,7 @@ function BubblesCanvas() {
   }
 
   function render() {
+    if(!canvas) return;
     ctx.clearRect(0, 0, dimensions[0], dimensions[1]);
     bubbles && bubbles.forEach((bubble) => bubble.render());
   }

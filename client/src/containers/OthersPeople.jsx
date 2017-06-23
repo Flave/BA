@@ -39,7 +39,7 @@ class Others extends Component {
     this.bubblesCanvas
       .data(allLoaded ? users : null)
       .dimensions(ui.windowDimensions)
-      .initialize(this.bubbleContainer)
+      .canvas(this.bubbleContainer)
       .on('click', this.handleBubbleClick)
       .on('mouseenter', () => console.log('mouseenter'))
       .on('mouseleave', () => console.log('mouseleave'));
@@ -58,10 +58,10 @@ class Others extends Component {
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
 
-
     this.bubblesCanvas
       .dimensions(ui.windowDimensions)
       .data(allLoaded ? users : null)
+      .canvas(this.bubbleContainer)
       .margins({left: ui.drawer ? DRAWER_WIDTH : 0})
       .user(_find(users, {id: user.login}))
       .properties(ui.othersPeopleOptions)
@@ -75,6 +75,10 @@ class Others extends Component {
   render() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
+    const allLoaded = users && (users.length === ui.userCount);
+
+    if(!users)
+      return <div>Loading Users</div>
 
     return (
       <div>
@@ -83,6 +87,7 @@ class Others extends Component {
           {(ui.drawer === 'options') && <Options />}
         </Drawer>
         <OthersNav />
+        {!allLoaded && <div>Loading remaining users</div>}
         <canvas 
           width={ui.windowDimensions[0]} 
           height={ui.windowDimensions[1]} 

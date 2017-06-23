@@ -11,12 +11,6 @@ const receiveAll = (data) => ({
   data
 });
 
-const receiveFeed = (data, id) => ({
-  type: 'RECEIVE_FEED',
-  data,
-  id
-});
-
 const receiveProfile = (data, id) => ({
   type: 'RECEIVE_PROFILE',
   data,
@@ -32,11 +26,6 @@ export const fetchUser = () => {
 export const fetchAll = () =>
   api.fetchAll().then(response => {
     return receiveAll(response.data);
-  })
-
-export const fetchFeed = (id) =>
-  api.fetchFeed(id).then(response => {
-    return receiveFeed(response.data, id);
   })
 
 export const fetchProfile = (id) =>
@@ -69,7 +58,7 @@ export const receiveFeedItem = (item, height, id, profile) => ({
   item,
   height,
   id,
-  profile // TODO
+  profile
 });
 
 export const setOthersPeopleOptions = (options) => ({
@@ -81,9 +70,9 @@ export const showMoreItems = (dimensions) => ({
   type: 'SHOW_MORE_ITEMS'
 });
 
-export const resetFeed = (id) => ({
+export const resetFeed = (profile) => ({
   type: 'RESET_FEED',
-  id
+  profile
 });
 
 export const resetUi = () => ({

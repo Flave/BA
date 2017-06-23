@@ -83,19 +83,31 @@ export default class FBEmbedPost extends Component {
   constructor(props) {
     super(props);
     this.parse = this.parse.bind(this);
+    this.onIframeLoad = this.onIframeLoad.bind(this);
   }
 
 
   parse() {
     window.FB.XFBML.parse(this.root);
     const iframe = d3Select(this.root).selectAll('iframe');
-    iframe.on('load', () => {
-      // TODO: Make interval to check back until height is set
-      window.setTimeout(() => {
-        const height = parseInt(iframe.node().style.height.replace("px", ""));
+    iframe.on('load', this.onIframeLoad);
+  }
+
+  onIframeLoad() {
+    const iframe = d3Select(this.root).selectAll('iframe');
+    var heightCheckInterval = window.setInterval(checkHeightAndReturn.bind(this), 100);
+
+    // check checking height until it is set (iframe fully rendered)
+    function checkHeightAndReturn() {
+      const iframe = d3Select(this.root).selectAll('iframe');
+      const height = parseInt(iframe.node().style.height.replace("px", ""));
+      if(height > 0) {
         this.props.onLoadSuccess(height, this.props.item);
-      }, 4);
-    });
+        window.clearInterval(heightCheckInterval);
+      }
+    }
+
+    checkHeightAndReturn.call(this); 
   }
 
   componentDidMount() {

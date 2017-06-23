@@ -26,14 +26,10 @@ export default (state = null, action) => {
   switch(action.type) {
     case 'RECEIVE_ALL_USERS':
     return receiveAllUsers(state, action);
-    case 'RECEIVE_FEED':
-      return receiveFeed(state, action);
     case 'RECEIVE_PROFILE':
       return receiveProfile(state, action);
     case 'RECEIVE_FEED_ITEM':
       return setFeedItemPosition(state, action);
-    case 'RESET_FEED':
-      return resetFeed(state, action);
     case 'SET_PROFILE_VISITED':
       return setProfileVisited(state, action);
     default:
@@ -89,51 +85,7 @@ function receiveProfile(state, { id, data }) {
   return state.concat(data);
 }
 
-/*
-  Reset feed, so it gets loaded properly the next time the profile
-  is visited
-*/
-function resetFeed(state, {id}) {
-  // don't do this for initialisation
-  if(!state) return null;
-  // only reset feed of specified user
-  return state.map((user) => {
-    if(user.id !== id) return user;
-    if(!user.feed)
-      return {
-        ...user
-      }
 
-    let feed = user.feed.map((item) => {
-      return {
-        ...item,
-        height: undefined
-      }
-    });
-
-    return {
-      ...user,
-      feed
-    };
-  });  
-}
-
-function receiveFeed(state, {data, id}) {
-  // if there's no users yet simply put the new user in a new array
-  if(state === null)
-    return [{
-      id: id,
-      feed: data
-    }];
-  // else replaces the received user with the one in state
-  return state.map((user) => {
-    if(user.id !== id) return user;
-    return {
-      ...user,
-      feed: data
-    };
-  });
-}
 
 function setFeedItemPosition(state, {height, item: loadedItem, id}) {
   return state.map((profile) => {

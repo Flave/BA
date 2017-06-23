@@ -13,16 +13,19 @@ const router = new express.Router();
 
 
 // USER
-router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
+router.get('/api/user', ({ user }, res) => {
   User.find()
     .count()
     .then(count => {
       log.rainbow('Sending USER');
-      res.json({
-        name: user.facebook.name,
-        login: user._id,
-        userCount: count
-      });
+      if(user)
+        res.json({
+          name: user.facebook.name,
+          login: user._id,
+          userCount: count
+        });
+      else
+        res.json({ login: null });
     })
     .catch(err => console.log(err));
 });
@@ -30,15 +33,10 @@ router.get('/api/user', isLoggedInAjax, ({ user }, res) => {
 
 // PROFILE
 router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
-  User.findOne({_id: req.params.id })
-    .then(user => {
+  api.fetchProfile(req.params.id)
+    .then(profile => {
       log.rainbow('Sending PROFILE');
-      res.json({
-        id: user.id,
-        predictions: user.predictions,
-        subs: user.facebook.subs,
-        platforms: getConnectedPlatforms(user)
-      });
+      res.json(profile);
     })
     .catch((err) => {
       console.log(err);
@@ -74,14 +72,14 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
 });*/
 
 // FEED
-router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
+/*router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
   api.fetchFeed(req.params.id)
     .then(feed => {
       log.rainbow('Sending FEED');
       res.json(feed);
     })
     .catch(err => console.log(err));
-});
+});*/
 
 //User.find({}, {_id: true, predictions: true}).then((users) => {
 

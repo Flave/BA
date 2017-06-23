@@ -61,6 +61,7 @@ class Feed extends Component {
     const feed = profile.feed.slice(0, itemsShown);
 
     return feed.map((item, index) => {
+      // only show items that belong to a earlier batch or all if all loaded
       const show = index < batchStartIndex || !loading;
 
       if(item.platform === 'twitter')
