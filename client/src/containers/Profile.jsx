@@ -10,6 +10,7 @@ import PredictionsDrawer from 'app/components/profile/PredictionsDrawer.jsx';
 import SettingsDrawer from 'app/components/profile/SettingsDrawer.jsx';
 import SourcesDrawer from 'app/components/profile/SourcesDrawer.jsx';
 import ComparisonDrawer from 'app/components/profile/ComparisonDrawer.jsx';
+import Loader from 'app/components/common/Loader.jsx';
 import * as api from '../api';
 
 import {
@@ -33,14 +34,10 @@ class Profile extends Component {
 
     // Bit of an annoying way to make sure the necessary things are
     // being loaded but not too much
-    if(!userProfile || !userProfile.platforms) {
-      console.log("fetching user profile");
+    if(!userProfile || !userProfile.platforms)
       store.dispatch(actions.fetchProfile(user.login));
-    }
-    if((!profile || !profile.platforms) && !isMe) {
-      console.log("fetching profile profile");
+    if((!profile || !profile.platforms) && !isMe)
       store.dispatch(actions.fetchProfile(profileId));
-    }
   }
 
   handleMenuClick(menuId) {
@@ -59,7 +56,7 @@ class Profile extends Component {
     const me = _find(users, {id: user.login});
     let isMe = false;
 
-    if(!profile) return <div>Loading Profile</div>;
+    if(!profile) return <Loader copy="Loading profile"/>;
 
     isMe = (user.login === profile.id);
 
@@ -87,9 +84,9 @@ class Profile extends Component {
           batchStartIndex={ui.itemsShown - ui.itemsIncrement}
           loading={ui.feedLoading} 
           profile={profile} />
-        <LoadMoreBtn 
+        {!ui.feedLoading && <LoadMoreBtn 
           onClick={this.handleLoadMoreClick.bind(this)}
-          more={ui.maxItems > ui.itemsShown} />
+          more={ui.maxItems > ui.itemsShown} />}
       </div>
     )
   }

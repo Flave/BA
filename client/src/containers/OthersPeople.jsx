@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'app/components/others-people/Sidebar.jsx';
-import Bubbles from 'app/components/others-people/Bubbles.jsx';
 import BubblesCanvas from 'app/components/others-people/BubblesCanvas.js';
 import OthersNav from 'app/components/others/OthersNav.jsx';
 import Drawer from 'app/components/Drawer.jsx';
+import Loader from 'app/components/common/Loader.jsx';
 import PixelFilter from 'app/components/common/PixelFilter.jsx';
 import Options from 'app/components/others-people/Options.jsx';
 import * as actions from 'app/actions';
@@ -78,7 +78,7 @@ class Others extends Component {
     const allLoaded = users && (users.length === ui.userCount);
 
     if(!users)
-      return <div>Loading Users</div>
+      return <Loader copy="Loading Users" />
 
     return (
       <div>
@@ -87,7 +87,7 @@ class Others extends Component {
           {(ui.drawer === 'options') && <Options />}
         </Drawer>
         <OthersNav />
-        {!allLoaded && <div>Loading remaining users</div>}
+        {!allLoaded && <Loader copy="Loading remaining users" />}
         <canvas 
           width={ui.windowDimensions[0]} 
           height={ui.windowDimensions[1]} 

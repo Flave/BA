@@ -33,6 +33,7 @@ router.get('/api/user', ({ user }, res) => {
 
 // PROFILE
 router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
+  console.log("Profile Request");
   api.fetchProfile(req.params.id)
     .then(profile => {
       log.rainbow('Sending PROFILE');
@@ -60,26 +61,6 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
     res.json(strippedUsers);
   });
 });
-
-// API TEST
-/*router.get('/api/test', isLoggedInAjax, (req, res) => {
-  instagramApi
-    .fetchRankedSubs(req.user)
-    .then(subs => {
-      res.json(subs);
-    })
-    .catch(err => console.log(err));
-});*/
-
-// FEED
-/*router.get('/api/feed/:id', isLoggedInAjax, (req, res) => {
-  api.fetchFeed(req.params.id)
-    .then(feed => {
-      log.rainbow('Sending FEED');
-      res.json(feed);
-    })
-    .catch(err => console.log(err));
-});*/
 
 //User.find({}, {_id: true, predictions: true}).then((users) => {
 

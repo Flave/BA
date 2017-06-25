@@ -1,13 +1,20 @@
 import React from 'react';
 
-export default ({ userLoading, usersLoading, profileLoading, feedLoading}) => {
-  if(userLoading)
-    return <div className="loader">Loading Application</div>
-  if(usersLoading)
-    return <div className="loader">Loading Bubbles</div>
-  if(profileLoading)
-    return <div className="loader">Loading the Bubble</div>
-  if(feedLoading)
-    return <div className="loader">Loading the Feed</div>
-  return <div/>
+export default ({ copy }) => {
+  return (
+    <div className="loader">
+      <div className="sk-cube-grid">
+        <div className="sk-cube sk-cube1"></div>
+        <div className="sk-cube sk-cube2"></div>
+        <div className="sk-cube sk-cube3"></div>
+        <div className="sk-cube sk-cube4"></div>
+        <div className="sk-cube sk-cube5"></div>
+        <div className="sk-cube sk-cube6"></div>
+        <div className="sk-cube sk-cube7"></div>
+        <div className="sk-cube sk-cube8"></div>
+        <div className="sk-cube sk-cube9"></div>
+      </div>
+      <div className="loader__copy">{copy}</div>
+    </div>
+  )
 }

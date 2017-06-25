@@ -122,7 +122,12 @@ const fetchFeed = (user, count) => {
 
 
 const fetch = (user, ressource, operation, opts) => {
-  let oauth2Client = new OAuth2();
+  let oauth2Client = new OAuth2(
+    youtubeAuth.clientID,
+    youtubeAuth.clientSecret,
+    youtubeAuth.callbackURL
+  );
+
   let client = google.youtube({ version: 'v3',auth: oauth2Client })[ressource][operation];
   oauth2Client.credentials = {
       access_token: user.youtube.token,

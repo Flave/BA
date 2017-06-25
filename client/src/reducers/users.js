@@ -32,6 +32,8 @@ export default (state = null, action) => {
       return setFeedItemPosition(state, action);
     case 'SET_PROFILE_VISITED':
       return setProfileVisited(state, action);
+    case 'RESET_FEED':
+      return resetFeed(state, action);
     default:
       return state;
   }
@@ -52,6 +54,17 @@ function setProfileVisited(state, { id }) {
       visited: true
     }
   });
+}
+
+function resetFeed(state, {profile}) {
+  return applyToUser(state, profile.id, (user) => {
+    if(!user.feed) return user;
+
+    return {
+      ...user,
+      feed: user.feed.map(item => ({...item, loaded: false}))
+    }
+  })
 }
 
 // Checks if there is already a user with data

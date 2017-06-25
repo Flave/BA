@@ -8,8 +8,8 @@ const initialState = {
       id === 'age' ? {id, value: true} : {id, value: false}
     )
   ),
-  itemsShown: 2,
-  itemsIncrement: 2,
+  itemsShown: 4,
+  itemsIncrement: 4,
   maxItems: null,
   userCount: Infinity,
 
@@ -95,5 +95,5 @@ function setOthersPeopleOptions(state, action) {
 }
 
 function increaseItemsShown({ itemsShown, maxItems, itemsIncrement }) {
-  return (itemsShown + 2) > maxItems ? maxItems : itemsShown + itemsIncrement;
+  return (itemsShown + itemsIncrement) > maxItems ? maxItems : itemsShown + itemsIncrement;
 }

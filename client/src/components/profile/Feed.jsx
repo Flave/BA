@@ -5,7 +5,7 @@ import FacebookPost from 'app/components/common/FacebookPost.jsx';
 import Tweet from 'app/components/common/Tweet.jsx';
 import InstagramPost from 'app/components/common/InstagramPost.jsx';
 import YoutubeVideo from 'app/components/common/YoutubeVideo.jsx';
-import Loader from '../Loader.jsx';
+import Loader from 'app/components/common/Loader.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
 import { select as d3Select } from 'd3-selection';
 import { event as d3Event } from 'd3-selection';
@@ -61,8 +61,10 @@ class Feed extends Component {
     const feed = profile.feed.slice(0, itemsShown);
 
     return feed.map((item, index) => {
+      let show = true;
       // only show items that belong to a earlier batch or all if all loaded
-      const show = index < batchStartIndex || !loading;
+      if(loading && index >= batchStartIndex)
+        show = false;
 
       if(item.platform === 'twitter')
         return <Tweet 
@@ -102,7 +104,7 @@ class Feed extends Component {
 
     return (
       <div ref={(root) => this.root = root} className="feed">
-        {loading && <Loader />}
+        {loading && <Loader copy="Loading Feed" />}
         <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
           {feed && this.createFeed()}
         </div>
