@@ -39,30 +39,30 @@ export default (state = null, action) => {
   }
 }
 
-function applyToUser(state, id, fn) {
+function applyToProfile(state, id, fn) {
   if(!state) return null;
-  return state.map((user) => {
-    if(user.id !== id) return user;
-    return fn(user);
-  });  
+  return state.map((profile) => {
+    if(profile.id !== id) return profile;
+    return fn(profile);
+  });
 }
 
 function setProfileVisited(state, { id }) {
-  return applyToUser(state, id, (user) => {
+  return applyToProfile(state, id, (profile) => {
+
     return {
-      ...user,
+      ...profile,
       visited: true
     }
   });
 }
 
 function resetFeed(state, {profile}) {
-  return applyToUser(state, profile.id, (user) => {
-    if(!user.feed) return user;
-
+  return applyToProfile(state, profile.id, (profile) => {
+    if(!profile.feed) return profile;
     return {
-      ...user,
-      feed: user.feed.map(item => ({...item, loaded: false}))
+      ...profile,
+      feed: profile.feed.map(item => ({...item, loaded: false}))
     }
   })
 }
@@ -90,7 +90,7 @@ function receiveProfile(state, { id, data }) {
   // if profile already exists, just add the received profile data to it
   const containsProfile = _find(state, {id: id}) !== undefined;
   if(containsProfile)
-    return applyToUser(state, id, user => ({
+    return applyToProfile(state, id, user => ({
       ...user, 
       ...data
     }))

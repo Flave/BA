@@ -1,0 +1,46 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as actions from '../actions';
+import _find from 'lodash/find';
+import LoadMoreBtn from 'app/components/profile-feed/LoadMoreBtn.jsx';
+import Feed from 'app/components/profile-feed/Feed.jsx';
+
+import {
+  withRouter
+} from 'react-router-dom';
+
+
+class Profile extends Component {
+  handleLoadMoreClick(maxItems, itemsShown) {
+    this.context.store.dispatch(actions.showMoreItems())
+  }
+
+  render() {
+    const { store } = this.context;
+    const { users, user, ui } = store.getState();
+    const { match } = this.props;
+    const profile = _find(users, {id: match.params.id});
+    let isMe = false;
+
+    isMe = (user.login === profile.id);
+
+    return (
+      <div>
+        <Feed 
+          itemsShown={ui.itemsShown}
+          batchStartIndex={ui.itemsShown - ui.itemsIncrement}
+          loading={ui.feedLoading} 
+          profile={profile} />
+        {!ui.feedLoading && <LoadMoreBtn 
+          onClick={this.handleLoadMoreClick.bind(this)}
+          more={ui.maxItems > ui.itemsShown} />}
+      </div>
+    )
+  }
+};
+
+Profile.contextTypes = {
+  store: PropTypes.object
+}
+
+export default withRouter(Profile);

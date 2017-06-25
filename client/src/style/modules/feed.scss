@@ -4,11 +4,18 @@
   left: 0;
   bottom: 0;
   right: 0;
+
+  &.is-loading {
+    .feed__canvas {
+      opacity: .5;
+    }
+  }
 }
 
 .feed__canvas {
   width: 100%;
   height: 100%;
+  transition: opacity .3s;
 
   &.is-zooming div {
     pointer-events: none;

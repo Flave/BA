@@ -7,7 +7,7 @@ const User = require('../models/user');
 const log = require('../../log');
 const _ = require('lodash');
 const Promise = require('promise');
-const { getConnectedPlatforms } = require('../util');
+const { getConnectedPlatforms, isLoggedInAjax } = require('../util');
 
 const router = new express.Router();
 
@@ -63,28 +63,6 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
 });
 
 //User.find({}, {_id: true, predictions: true}).then((users) => {
-
-// route middleware to make sure
-function isLoggedInAjax(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.json(null);
-}
-
-// route middleware to make sure
-function isLoggedIn(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the home page
-  res.redirect('/');
-}
 
 
 module.exports = router;

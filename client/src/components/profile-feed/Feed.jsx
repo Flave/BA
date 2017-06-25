@@ -62,9 +62,12 @@ class Feed extends Component {
 
     return feed.map((item, index) => {
       let show = true;
+
       // only show items that belong to a earlier batch or all if all loaded
       if(loading && index >= batchStartIndex)
         show = false;
+
+      console.log(index, batchStartIndex, loading, show);
 
       if(item.platform === 'twitter')
         return <Tweet 
@@ -77,14 +80,14 @@ class Feed extends Component {
         return <FacebookPost  
           item={item}
           key={item.id}
-          show={show} 
+          show={show}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'instagram')
         return <InstagramPost
           item={item}
           key={item.id}
-          show={show} 
+          show={show}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'youtube')
@@ -98,13 +101,14 @@ class Feed extends Component {
   }
 
   render() {
-    const { loading } = this.props;
+    const { loading, batchStartIndex } = this.props;
     const { feed } = this.props.profile;
     const zoomClass = this.state.zooming ? "is-zooming" : "";
+    const className = `feed ${loading ? "is-loading" : ""}`;
 
     return (
-      <div ref={(root) => this.root = root} className="feed">
-        {loading && <Loader copy="Loading Feed" />}
+      <div ref={(root) => this.root = root} className={className}>
+        {(loading) && <Loader copy="Loading Feed" />}
         <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
           {feed && this.createFeed()}
         </div>

@@ -57,7 +57,7 @@ class App extends Component {
         <div>
           <Route path="/" exact component={OthersPeople} />
           <Route path="/content" exact component={OthersContent} />
-          <Route path="/someone/:id" component={Profile} />
+          <Route path="/:id" component={Profile} />
         </div>
       )
     }

@@ -46,7 +46,7 @@ class Others extends Component {
   }
 
   handleBubbleClick(d) {
-    this.props.history.push('/someone/' + d.id);
+    this.props.history.push(`/${d.id}/feed`);
   }
 
   handleTransitionStart() {

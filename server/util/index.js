@@ -22,5 +22,27 @@ module.exports = {
       .map(platform => user[platform.id] && user[platform.id].token /*&& platform.id !== "youtube"*/ ? platform : null)
       .compact()
       .value();
-  }
+  },
+
+// route middleware to make sure
+isLoggedInAjax: (req, res, next) => {
+
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated())
+    return next();
+
+  // if they aren't redirect them to the home page
+  res.json(null);
+},
+
+// route middleware to make sure
+isLoggedIn: (req, res, next) => {
+
+  // if user is authenticated in the session, carry on
+  if (req.isAuthenticated())
+    return next();
+
+  // if they aren't redirect them to the home page
+  res.redirect('/');
+}
 }
