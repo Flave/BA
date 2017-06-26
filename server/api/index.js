@@ -18,13 +18,24 @@ const platformApis = {
 }
 
 // Fetching the main feed for a profile
-function fetchFeed(user) {
+const fetchFeed = (user) => {
   let promises = _.map(getConnectedPlatforms(user), platform => {
     return platformApis[platform.id].fetchFeed(user, 6)
   });
   return Promise.all(promises)
     .then(_.flatten);
 }
+
+const getCombinedSubs = (user) =>
+  _.chain(getConnectedPlatforms(user))
+    .map((platform) => 
+      user[platform.id].subs.map(({id, relevance, name, thumb, username}) => (
+        {id, relevance, name, thumb, username, platform: platform.id}
+      ))
+    )
+    .flatten()
+    .value();
+
 
 module.exports.fetchPredictions = (user) => {
   return platformApis.facebook
@@ -77,13 +88,26 @@ module.exports.fetchProfile = (profileId) => {
           return {
             id: user.id,
             predictions: user.predictions,
-            subs: user.facebook.subs,
+            subs: getCombinedSubs(user),
             platforms: getConnectedPlatforms(user),
             feed: feed
           }
         })
     });
 }
+
+/*module.exports.fetchProfile = (profileId) => {
+  return User.findOne({_id: profileId })
+    .then(user => {
+      return {
+        id: user.id,
+        predictions: user.predictions,
+        subs: getCombinedSubs(user),
+        platforms: getConnectedPlatforms(user),
+        feed: []
+      }
+    });
+}*/
 
 // UPDATING SUBS
 module.exports.updateTwitterSubs = (user) => {

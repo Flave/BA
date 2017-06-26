@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'app/components/others-people/Sidebar.jsx';
 import BubblesCanvas from 'app/components/others-people/BubblesCanvas.js';
-import OthersNav from 'app/components/others/OthersNav.jsx';
 import Drawer from 'app/components/Drawer.jsx';
 import Loader from 'app/components/common/Loader.jsx';
 import PixelFilter from 'app/components/common/PixelFilter.jsx';
@@ -86,7 +85,6 @@ class Others extends Component {
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'options') && <Options />}
         </Drawer>
-        <OthersNav />
         {!allLoaded && <Loader copy="Loading remaining users" />}
         <canvas 
           width={ui.windowDimensions[0]} 

@@ -21,11 +21,12 @@ const youtubeAuth = require('../../config/auth')[process.env.NODE_ENV].youtubeAu
 const fetchRankedSubs = (user) => {
   return fetchSubs(user)
     .then((subs) => {
-      return _.map(subs, sub => {
+      return _.map(subs, (sub, i) => {
         return {
           name: sub.snippet.title,
           id: sub.snippet.resourceId.channelId,
-          thumb: sub.snippet.thumbnails.default.url
+          thumb: sub.snippet.thumbnails.default.url,
+          relevance: 1 - 1/subs.length * i
         }
       });
     })

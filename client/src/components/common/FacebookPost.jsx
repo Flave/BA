@@ -3,6 +3,10 @@ import { select as d3Select } from 'd3-selection';
 import { development as authConfig } from 'root/config/auth';
 
 const callbacks = [];
+/*const fbRoot = document.createElement('div');
+
+fbRoot.setAttribute('id', 'fb-root');
+window.document.body.appendChild(fbRoot);*/
 
 function loadScript(cb) {
   if(callbacks.length === 0) {
@@ -59,11 +63,10 @@ export default class FBEmbedPost extends Component {
 
   onIframeLoad() {
     const iframe = d3Select(this.root).selectAll('iframe');
-    const heightCheckInterval = window.setInterval(checkHeightAndReturn.bind(this), 100);
+    this.heightCheckInterval = window.setInterval(checkHeightAndReturn.bind(this), 100);
     let height = 0;
     let lastHeight = 0;
     let heightStableSince = 0;
-
 
     // check checking height until it is set (iframe fully rendered)
     function checkHeightAndReturn() {
@@ -72,11 +75,11 @@ export default class FBEmbedPost extends Component {
       height = parseInt(iframe.node().style.height.replace("px", ""));
       if(height > 0 && heightStableSince > 3) {
         this.props.onLoadSuccess(height, this.props.item);
-        window.clearInterval(heightCheckInterval);
+        window.clearInterval(this.heightCheckInterval);
       }
 
       if(height === lastHeight) 
-        heightStableSince++;
+        heightStableSince += 1;
       else
         heightStableSince = 0;
     }
@@ -89,6 +92,10 @@ export default class FBEmbedPost extends Component {
       loadScript(this.parse);
   }
 
+  componentWillUnmount() {
+    window.clearInterval(this.heightCheckInterval);
+  }
+
   render() {
     const { item, show, options, allLoaded } = this.props;
     let style = {
@@ -99,7 +106,6 @@ export default class FBEmbedPost extends Component {
 
     return (
       <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--facebook">
-        <div id="fb-root"></div>
         <div className="fb-post" data-href={item.id} data-width={options.width}></div>
       </div>
     );

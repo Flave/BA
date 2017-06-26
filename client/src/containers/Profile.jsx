@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import _find from 'lodash/find';
 import Drawer from 'app/components/Drawer.jsx';
+import Nav from 'app/components/common/Nav.jsx';
 import Sidebar from 'app/components/profile-feed/Sidebar.jsx';
 import PredictionsDrawer from 'app/components/profile-feed/PredictionsDrawer.jsx';
 import SettingsDrawer from 'app/components/profile-feed/SettingsDrawer.jsx';
@@ -52,17 +53,26 @@ class Profile extends Component {
     const { users, user, ui } = store.getState();
     const { match } = this.props;
     const profile = _find(users, {id: match.params.id});
-    const me = _find(users, {id: user.login});
+    const userProfile = _find(users, {id: user.login});
     let isMe = false;
+    const baseProfilesLoaded = !!(profile && userProfile);
+    const fullyLoaded = !!(baseProfilesLoaded && profile.subs && userProfile.subs)
 
-    if(!profile) return <Loader copy="Loading profile"/>;
+    // base profile could already be loaded so we have to make sure
+    // the actual profile with "subs" is loaded
+    if(!baseProfilesLoaded) 
+      return <Loader copy="Loading Profile"/>;
 
     isMe = (user.login === profile.id);
 
     return (
       <div>
-        <Route path="/:id/feed" component={ProfileFeed} />
-        <Route path="/:id/sources" component={ProfileSources} />
+        {fullyLoaded && <Route path="/:id/feed" component={ProfileFeed} />}
+        {fullyLoaded && <Route path="/:id/sources" component={ProfileSources} />}
+        {!fullyLoaded && <Loader copy="Loading Profile"/>}
+        <Nav 
+          baseUrl={match.url} 
+          segments={[{key: "feed", label: "Feed"}, {key: "sources", label: "Sources"}]}/>
         <Sidebar 
           profile={profile} 
           isMe={isMe}
@@ -71,8 +81,8 @@ class Profile extends Component {
           offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'predictions') && <PredictionsDrawer />}
-          {(ui.drawer === 'user_settings') && <SettingsDrawer user={me} currentPath={match.url} />}
-          {(ui.drawer === 'profile_sources') && <SourcesDrawer user={me} />}
+          {(ui.drawer === 'user_settings') && <SettingsDrawer user={userProfile} currentPath={match.url} />}
+          {(ui.drawer === 'profile_sources') && <SourcesDrawer user={userProfile} />}
         </Drawer>
       </div>
     )

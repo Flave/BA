@@ -1,7 +1,5 @@
 function Bubble(ctx, options) {
   let bubble = {...options};
-  const duration = 1000;
-  const delay = 0;
 
   bubble.update = function({targetX, targetY}, dontAnimate, cb) {
     bubble.targetX = targetX;

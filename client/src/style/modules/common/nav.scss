@@ -1,0 +1,28 @@
+.nav {
+  position: fixed;
+  left: 50%;
+  top: 20px;
+  transform: translateX(-50%);
+  box-shadow: 0 0 4px rgba(0, 0, 0, .2);
+  border: 1px solid $c-black;
+
+  a {
+    padding: 5px 10px;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: $c-black;
+    background-color: white;
+    display: inline-block;
+    min-width: 90px;
+    text-align: center;
+
+    &.is-active {
+      color: white;
+      background-color: $c-black;
+    }    
+  }
+}
+
+.nav__segment {
+
+}

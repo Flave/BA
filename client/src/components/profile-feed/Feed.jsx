@@ -67,7 +67,7 @@ class Feed extends Component {
       if(loading && index >= batchStartIndex)
         show = false;
 
-      console.log(index, batchStartIndex, loading, show);
+      //console.log(index, batchStartIndex, loading, show);
 
       if(item.platform === 'twitter')
         return <Tweet 

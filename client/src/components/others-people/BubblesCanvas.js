@@ -1,7 +1,8 @@
 import { dispatch as d3Dispatch } from 'd3-dispatch';
-import { forceCollide as d3ForceCollide } from 'd3-force';
 import { rebind, getDistance } from '../../utility';
 import { forceSimulation as d3ForceSimulation } from 'd3-force';
+import { forceCollide as d3ForceCollide } from 'd3-force';
+import { forceManyBody as d3ForceManyBody } from 'd3-force';
 import { forceX as d3ForceX } from 'd3-force';
 import { forceY as d3ForceY } from 'd3-force';
 import { randomNormal as d3RandomNormal } from 'd3-random';
@@ -27,12 +28,15 @@ function BubblesCanvas() {
   let properties;
   let maxBubbleRadius = 50;
   const strengthGenerator = d3RandomNormal(0.1, 0.03);
-  const forceX = d3ForceX().strength(strengthGenerator).x((d) => d.targetX)
-  const forceY = d3ForceY().strength(strengthGenerator).y((d) => d.targetY)
+  const collide = d3ForceCollide( function(d){return d.r - d.r * 0.1 });
+  const charge = d3ForceManyBody()
+  const forceX = d3ForceX().strength(strengthGenerator).x((d) => d.targetX);
+  const forceY = d3ForceY().strength(strengthGenerator).y((d) => d.targetY);
   let hoveredBubble = null;
 
   let simulation = d3ForceSimulation()
-      .force("collide", d3ForceCollide( function(d){return d.r - d.r * 0.1 }))
+      .force("collide", collide)
+      .force("charge", charge)
       .force("x", forceX)
       .force("y", forceY)
       .on("tick", render);

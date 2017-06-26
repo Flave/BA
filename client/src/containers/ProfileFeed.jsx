@@ -11,6 +11,18 @@ import {
 
 
 class Profile extends Component {
+
+  componentDidMount() {
+    const { store } = this.context;
+    const { users } = store.getState();
+    const profileId = this.props.match.params.id;
+    const profile = _find(users, {id: profileId});
+
+    // reset feed ui to initial state and set all feed items to loaded: false
+    if(profile) 
+      store.dispatch(actions.resetFeed(profile));
+  }
+
   handleLoadMoreClick(maxItems, itemsShown) {
     this.context.store.dispatch(actions.showMoreItems())
   }
