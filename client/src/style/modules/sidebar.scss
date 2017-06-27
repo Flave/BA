@@ -19,11 +19,12 @@
   font-weight: 900;
   line-height: 27px;
   transition: all .3s;
+  margin-bottom: 60px;
 }
 
 .sidebar__links {
   position: absolute;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
   font-size: 15px;  
 }
@@ -40,9 +41,39 @@
   cursor: pointer;
   text-decoration: none;
   color: $c-black;
+  font-weight: 600;
 
   &.is-active {
     color: $c-accent;
     font-weight: 700;
   }
+}
+
+.sidebar__link-icon {
+  vertical-align: text-top;
+  display: inline-block;
+  margin-right: 4px;
+
+}
+
+.sidebar__platforms {
+  border-top: 1px solid $c-shade-superlight;
+  padding-top: 20px;
+}
+
+.sidebar__platforms-title {
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  color: $c-black;
+}
+
+.sidebar__platform {
+  color: $c-shade-light;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 9px;
+
+  &--is-connected {
+    color: $c-accent;
+  } 
 }

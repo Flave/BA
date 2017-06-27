@@ -7,7 +7,6 @@ import Nav from 'app/components/common/Nav.jsx';
 import Sidebar from 'app/components/profile-feed/Sidebar.jsx';
 import PredictionsDrawer from 'app/components/profile-feed/PredictionsDrawer.jsx';
 import SettingsDrawer from 'app/components/profile-feed/SettingsDrawer.jsx';
-import SourcesDrawer from 'app/components/profile-feed/SourcesDrawer.jsx';
 import ProfileFeed from './ProfileFeed.jsx';
 import ProfileSources from './ProfileSources.jsx';
 import Loader from 'app/components/common/Loader.jsx';
@@ -73,14 +72,13 @@ class Profile extends Component {
           segments={[{key: "feed", label: "Feed"}, {key: "sources", label: "Sources"}]}/>
         <Sidebar 
           profile={profile} 
-          isUser={isUser}
+          userProfile={userProfile}
           onMenuClick={this.handleMenuClick.bind(this)} 
           drawer={ui.drawer} 
           offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'predictions') && <PredictionsDrawer />}
           {(ui.drawer === 'user_settings') && <SettingsDrawer user={userProfile} currentPath={location.pathname} />}
-          {(ui.drawer === 'profile_sources') && <SourcesDrawer user={userProfile} />}
         </Drawer>
       </div>
     )
