@@ -1,8 +1,13 @@
-import predictions from 'root/constants/predictions';
+import { predictions, ui } from 'root/constants';
 import _find from 'lodash/find';
 
 const initialState = {
   windowDimensions: [window.innerWidth, window.innerHeight],
+  canvasDimensions: {
+    width: window.innerWidth - ui.SIDEBAR_WIDTH,
+    height: window.innerHeight,
+    left: ui.SIDEBAR_WIDTH
+  },
   drawer: null,
   othersPeopleOptions: predictions.map(({ id }) => (
       id === 'age' ? {id, value: true} : {id, value: false}
@@ -28,10 +33,7 @@ export default (state = initialState, action) => {
       }
 
     case 'TOGGLE_DRAWER':
-      return {
-        ...state,
-        drawer: state.drawer === action.id ? null : action.id
-      }
+      return toggleDrawer(state, action);
 
     case 'RESET_UI':
       return {
@@ -79,6 +81,21 @@ export default (state = initialState, action) => {
       };
     default:
       return state;
+  }
+}
+
+
+function toggleDrawer(state, { id }) {
+  const drawer = state.drawer === id ? null : id;
+  const left = drawer ? ui.DRAWER_WIDTH : ui.SIDEBAR_WIDTH;
+  return {
+    ...state,
+    drawer: drawer,
+    canvasDimensions: {
+      width: state.windowDimensions[0] - left,
+      height: state.windowDimensions[1],
+      left
+    }
   }
 }
 

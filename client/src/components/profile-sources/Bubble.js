@@ -7,10 +7,20 @@ function Bubble(ctx, options) {
   }
 
   bubble.render = function() {
+    ctx.save();
+    ctx.translate(bubble.x, bubble.y);
     ctx.fillStyle = bubble.fill;
     ctx.beginPath();
-    ctx.arc(bubble.x, bubble.y, bubble.r,0,2*Math.PI);
-    ctx.fill();
+    ctx.arc(0, 0, bubble.r,0,2*Math.PI);
+    if(bubble.hasThumb) {
+      ctx.clip();
+      var img = window.document.getElementById(`subs-vis__thumb--${bubble.id}`);
+      if(img)
+        ctx.drawImage(img, -bubble.r, -bubble.r, bubble.r * 2, bubble.r * 2);
+    } else {
+      ctx.fill();
+    }
+    ctx.restore();
   }
 
   return bubble;

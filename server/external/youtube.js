@@ -24,6 +24,7 @@ const fetchRankedSubs = (user) => {
       return _.map(subs, (sub, i) => {
         return {
           name: sub.snippet.title,
+          username: sub.snippet.title,
           id: sub.snippet.resourceId.channelId,
           thumb: sub.snippet.thumbnails.default.url,
           relevance: 1 - 1/subs.length * i
@@ -118,7 +119,7 @@ const fetchFeed = (user, count) => {
     .value();
 
   })
-  .catch(err => console.log(err));
+  .catch(err => console.log("Youtube", err));
 }
 
 

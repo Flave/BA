@@ -69,6 +69,7 @@ const fetchFeed = (user, count) => {
         }
       ))
     )
+    .catch(err => console.log("Youtube", err));
 }
 
 module.exports = {

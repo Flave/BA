@@ -36,7 +36,7 @@ var userSchema = mongoose.Schema({
     token : String,
     refreshToken: String,
     subs: [{
-      id: String, name: String, thumb: String, relevance: Number
+      id: String, name: String, username: String, thumb: String, relevance: Number
     }]
   },
   instagram : {

@@ -1,4 +1,3 @@
-import React, { Component } from 'react';
 import { dispatch as d3Dispatch } from 'd3-dispatch';
 import { rebind, getDistance } from '../../utility';
 import { forceSimulation as d3ForceSimulation } from 'd3-force';
@@ -7,22 +6,20 @@ import { forceCollide as d3ForceCollide } from 'd3-force';
 import { forceX as d3ForceX } from 'd3-force';
 import { forceY as d3ForceY } from 'd3-force';
 import { randomNormal as d3RandomNormal } from 'd3-random';
-import { max as d3Max } from 'd3-array';
 import Bubble from './Bubble';
 import _find from 'lodash/find';
-
-
 
 function BubblesCanvas() {
   let canvas;
   let dispatch = d3Dispatch('click', 'mouseleave', 'mouseenter', 'transitionstart');
   let ctx;
-  let dimensions;
+  let size;
   let margins = {top: 0, right: 0, bobbotm: 0, left: 0};
   let subs;
+  let maxRadius = 15;
+  let minRadius = 5;
   let _bubblesCanvas = {};
   let bubbles;
-  let counts;
 
   const collide = d3ForceCollide( function(d){return d.r + 2 }).iterations(2);
   const charge = d3ForceManyBody().strength(-0.5);
@@ -57,6 +54,7 @@ function BubblesCanvas() {
   _bubblesCanvas.destroy = function() {
     canvas.removeEventListener('mousemove', handleMouseMove);
     canvas.removeEventListener('click', handleClick);
+    simulation.on("tick", null);
   }
 
   _bubblesCanvas.canvas = function(_canvas) {
@@ -66,15 +64,10 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   }
 
+  // subs = [[userSubs], [commonSubs], [profileSubs]]
   _bubblesCanvas.subs = function(_) {
     if(!arguments.length) return subs;
     subs = _;
-    return _bubblesCanvas;
-  }
-
-  _bubblesCanvas.counts = function(_) {
-    if(!arguments.length) return counts;
-    counts = _;
     return _bubblesCanvas;
   }
 
@@ -90,25 +83,29 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   }
 
-  _bubblesCanvas.dimensions = function(_) {
-    if(!arguments.length) return dimensions;
-    dimensions = _;
+  _bubblesCanvas.size = function(_) {
+    if(!arguments.length) return size;
+    size = _;
     return _bubblesCanvas;
   }
 
   function initializeBubbles() {
-    bubbles = subs.map((sub) => {
-      const { x, y } = getPosition(sub);
-      return Bubble(ctx, {
-        id: sub.id,
-        subscriber: sub.subscriber,
-        x: dimensions[0]/2 + d3RandomNormal(0, 200)(),
-        y: dimensions[1]/2 + d3RandomNormal(0, 200)(),
-        fill: colors[sub.subscriber],
-        r: d3RandomNormal(6, .3)()
-      });
-    });
+    bubbles = [];
+    let groupedBubbles = subs.map((subsGroup, subscriberIndex) => (
+      subsGroup.map((sub, subIndex) => 
+        Bubble(ctx, {
+          ...sub,
+          hasThumb: subIndex < 20,
+          x: size[0]/2 + d3RandomNormal(0, 200)(),
+          y: size[1]/2 + d3RandomNormal(0, 200)(),
+          fill: colors[subscriberIndex],
+          r: sub.relevance * (maxRadius - minRadius) + minRadius,
+          subscriber: subscriberIndex
+        })
+      )
+    ));
 
+    groupedBubbles.forEach(group => bubbles = bubbles.concat(group));
     registerEvents();
     simulation.nodes(bubbles);
   }
@@ -127,7 +124,7 @@ function BubblesCanvas() {
 
   function render() {
     if(!canvas) return;
-    ctx.clearRect(0, 0, dimensions[0], dimensions[1]);
+    ctx.clearRect(0, 0, size[0], size[1]);
     bubbles && bubbles.forEach((bubble) => bubble.render());
   }
 
@@ -141,84 +138,34 @@ function BubblesCanvas() {
   }
 
   function getPosition(sub) {
-/*    let xOrigin = (sub.subscriber + 1) * dimensions[0] / 4;
-    let xOffset = d3RandomNormal(0, 100)();*/
     return {
-      x: (sub.subscriber + 1) * dimensions[0] / 4,
-      y: dimensions[1] / 2
+      x: (sub.subscriber + 1) * (size[0] - margins.left) / 4 + margins.left,
+      y: size[1] / 2
     }
   }
 
   function handleClick(e) {
-    let bubble = getBubbleUnderCursor(e);
+    let bubble = simulation.find(e.clientX, e.clientY, maxRadius);
     if(bubble)
       dispatch.call('click', null, bubble);
   }
 
   function handleMouseMove(e) {
-    let bubble = getBubbleUnderCursor(e);
+    let bubble = simulation.find(e.clientX, e.clientY, maxRadius);
     if(!bubble && !hoveredBubble) return;
     if(hoveredBubble && !bubble)
-      dispatch.call('mouseleave', hoveredBubble);
+      dispatch.call('mouseleave', null, hoveredBubble);
     else if(!hoveredBubble && bubble)
-      dispatch.call('mouseenter', bubble);
+      dispatch.call('mouseenter', null, bubble);
     else if(bubble.id !== hoveredBubble.id) {
-      dispatch.call('mouseleave', hoveredBubble);
-      dispatch.call('mouseenter', bubble);
+      dispatch.call('mouseleave', null, hoveredBubble);
+      dispatch.call('mouseenter', null, bubble);
     }
     hoveredBubble = bubble;
-  }
-
-  function getBubbleUnderCursor(e) {
-    for(let i=0; i<bubbles.length; i++) {
-      const bubble = bubbles[i];
-      const distance = getDistance({x: bubble.x, y: bubble.y}, {x: e.clientX, y: e.clientY});
-      if(distance < bubble.r) {
-        return bubble;
-        break;
-      }
-    }
   }
 
   return rebind(_bubblesCanvas, dispatch, 'on');
 }
 
 
-class SourcesBubbles extends Component {
-
-  componentDidMount() {
-    this.bubbles = BubblesCanvas();
-    this.updateVis();
-  }
-
-  componentDidUpdate() {
-    this.updateVis();
-  }
-
-  updateVis() {
-    let { subs, isUser, counts, dimensions } = this.props;
-    this.bubbles
-      .subs(subs)
-      .counts(counts)
-      .isUser(isUser)
-      .canvas(this.canvas)
-      .dimensions(dimensions)
-      .update();
-  }
-
-  render() {
-    let { dimensions } = this.props;
-
-    return (
-      <div>
-        <canvas 
-          width={dimensions[0]} 
-          height={dimensions[1]}
-          ref={canvas => this.canvas = canvas}></canvas>
-      </div>
-    )
-  }
-};
-
-
-export default SourcesBubbles;
+export default BubblesCanvas;

@@ -1,0 +1,40 @@
+.tooltip {
+  position: absolute;
+  left: 50%;
+  top: 200px;
+  transform: translateX(-50%);
+  max-width: 250px;
+  background-color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .2);
+  padding: 15px 20px;
+
+  &:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    bottom: -11px;
+    width: 14px;
+    height: 14px;
+    left: 50%;
+    transform: rotate(45deg) translateX(-50%);
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, .1);
+    background-color: inherit;
+  }
+
+  &--source {
+    text-align: center;
+  }
+}
+
+.tooltip__copy {
+
+}
+
+.tooltip__thumb {
+  height: 60px;
+  width: 60px;
+  margin: 0 auto 12px auto;
+  background-size: cover;
+  border-radius: 100%;
+  background-position: 50% 50%;
+}

@@ -118,7 +118,8 @@ const fetchFeed = (user, count) => {
         }
       })
       .value();
-    });
+    })
+    .catch(err => console.log("Twitter", err))
 }
 
 const fetchHomeTimeline = (user, count) => {

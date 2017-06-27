@@ -17,9 +17,16 @@ const receiveProfile = (data, id) => ({
   id
 });
 
+const receiveError = (data) => ({
+  type: 'RECEIVE_ERROR',
+  data
+});
+
 export const fetchUser = () => {
   return api.fetchUser().then(response => {
-    return receiveUser(response.data);
+    //if(response.status === "ok")
+      return receiveUser(response.data);
+    //return receiveError(response.data);
   })
 }
 

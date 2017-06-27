@@ -12,13 +12,14 @@ import ProfileFeed from './ProfileFeed.jsx';
 import ProfileSources from './ProfileSources.jsx';
 import Loader from 'app/components/common/Loader.jsx';
 import * as api from '../api';
+import { ui } from 'root/constants';
 
 import {
   Route,
   withRouter
 } from 'react-router-dom';
 
-const DRAWER_WIDTH = 350;
+const { DRAWER_WIDTH } = ui;
 
 class Profile extends Component {
 
@@ -28,19 +29,16 @@ class Profile extends Component {
     const profileId = this.props.match.params.id;
     const profile = _find(users, {id: profileId});
     const userProfile = _find(users, {id: user.login});
-    const isMe = user.login === profileId;
-
-    // reset feed ui to initial state and set all feed items to loaded: false
-    if(profile)
-      store.dispatch(actions.resetFeed(profile));
+    const isUser = user.login === profileId;
 
     store.dispatch(actions.setProfileVisited(profileId));
+    store.dispatch(actions.resetUi());
 
     // Bit of an annoying way to make sure the necessary things are
     // being loaded but not too much
     if(!userProfile || !userProfile.platforms)
       store.dispatch(actions.fetchProfile(user.login));
-    if((!profile || !profile.platforms) && !isMe)
+    if((!profile || !profile.platforms) && !isUser)
       store.dispatch(actions.fetchProfile(profileId));
   }
 
@@ -51,10 +49,10 @@ class Profile extends Component {
   render() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
-    const { match } = this.props;
+    const { match, location } = this.props;
     const profile = _find(users, {id: match.params.id});
     const userProfile = _find(users, {id: user.login});
-    let isMe = false;
+    let isUser = false;
     const baseProfilesLoaded = !!(profile && userProfile);
     const fullyLoaded = !!(baseProfilesLoaded && profile.subs && userProfile.subs)
 
@@ -63,7 +61,7 @@ class Profile extends Component {
     if(!baseProfilesLoaded) 
       return <Loader copy="Loading Profile"/>;
 
-    isMe = (user.login === profile.id);
+    isUser = (user.login === profile.id);
 
     return (
       <div>
@@ -75,13 +73,13 @@ class Profile extends Component {
           segments={[{key: "feed", label: "Feed"}, {key: "sources", label: "Sources"}]}/>
         <Sidebar 
           profile={profile} 
-          isMe={isMe}
+          isUser={isUser}
           onMenuClick={this.handleMenuClick.bind(this)} 
           drawer={ui.drawer} 
           offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'predictions') && <PredictionsDrawer />}
-          {(ui.drawer === 'user_settings') && <SettingsDrawer user={userProfile} currentPath={match.url} />}
+          {(ui.drawer === 'user_settings') && <SettingsDrawer user={userProfile} currentPath={location.pathname} />}
           {(ui.drawer === 'profile_sources') && <SourcesDrawer user={userProfile} />}
         </Drawer>
       </div>

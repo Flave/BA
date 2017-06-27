@@ -29,9 +29,9 @@ const optionsConfig = {
 }
 
 
-const Sidebar = ({ drawer, offset, isMe, profile, onMenuClick }) => {
-  const title = isMe ? <div>your<br/>internet</div> : <div>the internet of<br/>someone else</div>;
-  const options = isMe ? optionsConfig.user : optionsConfig.profile;
+const Sidebar = ({ drawer, offset, isUser, profile, onMenuClick }) => {
+  const title = isUser ? <div>your<br/>internet</div> : <div>the internet of<br/>someone else</div>;
+  const options = isUser ? optionsConfig.user : optionsConfig.profile;
   const elStyle = {
     transform: `translateX(${drawer ? offset : 0}px)`
   }

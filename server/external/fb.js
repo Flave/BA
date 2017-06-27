@@ -60,7 +60,7 @@ const fetchRankedSubs = (user) => {
     .then(pages => {
       return rankPages(pages);
     })
-    .catch(err => console.log(err));
+    .catch(err => console.log("Facebook", err));
 }
 
 // Ranks pages according to general popularity and currency of latest posts

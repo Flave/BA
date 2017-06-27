@@ -12,7 +12,8 @@
     }
   }
 
-  &.is-active {
+  &.is-active,
+  &.is-semi-active {
     color: $c-accent;
 
     .check__box {
@@ -31,10 +32,14 @@
 .check__box {
   display: inline-block;
   cursor: pointer;
-  width: 15px;
-  height: 15px;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-bottom;
   margin-right: 10px;
-  position: relative;
-  top: 2px;
   border: 1px solid rgba(0, 0, 0, .5);
+}
+
+.check__icon {
+  display: inline-block;
+  vertical-align: top;
 }

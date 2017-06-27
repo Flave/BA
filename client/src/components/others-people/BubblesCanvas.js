@@ -20,25 +20,29 @@ function BubblesCanvas() {
   let dispatch = d3Dispatch('click', 'mouseleave', 'mouseenter', 'transitionstart');
   let ctx;
   let dimensions;
-  let margins = {top: 0, right: 0, bobbotm: 0, left: 0};
+  let margins = {top: 20, right: 0, bottom: 20, left: 0};
   let data;
   let _bubblesCanvas = {};
   let bubbles;
   let user;
   let properties;
   let maxBubbleRadius = 50;
-  const strengthGenerator = d3RandomNormal(0.1, 0.03);
-  const collide = d3ForceCollide( function(d){return d.r - d.r * 0.1 });
-  const charge = d3ForceManyBody()
+  let minDist = 100;
+  let pixRatio = .16;
+  let invertPixRatio = 1 / pixRatio;
+  let pixDimensions;
+  // to have a natural movement...
+  const strengthGenerator = d3RandomNormal(0.02, 0.007);
+  const collide = d3ForceCollide( function(d){return d.r + d.r * 0.05 });
   const forceX = d3ForceX().strength(strengthGenerator).x((d) => d.targetX);
   const forceY = d3ForceY().strength(strengthGenerator).y((d) => d.targetY);
   let hoveredBubble = null;
 
   let simulation = d3ForceSimulation()
       .force("collide", collide)
-      .force("charge", charge)
       .force("x", forceX)
       .force("y", forceY)
+      .velocityDecay(0.2)
       .on("tick", render);
 
 
@@ -59,6 +63,9 @@ function BubblesCanvas() {
     if(!_canvas) return _bubblesCanvas;
     canvas = _canvas;
     ctx = canvas.getContext('2d');
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.imageSmoothingEnabled = false;
     return _bubblesCanvas;
   }
 
@@ -83,6 +90,7 @@ function BubblesCanvas() {
   _bubblesCanvas.dimensions = function(_) {
     if(!arguments.length) return dimensions;
     dimensions = _;
+    pixDimensions = [dimensions[0] * pixRatio, dimensions[1] * pixRatio];
     return _bubblesCanvas;
   }
 
@@ -95,31 +103,62 @@ function BubblesCanvas() {
   function initializeBubbles() {
     const getSimilarity = calculateSimilarity(user, data, properties);
 
-    bubbles = data.map((profile) => {
+    bubbles = data.map((profile, i) => {
       const similarity = getSimilarity(profile);
+      let angle = (Math.PI * 2) / data.length * i + d3RandomNormal(0, 0.1)();
+      let dist = Math.random() * 10 + 10;
+      let x = Math.cos(angle) * dist + pixDimensions[0]/2;
+      let y = Math.sin(angle) * dist + pixDimensions[1]/2;
 
       return Bubble(ctx, {
         id: profile.id,
-        x: dimensions[0] / 2,
-        y: dimensions[0] / 2,
-        angle: Math.random() * Math.PI * 2,
+        x: isUser(profile) ? pixDimensions[0] / 2 : x,
+        y: isUser(profile) ? pixDimensions[1] / 2 : y,
+        angle,
         fill: isUser(profile) ? "#3163FF" : "rgba(0, 0, 0, .3)",
-        r: Math.sqrt(similarity) * maxBubbleRadius + 2
+        r: (Math.sqrt(similarity) * maxBubbleRadius + 2) * pixRatio
       });
     });
     registerEvents();
     simulation.nodes(bubbles);
   }
 
-  function registerEvents() {
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('click', handleClick);
+  function updateBubbles() {
+    let selectedProperties = getSelectedProperties();
+    const getSimilarity = calculateSimilarity(user, data, selectedProperties);
+    const shorterSide = Math.min(...dimensions);
+    // TODO: margins need to be incoorporated correctly to account for height > width
+    const maxDist = shorterSide/2 - margins.top - margins.bottom;
+    const distScope = maxDist - minDist;
+    const centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
+
+    bubbles.forEach((bubble) => {
+      const profile = _find(data, {id: bubble.id});
+      const similarity = getSimilarity(profile);
+      const dist = maxDist - similarity * distScope;
+      let targetX = Math.cos(bubble.angle) * dist + centerX;
+      let targetY = Math.sin(bubble.angle) * dist + dimensions[1] / 2;
+
+      if(isUser(bubble)) {
+        targetX = centerX;
+        targetY = dimensions[1] / 2;
+      }
+
+      targetX *= pixRatio;
+      targetY *= pixRatio;
+      bubble.update({ targetX, targetY });
+    });
   }
 
   function render() {
     if(!canvas) return;
-    ctx.clearRect(0, 0, dimensions[0], dimensions[1]);
+
+    ctx.fillStyle = "#fff";
+    ctx.rect(0, 0, pixDimensions[0], pixDimensions[1]);
+    ctx.fill();
+
     bubbles && bubbles.forEach((bubble) => bubble.render());
+    ctx.drawImage(canvas, 0, 0, pixDimensions[0], pixDimensions[1], 0, 0, dimensions[0], dimensions[1]);
   }
 
   function restartSimulation() {
@@ -131,25 +170,14 @@ function BubblesCanvas() {
       .restart();
   }
 
-  function updateBubbles() {
-    let selectedProperties = properties.filter((property) => property.value);
-    selectedProperties = selectedProperties.length ? selectedProperties : properties;
-    const getSimilarity = calculateSimilarity(user, data, selectedProperties);
-    const maxRadius = dimensions[1]/2;
-    const centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
+  function getSelectedProperties() {
+    let selectedProperties = properties.filter((property) => property.value)
+    return selectedProperties.length ? selectedProperties : properties;
+  }
 
-    bubbles.forEach((bubble) => {
-      const profile = _find(data, {id: bubble.id});
-      const similarity = getSimilarity(profile);
-      const r = maxRadius - similarity * maxRadius;
-      let targetX = Math.cos(bubble.angle) * r + centerX;
-      let targetY = Math.sin(bubble.angle) * r + dimensions[1] / 2;
-      if(isUser(bubble)) {
-        targetX = centerX;
-        targetY = dimensions[1] / 2;
-      }
-      bubble.update({ targetX, targetY });
-    });
+  function registerEvents() {
+    canvas.addEventListener('mousemove', handleMouseMove);
+    canvas.addEventListener('click', handleClick);
   }
 
   function handleClick(e) {
@@ -175,8 +203,8 @@ function BubblesCanvas() {
   function getBubbleUnderCursor(e) {
     for(let i=0; i<bubbles.length; i++) {
       const bubble = bubbles[i];
-      const distance = getDistance({x: bubble.x, y: bubble.y}, {x: e.clientX, y: e.clientY});
-      if(distance < bubble.r) {
+      const distance = getDistance({x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y}, {x: e.clientX, y: e.clientY});
+      if(distance < bubble.r * invertPixRatio) {
         return bubble;
         break;
       }

@@ -1,0 +1,19 @@
+.subs-vis__label {
+  position: absolute;
+  bottom: 20%;
+  transition: all .3s;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.subs-vis__label-text {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.subs-vis__thumbs {
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}

@@ -35,3 +35,14 @@ export const getDistance = function(a, b) {
   var dy = a.y - b.y;
   return Math.sqrt( dx*dx + dy*dy );
 }
+
+const baseURLs = {
+  facebook: "https://www.facebook.com/",
+  twitter: "https://twitter.com/",
+  youtube: "https://www.youtube.com/",
+  instagram: "https://www.instagram.com/"
+}
+
+export const getSubURL = sub => {
+  return `${baseURLs[sub.platform]}${sub.username}`
+}

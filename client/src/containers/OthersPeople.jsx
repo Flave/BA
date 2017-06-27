@@ -4,17 +4,17 @@ import Sidebar from 'app/components/others-people/Sidebar.jsx';
 import BubblesCanvas from 'app/components/others-people/BubblesCanvas.js';
 import Drawer from 'app/components/Drawer.jsx';
 import Loader from 'app/components/common/Loader.jsx';
-import PixelFilter from 'app/components/common/PixelFilter.jsx';
 import Options from 'app/components/others-people/Options.jsx';
 import * as actions from 'app/actions';
 import _find from 'lodash/find';
+import { ui } from 'root/constants';
 
 import {
   withRouter,
   Route
 } from 'react-router-dom';
 
-const DRAWER_WIDTH = 350;
+const { DRAWER_WIDTH } = ui;
 
 class Others extends Component {
 
@@ -90,8 +90,7 @@ class Others extends Component {
           width={ui.windowDimensions[0]} 
           height={ui.windowDimensions[1]} 
           ref={(el) => this.bubbleContainer = el} 
-          className="bubbles" style={{filter: "url(#pixelate)"}}></canvas>
-        <PixelFilter />
+          className="bubbles"></canvas>
       </div>
     )
   }

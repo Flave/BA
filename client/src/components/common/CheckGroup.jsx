@@ -31,13 +31,16 @@ class Others extends Component {
 
   createCheck(value, option, handleClick) {
     const activeClass = value ? 'is-active' : '';
+    const iconClass = value ? 'icon-check' : '';
     return (
       <div 
         key={option.id} 
         className={`check ${activeClass}`}>
         <span 
           onClick={this.handleCheckClick.bind(this, {id: option.id, value: !value})} 
-          className="check__box"></span>
+          className="check__box">
+          <span className={`check__icon ${iconClass}`}></span>
+        </span>
         <span className="check__label">{option.label}</span>
       </div>
     )
@@ -47,6 +50,7 @@ class Others extends Component {
     const { group, options, values } = this.props;
     const { collapsed } = this.state;
     const activeClasses = ['', 'is-semi-active', 'is-active'];
+    const activeIcons = ['', 'icon-semi-check', 'icon-check'];
     let activityIndex = 0;
     // get the checked options
     const checkedOptions = values.filter((check) => check.value) || [];
@@ -60,7 +64,9 @@ class Others extends Component {
           className={`check check--header ${activeClasses[activityIndex]}`}>
           <span 
             onClick={this.handleGroupClick.bind(this, group, activityIndex)}  
-            className="check__box"></span>
+            className="check__box">
+            <span className={`check__icon ${activeIcons[activityIndex]}`}></span>
+          </span>
           <span className="check__label">{group.label}</span>
           <span 
             className={`check__collapse-icon icon-carret-${collapsed ? 'down' : 'up'}`}/>
