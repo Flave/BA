@@ -12,7 +12,7 @@ function _rebind(target, source, method) {
   };
 }
 
-export const getTranslation = function getTranslation(transform) {
+/*export const getTranslation = function getTranslation(transform) {
   // Create a dummy g for calculation purposes only. This will never
   // be appended to the DOM and will be discarded once this function 
   // returns.
@@ -28,7 +28,7 @@ export const getTranslation = function getTranslation(transform) {
   
   // As per definition values e and f are the ones for the translation.
   return [matrix.e, matrix.f];
-}
+}*/
 
 export const getDistance = function(a, b) {
   var dx = a.x - b.x;
@@ -45,4 +45,10 @@ const baseURLs = {
 
 export const getSubURL = sub => {
   return `${baseURLs[sub.platform]}${sub.username}`
+}
+
+// Returns
+export const getSelectedPredictions = predictions => {
+  let selectedPredictions = predictions.filter(prediction => prediction.value)
+  return selectedPredictions.length ? selectedPredictions : predictions;
 }

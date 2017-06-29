@@ -1,10 +1,12 @@
 import React from 'react';
+import Predictions from 'app/components/common/Predictions.jsx';
 
 const PredictionsDrawer = ({ isMe, profile }) => {
   return (
     <div className="drawer__content">
       <div className="drawer__section">
-        PREDICTIONS
+        Predictions
+        <Predictions profile={profile} modifiers={["profile"]}/>
       </div>
     </div>
   )

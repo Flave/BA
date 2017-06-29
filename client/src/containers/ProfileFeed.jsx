@@ -40,7 +40,7 @@ class Profile extends Component {
       <div>
         <Feed 
           itemsShown={ui.itemsShown}
-          batchStartIndex={ui.itemsShown - ui.itemsIncrement}
+          batchStartIndex={ui.lastItemsShown}
           loading={ui.feedLoading} 
           profile={profile} />
         {!ui.feedLoading && <LoadMoreBtn 

@@ -48,7 +48,7 @@ const getPrediction = (user) => {
         getNewToken()
           .then(getPrediction.bind(null, user))
           .then((predictions) => {
-            fulfill(predictions);
+            fulfill(processPredictions(response.body.predictions));
           });
       } else {
         log.red("Getting predictions failed!");

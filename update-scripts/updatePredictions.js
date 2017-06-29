@@ -1,7 +1,7 @@
-var configDB = require('./config/db');
+var configDB = require('../config/db');
 var mongoose = require('mongoose');
-var User = require('./server/models/user');
-var api = require('./server/api');
+var User = require('../server/models/user');
+var api = require('../server/api');
 mongoose.Promise = require('promise');
 mongoose.connect(configDB.url); // connect to our database
 

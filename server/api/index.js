@@ -20,7 +20,7 @@ const platformApis = {
 // Fetching the main feed for a profile
 const fetchFeed = (user) => {
   let promises = _.map(getConnectedPlatforms(user), platform => {
-    return platformApis[platform.id].fetchFeed(user, 6)
+    return platformApis[platform.id].fetchFeed(user, 12)
   });
   return Promise.all(promises)
     .then(_.flatten);

@@ -1,5 +1,5 @@
 import { dispatch as d3Dispatch } from 'd3-dispatch';
-import { rebind, getDistance } from '../../utility';
+import { rebind, getDistance, getSelectedPredictions } from '../../utility';
 import { forceSimulation as d3ForceSimulation } from 'd3-force';
 import { forceCollide as d3ForceCollide } from 'd3-force';
 import { forceManyBody as d3ForceManyBody } from 'd3-force';
@@ -28,7 +28,7 @@ function BubblesCanvas() {
   let properties;
   let maxBubbleRadius = 50;
   let minDist = 100;
-  let pixRatio = .16;
+  let pixRatio = .1;
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
@@ -46,7 +46,7 @@ function BubblesCanvas() {
       .on("tick", render);
 
 
-  _bubblesCanvas.update = function(_canvas) {
+  _bubblesCanvas.update = function() {
     if(!data || !canvas) return;
     if(!bubbles) initializeBubbles();
     updateBubbles();
@@ -100,6 +100,7 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   }
 
+
   function initializeBubbles() {
     const getSimilarity = calculateSimilarity(user, data, properties);
 
@@ -124,7 +125,7 @@ function BubblesCanvas() {
   }
 
   function updateBubbles() {
-    let selectedProperties = getSelectedProperties();
+    let selectedProperties = getSelectedPredictions(properties);
     const getSimilarity = calculateSimilarity(user, data, selectedProperties);
     const shorterSide = Math.min(...dimensions);
     // TODO: margins need to be incoorporated correctly to account for height > width
@@ -170,40 +171,46 @@ function BubblesCanvas() {
       .restart();
   }
 
-  function getSelectedProperties() {
-    let selectedProperties = properties.filter((property) => property.value)
-    return selectedProperties.length ? selectedProperties : properties;
-  }
-
   function registerEvents() {
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('click', handleClick);
   }
 
   function handleClick(e) {
-    let bubble = getBubbleUnderCursor(e);
+    let bubble = getBubbleUnderCursor({x: e.clientX, y: e.clientY});
     if(bubble)
       dispatch.call('click', null, bubble);
   }
 
   function handleMouseMove(e) {
-    let bubble = getBubbleUnderCursor(e);
+    let bubble = getBubbleUnderCursor({x: e.clientX, y: e.clientY});
     if(!bubble && !hoveredBubble) return;
     if(hoveredBubble && !bubble)
-      dispatch.call('mouseleave', hoveredBubble);
+      dispatch.call('mouseleave', null, unprojectBubble(hoveredBubble));
     else if(!hoveredBubble && bubble)
-      dispatch.call('mouseenter', bubble);
+      dispatch.call('mouseenter', null, unprojectBubble(bubble));
     else if(bubble.id !== hoveredBubble.id) {
-      dispatch.call('mouseleave', hoveredBubble);
-      dispatch.call('mouseenter', bubble);
+      dispatch.call('mouseleave', null, unprojectBubble(hoveredBubble));
+      dispatch.call('mouseenter', null, unprojectBubble(bubble));
     }
     hoveredBubble = bubble;
   }
 
-  function getBubbleUnderCursor(e) {
+
+  // Returns a bubble with "real world canvas" properties
+  function unprojectBubble(bubble) {
+    return {
+      ...bubble,
+      x: bubble.x * invertPixRatio,
+      y: bubble.y * invertPixRatio,
+      r: bubble.r * invertPixRatio
+    }
+  }
+
+  function getBubbleUnderCursor(cursorPosition) {
     for(let i=0; i<bubbles.length; i++) {
       const bubble = bubbles[i];
-      const distance = getDistance({x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y}, {x: e.clientX, y: e.clientY});
+      const distance = getDistance({x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y}, cursorPosition);
       if(distance < bubble.r * invertPixRatio) {
         return bubble;
         break;

@@ -20,6 +20,7 @@
     "cookie-parser": "^1.4.3",
     "d3-array": "^1.2.0",
     "d3-dispatch": "^1.0.3",
+    "d3-drag": "^1.1.0",
     "d3-force": "^1.0.6",
     "d3-quadtree": "^1.0.3",
     "d3-random": "^1.1.0",
@@ -55,6 +56,7 @@
     "redux": "^3.6.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
+    "seedrandom": "^2.4.3",
     "shortid": "^2.2.8",
     "twitter": "^1.7.0"
   },

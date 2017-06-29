@@ -77,7 +77,7 @@ class Profile extends Component {
           drawer={ui.drawer} 
           offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
-          {(ui.drawer === 'predictions') && <PredictionsDrawer />}
+          {(ui.drawer === 'predictions') && <PredictionsDrawer profile={profile}/>}
           {(ui.drawer === 'user_settings') && <SettingsDrawer user={userProfile} currentPath={location.pathname} />}
         </Drawer>
       </div>

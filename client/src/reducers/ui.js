@@ -13,8 +13,9 @@ const initialState = {
       id === 'age' ? {id, value: true} : {id, value: false}
     )
   ),
-  itemsShown: 4,
-  itemsIncrement: 4,
+  itemsShown: 5,
+  lastItemsShown: 0,
+  itemsIncrement: 5,
   maxItems: null,
   userCount: Infinity,
 
@@ -29,7 +30,11 @@ export default (state = initialState, action) => {
     case 'SET_WINDOW_DIMENSIONS':
       return {
         ...state,
-        windowDimensions: action.dimensions
+        windowDimensions: action.dimensions,
+        canvasDimensions: {
+          ...state.canvasDimensions,
+          width: action.dimensions[0] - state.canvasDimensions.left
+        }
       }
 
     case 'TOGGLE_DRAWER':
@@ -56,8 +61,8 @@ export default (state = initialState, action) => {
     case 'SHOW_MORE_ITEMS':
       return {
         ...state,
-        itemsShown: increaseItemsShown(state),
-        feedLoading: true
+        feedLoading: true,
+        ...increaseItemsShown(state)
       }
 
     case 'RECEIVE_PROFILE':
@@ -77,6 +82,7 @@ export default (state = initialState, action) => {
         ...state,
         feedLoading: true,
         itemsShown: initialState.itemsShown,
+        lastItemsShown: initialState.lastItemsShown,
         maxItems: action.profile && action.profile.feed ? action.profile.feed.length : null
       };
     default:
@@ -101,7 +107,9 @@ function toggleDrawer(state, { id }) {
 
 function setFeedLoading(state, { profile }) {
   const loadedItems = profile.feed.filter(item => item.loaded);
-  return loadedItems.length < state.itemsShown - 1;
+  const allItemsLoaded = loadedItems.length === state.maxItems - 1;
+  const batchLoading = loadedItems.length < state.itemsShown - 1;
+  return batchLoading && !allItemsLoaded;
 }
 
 function setOthersPeopleOptions(state, action) {
@@ -112,5 +120,8 @@ function setOthersPeopleOptions(state, action) {
 }
 
 function increaseItemsShown({ itemsShown, maxItems, itemsIncrement }) {
-  return (itemsShown + itemsIncrement) > maxItems ? maxItems : itemsShown + itemsIncrement;
+  return {
+    itemsShown: (itemsShown + itemsIncrement) > maxItems ? maxItems : itemsShown + itemsIncrement,
+    lastItemsShown: itemsShown
+  }
 }

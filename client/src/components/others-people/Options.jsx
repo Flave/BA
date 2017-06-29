@@ -24,7 +24,7 @@ class Others extends Component {
     return (
       <div className="drawer__content">
         <div className="drawer__section">
-          {predictionGroups.map((group) => {
+          {predictionGroups.map((group, i) => {
             // get all ticks that belong to this group
             const groupValues = group.properties.map((property) => {
               return _find(ui.othersPeopleOptions, {'id': property})

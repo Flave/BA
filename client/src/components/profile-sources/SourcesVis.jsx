@@ -16,8 +16,8 @@ function BubblesCanvas() {
   let size;
   let margins = {top: 0, right: 0, bobbotm: 0, left: 0};
   let subs;
-  let maxRadius = 15;
-  let minRadius = 5;
+  let maxRadius = 25;
+  let minRadius = 2;
   let _bubblesCanvas = {};
   let bubbles;
 
@@ -91,19 +91,20 @@ function BubblesCanvas() {
 
   function initializeBubbles() {
     bubbles = [];
-    let groupedBubbles = subs.map((subsGroup, subscriberIndex) => (
-      subsGroup.map((sub, subIndex) => 
+    let groupedBubbles = subs.map((subsGroup, subscriberIndex) => {
+      const colIndex = isUser && (subscriberIndex === 1) ? 0 : subscriberIndex;
+      return subsGroup.map((sub, subIndex) => 
         Bubble(ctx, {
           ...sub,
           hasThumb: subIndex < 20,
           x: size[0]/2 + d3RandomNormal(0, 200)(),
           y: size[1]/2 + d3RandomNormal(0, 200)(),
-          fill: colors[subscriberIndex],
+          fill: colors[colIndex],
           r: sub.relevance * (maxRadius - minRadius) + minRadius,
           subscriber: subscriberIndex
         })
       )
-    ));
+    });
 
     groupedBubbles.forEach(group => bubbles = bubbles.concat(group));
     registerEvents();

@@ -6768,11 +6768,9 @@ module.exports = [
 
 /***/ }),
 /* 76 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony default export */ __webpack_exports__["default"] = ([
+module.exports = [
   {
     'id': 'general',
     'label': 'General',
@@ -6816,7 +6814,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       'big5_extraversion'
     ]
   }
-]);
+]
 
 /***/ }),
 /* 77 */
@@ -11047,8 +11045,8 @@ module.exports = function bind(fn, thisArg) {
 
 
 var options = [{
-  id: 'Predictions',
-  label: 'predictions'
+  id: 'options',
+  label: 'Predictions'
 }, {
   id: 'info',
   label: 'Info'
@@ -11115,9 +11113,9 @@ var Sidebar = function Sidebar(_ref) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return rebind; });
-/* unused harmony export getTranslation */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getDistance; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getDistance; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getSubURL; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getSelectedPredictions; });
 // Copies a variable number of methods from source to target.
 var rebind = function rebind(target, source) {
   var i = 1,
@@ -11135,23 +11133,23 @@ function _rebind(target, source, method) {
   };
 }
 
-var getTranslation = function getTranslation(transform) {
+/*export const getTranslation = function getTranslation(transform) {
   // Create a dummy g for calculation purposes only. This will never
   // be appended to the DOM and will be discarded once this function 
   // returns.
   var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-
+  
   // Set the transform attribute to the provided string value.
   g.setAttributeNS(null, "transform", transform);
-
+  
   // consolidate the SVGTransformList containing all transformations
   // to a single SVGTransform of type SVG_TRANSFORM_MATRIX and get
   // its SVGMatrix. 
   var matrix = g.transform.baseVal.consolidate().matrix;
-
+  
   // As per definition values e and f are the ones for the translation.
   return [matrix.e, matrix.f];
-};
+}*/
 
 var getDistance = function getDistance(a, b) {
   var dx = a.x - b.x;
@@ -11168,6 +11166,14 @@ var baseURLs = {
 
 var getSubURL = function getSubURL(sub) {
   return "" + baseURLs[sub.platform] + sub.username;
+};
+
+// Returns
+var getSelectedPredictions = function getSelectedPredictions(predictions) {
+  var selectedPredictions = predictions.filter(function (prediction) {
+    return prediction.value;
+  });
+  return selectedPredictions.length ? selectedPredictions : predictions;
 };
 
 /***/ }),
@@ -18695,19 +18701,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var Others = function (_Component) {
-  _inherits(Others, _Component);
+var CheckGroup = function (_Component) {
+  _inherits(CheckGroup, _Component);
 
-  function Others(props) {
-    _classCallCheck(this, Others);
+  function CheckGroup(props) {
+    _classCallCheck(this, CheckGroup);
 
-    var _this = _possibleConstructorReturn(this, (Others.__proto__ || Object.getPrototypeOf(Others)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (CheckGroup.__proto__ || Object.getPrototypeOf(CheckGroup)).call(this, props));
 
     _this.state = { collapsed: true };
     return _this;
   }
 
-  _createClass(Others, [{
+  _createClass(CheckGroup, [{
     key: 'handleGroupClick',
     value: function handleGroupClick(_ref, activityIndex, event) {
       var properties = _ref.properties;
@@ -18768,7 +18774,8 @@ var Others = function (_Component) {
       var _props = this.props,
           group = _props.group,
           options = _props.options,
-          values = _props.values;
+          values = _props.values,
+          isOpen = _props.isOpen;
       var collapsed = this.state.collapsed;
 
       var activeClasses = ['', 'is-semi-active', 'is-active'];
@@ -18811,12 +18818,16 @@ var Others = function (_Component) {
     }
   }]);
 
-  return Others;
+  return CheckGroup;
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 ;
 
-/* harmony default export */ __webpack_exports__["a"] = (Others);
+CheckGroup.defaultProps = {
+  isOpen: false
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (CheckGroup);
 
 /***/ }),
 /* 265 */
@@ -19117,14 +19128,24 @@ var Tooltip = function (_Component) {
   _createClass(Tooltip, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-      var position = this.props.position;
+      var _props = this.props,
+          position = _props.position,
+          offset = _props.offset;
       var root = this.root;
 
       var width = root.clientWidth;
       var height = root.clientHeight;
+      var top = position.y - height + offset.y;
+      var className = "tooltip--top";
+
+      if (top < 0) {
+        top = top < 0 ? position.y - offset.y : top;
+        className = "tooltip--bottom";
+      }
 
       root.style.left = position.x + "px";
-      root.style.top = position.y - height - 20 + "px";
+      root.style.top = top + "px";
+      root.classList.add(className);
     }
   }, {
     key: "render",
@@ -19133,10 +19154,10 @@ var Tooltip = function (_Component) {
 
       var modifiers = this.props.modifiers.map(function (modifier) {
         return "tooltip--" + modifier;
-      });
+      }).join(" ");
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         "div",
-        { className: "tooltip " + modifiers.join(" "), ref: function ref(root) {
+        { className: "tooltip " + modifiers, ref: function ref(root) {
             return _this2.root = root;
           } },
         this.props.children
@@ -19148,7 +19169,8 @@ var Tooltip = function (_Component) {
 }(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
 
 Tooltip.defaultProps = {
-  modifiers: []
+  modifiers: [],
+  offset: { x: 0, y: -20 }
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (Tooltip);
@@ -19353,7 +19375,13 @@ var FecebookPost = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_root_constants_predictions__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_root_constants_predictions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_root_constants_predictions__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants_predictionGroups__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants_predictionGroups___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_root_constants_predictionGroups__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_utility__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_seedrandom__ = __webpack_require__(688);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_seedrandom___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_seedrandom__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+
 
 
 
@@ -19373,6 +19401,7 @@ function Bubble(ctx, options) {
   var bubble = _extends({}, options);
   var duration = 1000;
   var delay = 0;
+  var random = new Math.seedrandom(bubble.id);
 
   bubble.update = function (_ref) {
     var targetX = _ref.targetX,
@@ -19387,11 +19416,44 @@ function Bubble(ctx, options) {
   bubble.render = function () {
     ctx.save();
     ctx.translate(bubble.x, bubble.y);
-    addDimension(polarPosition({ x: 0, y: 0 }, bubble.r, .5, .8), bubble.r * 1.5, 0, 0, cols[0]);
-    /*    addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .2), bubble.r * 1.8, 0, 0, cols[1])
-        addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .5), bubble.r * 1.2, 0, 0, cols[2])*/
+    ctx.beginPath();
+    ctx.fillStyle = bubble.fill;
+    ctx.arc(0, 0, Math.floor(bubble.r), 0, 2 * Math.PI);
+    ctx.fill();
     ctx.restore();
   };
+
+  // bubble.render = function() {
+  //   const centerX = Math.floor(bubble.x);
+  //   const centerY = Math.floor(bubble.y);
+  //   const radius = Math.floor(bubble.r);
+
+  //   ctx.save();
+  //   ctx.translate(centerX, centerY);
+
+  //   for(let x = -radius; x < radius; x++) {
+  //     for(let y = -radius; y < radius; y++) {
+  //       const dist = Math.floor(getDistance({x: 0, y: 0}, {x, y}));// Math.sqrt(Math.pow(centerX - x, 2), Math.pow(centerY - y, 2));
+
+  //       if(dist < radius) {
+  //         Math.seedrandom(`${bubble.id}-${x}-${y}`);
+  //         ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * .1 + .6})`;
+  //         ctx.fillRect(x, y, 1, 1);
+  //       }
+  //     }
+  //   }
+  //   ctx.restore();    
+  // }
+
+  // bubble.render = function() {
+  //   ctx.save();
+  //   ctx.translate(Math.floor(bubble.x), Math.floor(bubble.y));
+  //   addDimension(polarPosition({x:0, y:0}, bubble.r, .5, .8), bubble.r * 1.5, 0, 0, cols[0])
+  //   // addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .2), bubble.r * 1.8, 0, 0, cols[1])
+  //   // addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .5), bubble.r * 1.2, 0, 0, cols[2])
+  //   ctx.restore();
+  // }
+
 
   // draws a circle at position 0 0 with a gradient that starts at the point specified
   // by rOffset and angleOffset and ends in center
@@ -19479,7 +19541,7 @@ function BubblesCanvas() {
   var properties = void 0;
   var maxBubbleRadius = 50;
   var minDist = 100;
-  var pixRatio = .16;
+  var pixRatio = .1;
   var invertPixRatio = 1 / pixRatio;
   var pixDimensions = void 0;
   // to have a natural movement...
@@ -19497,7 +19559,7 @@ function BubblesCanvas() {
 
   var simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["e" /* forceSimulation */])().force("collide", collide).force("x", forceX).force("y", forceY).velocityDecay(0.2).on("tick", render);
 
-  _bubblesCanvas.update = function (_canvas) {
+  _bubblesCanvas.update = function () {
     if (!data || !canvas) return;
     if (!bubbles) initializeBubbles();
     updateBubbles();
@@ -19575,7 +19637,7 @@ function BubblesCanvas() {
   }
 
   function updateBubbles() {
-    var selectedProperties = getSelectedProperties();
+    var selectedProperties = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utility__["c" /* getSelectedPredictions */])(properties);
     var getSimilarity = calculateSimilarity(user, data, selectedProperties);
     var shorterSide = Math.min.apply(Math, _toConsumableArray(dimensions));
     // TODO: margins need to be incoorporated correctly to account for height > width
@@ -19618,37 +19680,39 @@ function BubblesCanvas() {
     simulation.alpha(1).alphaTarget(0).force("x", forceX).force("y", forceY).restart();
   }
 
-  function getSelectedProperties() {
-    var selectedProperties = properties.filter(function (property) {
-      return property.value;
-    });
-    return selectedProperties.length ? selectedProperties : properties;
-  }
-
   function registerEvents() {
     canvas.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('click', handleClick);
   }
 
   function handleClick(e) {
-    var bubble = getBubbleUnderCursor(e);
+    var bubble = getBubbleUnderCursor({ x: e.clientX, y: e.clientY });
     if (bubble) dispatch.call('click', null, bubble);
   }
 
   function handleMouseMove(e) {
-    var bubble = getBubbleUnderCursor(e);
+    var bubble = getBubbleUnderCursor({ x: e.clientX, y: e.clientY });
     if (!bubble && !hoveredBubble) return;
-    if (hoveredBubble && !bubble) dispatch.call('mouseleave', hoveredBubble);else if (!hoveredBubble && bubble) dispatch.call('mouseenter', bubble);else if (bubble.id !== hoveredBubble.id) {
-      dispatch.call('mouseleave', hoveredBubble);
-      dispatch.call('mouseenter', bubble);
+    if (hoveredBubble && !bubble) dispatch.call('mouseleave', null, unprojectBubble(hoveredBubble));else if (!hoveredBubble && bubble) dispatch.call('mouseenter', null, unprojectBubble(bubble));else if (bubble.id !== hoveredBubble.id) {
+      dispatch.call('mouseleave', null, unprojectBubble(hoveredBubble));
+      dispatch.call('mouseenter', null, unprojectBubble(bubble));
     }
     hoveredBubble = bubble;
   }
 
-  function getBubbleUnderCursor(e) {
+  // Returns a bubble with "real world canvas" properties
+  function unprojectBubble(bubble) {
+    return _extends({}, bubble, {
+      x: bubble.x * invertPixRatio,
+      y: bubble.y * invertPixRatio,
+      r: bubble.r * invertPixRatio
+    });
+  }
+
+  function getBubbleUnderCursor(cursorPosition) {
     for (var i = 0; i < bubbles.length; i++) {
       var bubble = bubbles[i];
-      var distance = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utility__["c" /* getDistance */])({ x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y }, { x: e.clientX, y: e.clientY });
+      var distance = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__utility__["d" /* getDistance */])({ x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y }, cursorPosition);
       if (distance < bubble.r * invertPixRatio) {
         return bubble;
         break;
@@ -19703,6 +19767,7 @@ function BubblesCanvas() {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_find__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_root_constants_predictionGroups__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_root_constants_predictionGroups___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_root_constants_predictionGroups__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_root_constants_predictions__ = __webpack_require__(41);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_root_constants_predictions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_root_constants_predictions__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_common_CheckGroup_jsx__ = __webpack_require__(264);
@@ -19755,7 +19820,7 @@ var Others = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           { className: 'drawer__section' },
-          __WEBPACK_IMPORTED_MODULE_4_root_constants_predictionGroups__["default"].map(function (group) {
+          __WEBPACK_IMPORTED_MODULE_4_root_constants_predictionGroups___default.a.map(function (group, i) {
             // get all ticks that belong to this group
             var groupValues = group.properties.map(function (property) {
               return __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(ui.othersPeopleOptions, { 'id': property });
@@ -20001,6 +20066,8 @@ Feed.contextTypes = {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_app_components_common_Predictions_jsx__ = __webpack_require__(685);
+
 
 
 var PredictionsDrawer = function PredictionsDrawer(_ref) {
@@ -20008,12 +20075,13 @@ var PredictionsDrawer = function PredictionsDrawer(_ref) {
       profile = _ref.profile;
 
   return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    "div",
-    { className: "drawer__content" },
+    'div',
+    { className: 'drawer__content' },
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "div",
-      { className: "drawer__section" },
-      "PREDICTIONS"
+      'div',
+      { className: 'drawer__section' },
+      'Predictions',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_app_components_common_Predictions_jsx__["a" /* default */], { profile: profile, modifiers: ["profile"] })
     )
   );
 };
@@ -20206,7 +20274,7 @@ var SettingsDrawer = function (_Component) {
 var optionsConfig = {
   user: [{
     id: 'user_settings',
-    label: 'Settings'
+    label: 'Your Profile'
   }, {
     id: 'predictions',
     label: 'Predictions'
@@ -20402,8 +20470,8 @@ function BubblesCanvas() {
   var size = void 0;
   var margins = { top: 0, right: 0, bobbotm: 0, left: 0 };
   var subs = void 0;
-  var maxRadius = 15;
-  var minRadius = 5;
+  var maxRadius = 25;
+  var minRadius = 2;
   var _bubblesCanvas = {};
   var bubbles = void 0;
 
@@ -20474,12 +20542,13 @@ function BubblesCanvas() {
   function initializeBubbles() {
     bubbles = [];
     var groupedBubbles = subs.map(function (subsGroup, subscriberIndex) {
+      var colIndex = isUser && subscriberIndex === 1 ? 0 : subscriberIndex;
       return subsGroup.map(function (sub, subIndex) {
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__Bubble__["a" /* default */])(ctx, _extends({}, sub, {
           hasThumb: subIndex < 20,
           x: size[0] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
           y: size[1] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
-          fill: colors[subscriberIndex],
+          fill: colors[colIndex],
           r: sub.relevance * (maxRadius - minRadius) + minRadius,
           subscriber: subscriberIndex
         }));
@@ -20692,13 +20761,17 @@ Others.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_components_others_people_BubblesCanvas_js__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_components_common_Loader_jsx__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_others_people_Options_jsx__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_actions__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash_find__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_lodash_find__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_root_constants__ = __webpack_require__(74);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_root_constants__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_react_router_dom__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_common_Tooltip_jsx__ = __webpack_require__(268);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_components_common_Predictions_jsx__ = __webpack_require__(685);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_app_components_others_people_Options_jsx__ = __webpack_require__(273);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_app_components_others_people_Info_jsx__ = __webpack_require__(697);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_utility__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_actions__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_lodash_find__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_root_constants__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_react_router_dom__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20720,7 +20793,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_9_root_constants__["ui"].DRAWER_WIDTH;
+
+
+
+
+var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_13_root_constants__["ui"].DRAWER_WIDTH;
 
 var Others = function (_Component) {
   _inherits(Others, _Component);
@@ -20731,12 +20808,17 @@ var Others = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Others.__proto__ || Object.getPrototypeOf(Others)).call(this, props));
 
     _this.bubblesCanvas = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_app_components_others_people_BubblesCanvas_js__["a" /* default */])();
+    _this.state = {
+      hoveredBubble: null
+    };
     return _this;
   }
 
   _createClass(Others, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
+      var _this2 = this;
+
       var store = this.context.store;
 
       var _store$getState = store.getState(),
@@ -20749,14 +20831,14 @@ var Others = function (_Component) {
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_7_app_actions__["d" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["d" /* resetUi */]());
       // if user landed on profile there will be already 1-2 profiles
-      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_7_app_actions__["j" /* fetchAll */]());
+      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["j" /* fetchAll */]());
 
-      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function () {
-        return console.log('mouseenter');
+      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
+        return _this2.setState({ hoveredBubble: hoveredBubble });
       }).on('mouseleave', function () {
-        return console.log('mouseleave');
+        return _this2.setState({ hoveredBubble: null });
       });
     }
   }, {
@@ -20767,7 +20849,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleTransitionStart',
     value: function handleTransitionStart() {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_7_app_actions__["d" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["d" /* resetUi */]());
     }
   }, {
     key: 'componentDidUpdate',
@@ -20781,24 +20863,49 @@ var Others = function (_Component) {
 
       var allLoaded = users && users.length === ui.userCount;
 
-      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_8_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
+      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
     }
   }, {
-    key: 'handleMenuClick',
-    value: function handleMenuClick(menuId) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_7_app_actions__["f" /* toggleDrawer */](menuId));
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      var _this2 = this;
-
+    key: 'createTooltip',
+    value: function createTooltip() {
       var store = this.context.store;
 
       var _store$getState3 = store.getState(),
           users = _store$getState3.users,
-          user = _store$getState3.user,
           ui = _store$getState3.ui;
+
+      var hoveredBubble = this.state.hoveredBubble;
+
+      var profile = __WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: hoveredBubble.id });
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        __WEBPACK_IMPORTED_MODULE_6_app_components_common_Tooltip_jsx__["a" /* default */],
+        {
+          modifiers: ["dark", "predictions"],
+          position: { x: hoveredBubble.x, y: hoveredBubble.y },
+          offset: { x: 0, y: -hoveredBubble.r - 11 } },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_app_components_common_Predictions_jsx__["a" /* default */], {
+          modifiers: ["tooltip"],
+          predictionsSelection: ui.othersPeopleOptions,
+          profile: profile })
+      );
+    }
+  }, {
+    key: 'handleMenuClick',
+    value: function handleMenuClick(menuId) {
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["f" /* toggleDrawer */](menuId));
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this3 = this;
+
+      var store = this.context.store;
+
+      var _store$getState4 = store.getState(),
+          users = _store$getState4.users,
+          user = _store$getState4.user,
+          ui = _store$getState4.ui;
 
       var allLoaded = users && users.length === ui.userCount;
 
@@ -20811,16 +20918,18 @@ var Others = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__["a" /* default */],
           { width: DRAWER_WIDTH, isOpen: ui.drawer },
-          ui.drawer === 'options' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_app_components_others_people_Options_jsx__["a" /* default */], null)
+          ui.drawer === 'options' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_app_components_others_people_Options_jsx__["a" /* default */], null),
+          ui.drawer === 'info' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_app_components_others_people_Info_jsx__["a" /* default */], null)
         ),
         !allLoaded && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_common_Loader_jsx__["a" /* default */], { copy: 'Loading remaining users' }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('canvas', {
           width: ui.windowDimensions[0],
           height: ui.windowDimensions[1],
           ref: function ref(el) {
-            return _this2.bubbleContainer = el;
+            return _this3.bubbleContainer = el;
           },
-          className: 'bubbles' })
+          className: 'bubbles' }),
+        this.state.hoveredBubble && this.createTooltip()
       );
     }
   }]);
@@ -20834,7 +20943,7 @@ Others.contextTypes = {
   store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10_react_router_dom__["d" /* withRouter */])(Others));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_14_react_router_dom__["d" /* withRouter */])(Others));
 
 /***/ }),
 /* 285 */
@@ -20967,7 +21076,7 @@ var Profile = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__["a" /* default */],
           { width: DRAWER_WIDTH, isOpen: ui.drawer },
-          ui.drawer === 'predictions' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_app_components_profile_feed_PredictionsDrawer_jsx__["a" /* default */], null),
+          ui.drawer === 'predictions' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_app_components_profile_feed_PredictionsDrawer_jsx__["a" /* default */], { profile: profile }),
           ui.drawer === 'user_settings' && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_app_components_profile_feed_SettingsDrawer_jsx__["a" /* default */], { user: userProfile, currentPath: location.pathname })
         )
       );
@@ -21067,7 +21176,7 @@ var Profile = function (_Component) {
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_profile_feed_Feed_jsx__["a" /* default */], {
           itemsShown: ui.itemsShown,
-          batchStartIndex: ui.itemsShown - ui.itemsIncrement,
+          batchStartIndex: ui.lastItemsShown,
           loading: ui.feedLoading,
           profile: profile }),
         !ui.feedLoading && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_app_components_profile_feed_LoadMoreBtn_jsx__["a" /* default */], {
@@ -21477,8 +21586,9 @@ var initialState = {
     var id = _ref.id;
     return id === 'age' ? { id: id, value: true } : { id: id, value: false };
   }),
-  itemsShown: 4,
-  itemsIncrement: 4,
+  itemsShown: 5,
+  lastItemsShown: 0,
+  itemsIncrement: 5,
   maxItems: null,
   userCount: Infinity,
 
@@ -21495,7 +21605,10 @@ var initialState = {
   switch (action.type) {
     case 'SET_WINDOW_DIMENSIONS':
       return _extends({}, state, {
-        windowDimensions: action.dimensions
+        windowDimensions: action.dimensions,
+        canvasDimensions: _extends({}, state.canvasDimensions, {
+          width: action.dimensions[0] - state.canvasDimensions.left
+        })
       });
 
     case 'TOGGLE_DRAWER':
@@ -21518,9 +21631,8 @@ var initialState = {
 
     case 'SHOW_MORE_ITEMS':
       return _extends({}, state, {
-        itemsShown: increaseItemsShown(state),
         feedLoading: true
-      });
+      }, increaseItemsShown(state));
 
     case 'RECEIVE_PROFILE':
       return _extends({}, state, {
@@ -21536,6 +21648,7 @@ var initialState = {
       return _extends({}, state, {
         feedLoading: true,
         itemsShown: initialState.itemsShown,
+        lastItemsShown: initialState.lastItemsShown,
         maxItems: action.profile && action.profile.feed ? action.profile.feed.length : null
       });
     default:
@@ -21564,7 +21677,9 @@ function setFeedLoading(state, _ref3) {
   var loadedItems = profile.feed.filter(function (item) {
     return item.loaded;
   });
-  return loadedItems.length < state.itemsShown - 1;
+  var allItemsLoaded = loadedItems.length === state.maxItems - 1;
+  var batchLoading = loadedItems.length < state.itemsShown - 1;
+  return batchLoading && !allItemsLoaded;
 }
 
 function setOthersPeopleOptions(state, action) {
@@ -21579,7 +21694,10 @@ function increaseItemsShown(_ref4) {
       maxItems = _ref4.maxItems,
       itemsIncrement = _ref4.itemsIncrement;
 
-  return itemsShown + itemsIncrement > maxItems ? maxItems : itemsShown + itemsIncrement;
+  return {
+    itemsShown: itemsShown + itemsIncrement > maxItems ? maxItems : itemsShown + itemsIncrement,
+    lastItemsShown: itemsShown
+  };
 }
 
 /***/ }),
@@ -23720,7 +23838,7 @@ exports = module.exports = __webpack_require__(295)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(177) + ");\n  src: url(" + __webpack_require__(177) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(447) + ") format(\"truetype\"), url(" + __webpack_require__(448) + ") format(\"woff\"), url(" + __webpack_require__(446) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"Inconsolata\", monospace; }\n\na {\n  color: #2E2E2E; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  bottom: 20%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center; }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 18px;\n  margin-bottom: 5px; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    color: #3163FF; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      border: 1px solid #3163FF; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right;\n  cursor: pointer; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 1px solid rgba(0, 0, 0, 0.5); }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: absolute;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip--source {\n    text-align: center; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.intro {\n  text-align: center;\n  max-width: 900px;\n  margin: 0 auto; }\n\n.intro__slide {\n  padding-top: 200px; }\n\n.intro__lead {\n  font-size: 38px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"Inconsolata\", monospace;\n  border-radius: 24px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #4962B5;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: -moz-linear-gradient(left, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(177) + ");\n  src: url(" + __webpack_require__(177) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(447) + ") format(\"truetype\"), url(" + __webpack_require__(448) + ") format(\"woff\"), url(" + __webpack_require__(446) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"Inconsolata\", monospace; }\n\na {\n  color: #2E2E2E; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  bottom: 20%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center; }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 18px;\n  margin-bottom: 5px; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    color: #3163FF; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      border: 1px solid #3163FF; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right;\n  cursor: pointer; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 1px solid rgba(0, 0, 0, 0.5); }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  display: flex; }\n  .predictions--tooltip .prediction__group {\n    width: 160px;\n    padding-right: 25px;\n    margin-bottom: 0; }\n  .predictions--tooltip .prediction__bar {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .predictions--tooltip .prediction__bar-value {\n    background-color: white; }\n  .predictions--tooltip .prediction__group-label {\n    height: 45px; }\n\n.prediction__group {\n  margin-bottom: 30px; }\n  .prediction__group:last-child {\n    padding-right: 0; }\n\n.prediction__group-label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  margin-bottom: 10px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.prediction__label {\n  font-size: 14px; }\n\n.prediction__value {\n  font-size: 14px; }\n\n.prediction__bar {\n  margin-top: 5px;\n  position: relative;\n  height: 2px;\n  width: 100%;\n  background-color: rgba(46, 46, 46, 0.3); }\n\n.prediction__bar-value {\n  height: 100%;\n  background-color: #2e2e2e; }\n\n.intro {\n  text-align: center;\n  max-width: 900px;\n  margin: 0 auto; }\n\n.intro__slide {\n  padding-top: 200px; }\n\n.intro__lead {\n  font-size: 38px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"Inconsolata\", monospace;\n  border-radius: 24px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #4962B5;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n", ""]);
 
 // exports
 
@@ -49116,6 +49234,1196 @@ var valueEqual = function valueEqual(a, b) {
 };
 
 exports.default = valueEqual;
+
+/***/ }),
+/* 684 */,
+/* 685 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_root_constants__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_find__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_lodash_find__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var BubbleTooltip = function (_Component) {
+  _inherits(BubbleTooltip, _Component);
+
+  function BubbleTooltip(props) {
+    _classCallCheck(this, BubbleTooltip);
+
+    var _this = _possibleConstructorReturn(this, (BubbleTooltip.__proto__ || Object.getPrototypeOf(BubbleTooltip)).call(this, props));
+
+    _this.createPredictionGroup = _this.createPredictionGroup.bind(_this);
+    return _this;
+  }
+
+  _createClass(BubbleTooltip, [{
+    key: 'createPredictionGroup',
+    value: function createPredictionGroup(group) {
+      var _props = this.props,
+          profile = _props.profile,
+          predictionsSelection = _props.predictionsSelection;
+
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'prediction__group', key: group.id },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'prediction__group-label' },
+          group.label
+        ),
+        group.properties.map(function (prediction) {
+          var predictionSpec = __WEBPACK_IMPORTED_MODULE_2_lodash_find___default()(__WEBPACK_IMPORTED_MODULE_1_root_constants__["predictions"], { id: prediction });
+          var profilePrediction = __WEBPACK_IMPORTED_MODULE_2_lodash_find___default()(profile.predictions, { id: prediction });
+          var value = prediction === "age" ? profilePrediction.value : profilePrediction.value * 100;
+          var formattedValue = value.toString().slice(0, 2);
+          var unit = prediction === "age" ? "y" : "%";
+          var inactiveClass = "";
+
+          if (predictionsSelection) {
+            var isSelected = __WEBPACK_IMPORTED_MODULE_2_lodash_find___default()(predictionsSelection, { id: prediction }).value;
+            inactiveClass = isSelected ? '' : 'is-inactive';
+          }
+
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'prediction ' + inactiveClass, key: prediction },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'span',
+              { className: 'prediction__label' },
+              predictionSpec.label,
+              ' '
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'span',
+              { className: 'prediction__value' },
+              formattedValue,
+              unit
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { className: 'prediction__bar' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('div', { style: { width: value + '%' }, className: 'prediction__bar-value' })
+            )
+          );
+        })
+      );
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var groups = __WEBPACK_IMPORTED_MODULE_1_root_constants__["predictionGroups"].map(this.createPredictionGroup);
+      var modifiers = this.props.modifiers.map(function (modifier) {
+        return 'predictions--' + modifier;
+      }).join(" ");
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'predictions ' + modifiers },
+        groups
+      );
+    }
+  }]);
+
+  return BubbleTooltip;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (BubbleTooltip);
+
+/***/ }),
+/* 686 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
+
+/***/ }),
+/* 687 */
+/***/ (function(module, exports) {
+
+/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
+module.exports = __webpack_amd_options__;
+
+/* WEBPACK VAR INJECTION */}.call(exports, {}))
+
+/***/ }),
+/* 688 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// A library of seedable RNGs implemented in Javascript.
+//
+// Usage:
+//
+// var seedrandom = require('seedrandom');
+// var random = seedrandom(1); // or any seed.
+// var x = random();       // 0 <= x < 1.  Every bit is random.
+// var x = random.quick(); // 0 <= x < 1.  32 bits of randomness.
+
+// alea, a 53-bit multiply-with-carry generator by Johannes Baagøe.
+// Period: ~2^116
+// Reported to pass all BigCrush tests.
+var alea = __webpack_require__(689);
+
+// xor128, a pure xor-shift generator by George Marsaglia.
+// Period: 2^128-1.
+// Reported to fail: MatrixRank and LinearComp.
+var xor128 = __webpack_require__(691);
+
+// xorwow, George Marsaglia's 160-bit xor-shift combined plus weyl.
+// Period: 2^192-2^32
+// Reported to fail: CollisionOver, SimpPoker, and LinearComp.
+var xorwow = __webpack_require__(694);
+
+// xorshift7, by François Panneton and Pierre L'ecuyer, takes
+// a different approach: it adds robustness by allowing more shifts
+// than Marsaglia's original three.  It is a 7-shift generator
+// with 256 bits, that passes BigCrush with no systmatic failures.
+// Period 2^256-1.
+// No systematic BigCrush failures reported.
+var xorshift7 = __webpack_require__(693);
+
+// xor4096, by Richard Brent, is a 4096-bit xor-shift with a
+// very long period that also adds a Weyl generator. It also passes
+// BigCrush with no systematic failures.  Its long period may
+// be useful if you have many generators and need to avoid
+// collisions.
+// Period: 2^4128-2^32.
+// No systematic BigCrush failures reported.
+var xor4096 = __webpack_require__(692);
+
+// Tyche-i, by Samuel Neves and Filipe Araujo, is a bit-shifting random
+// number generator derived from ChaCha, a modern stream cipher.
+// https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+// Period: ~2^127
+// No systematic BigCrush failures reported.
+var tychei = __webpack_require__(690);
+
+// The original ARC4-based prng included in this library.
+// Period: ~2^1600
+var sr = __webpack_require__(695);
+
+sr.alea = alea;
+sr.xor128 = xor128;
+sr.xorwow = xorwow;
+sr.xorshift7 = xorshift7;
+sr.xor4096 = xor4096;
+sr.tychei = tychei;
+
+module.exports = sr;
+
+
+/***/ }),
+/* 689 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A port of an algorithm by Johannes Baagøe <baagoe@baagoe.com>, 2010
+// http://baagoe.com/en/RandomMusings/javascript/
+// https://github.com/nquinlan/better-random-numbers-for-javascript-mirror
+// Original work is under MIT license -
+
+// Copyright (C) 2010 by Johannes Baagøe <baagoe@baagoe.org>
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+// 
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+
+
+(function(global, module, define) {
+
+function Alea(seed) {
+  var me = this, mash = Mash();
+
+  me.next = function() {
+    var t = 2091639 * me.s0 + me.c * 2.3283064365386963e-10; // 2^-32
+    me.s0 = me.s1;
+    me.s1 = me.s2;
+    return me.s2 = t - (me.c = t | 0);
+  };
+
+  // Apply the seeding algorithm from Baagoe.
+  me.c = 1;
+  me.s0 = mash(' ');
+  me.s1 = mash(' ');
+  me.s2 = mash(' ');
+  me.s0 -= mash(seed);
+  if (me.s0 < 0) { me.s0 += 1; }
+  me.s1 -= mash(seed);
+  if (me.s1 < 0) { me.s1 += 1; }
+  me.s2 -= mash(seed);
+  if (me.s2 < 0) { me.s2 += 1; }
+  mash = null;
+}
+
+function copy(f, t) {
+  t.c = f.c;
+  t.s0 = f.s0;
+  t.s1 = f.s1;
+  t.s2 = f.s2;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new Alea(seed),
+      state = opts && opts.state,
+      prng = xg.next;
+  prng.int32 = function() { return (xg.next() * 0x100000000) | 0; }
+  prng.double = function() {
+    return prng() + (prng() * 0x200000 | 0) * 1.1102230246251565e-16; // 2^-53
+  };
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+function Mash() {
+  var n = 0xefc8249d;
+
+  var mash = function(data) {
+    data = data.toString();
+    for (var i = 0; i < data.length; i++) {
+      n += data.charCodeAt(i);
+      var h = 0.02519603282416938 * n;
+      n = h >>> 0;
+      h -= n;
+      h *= n;
+      n = h >>> 0;
+      h -= n;
+      n += h * 0x100000000; // 2^32
+    }
+    return (n >>> 0) * 2.3283064365386963e-10; // 2^-32
+  };
+
+  return mash;
+}
+
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.alea = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 690 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "Tyche-i" prng algorithm by
+// Samuel Neves and Filipe Araujo.
+// See https://eden.dei.uc.pt/~sneves/pubs/2011-snfa2.pdf
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  // Set up generator function.
+  me.next = function() {
+    var b = me.b, c = me.c, d = me.d, a = me.a;
+    b = (b << 25) ^ (b >>> 7) ^ c;
+    c = (c - d) | 0;
+    d = (d << 24) ^ (d >>> 8) ^ a;
+    a = (a - b) | 0;
+    me.b = b = (b << 20) ^ (b >>> 12) ^ c;
+    me.c = c = (c - d) | 0;
+    me.d = (d << 16) ^ (c >>> 16) ^ a;
+    return me.a = (a - b) | 0;
+  };
+
+  /* The following is non-inverted tyche, which has better internal
+   * bit diffusion, but which is about 25% slower than tyche-i in JS.
+  me.next = function() {
+    var a = me.a, b = me.b, c = me.c, d = me.d;
+    a = (me.a + me.b | 0) >>> 0;
+    d = me.d ^ a; d = d << 16 ^ d >>> 16;
+    c = me.c + d | 0;
+    b = me.b ^ c; b = b << 12 ^ d >>> 20;
+    me.a = a = a + b | 0;
+    d = d ^ a; me.d = d = d << 8 ^ d >>> 24;
+    me.c = c = c + d | 0;
+    b = b ^ c;
+    return me.b = (b << 7 ^ b >>> 25);
+  }
+  */
+
+  me.a = 0;
+  me.b = 0;
+  me.c = 2654435769 | 0;
+  me.d = 1367130551;
+
+  if (seed === Math.floor(seed)) {
+    // Integer seed.
+    me.a = (seed / 0x100000000) | 0;
+    me.b = seed | 0;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 20; k++) {
+    me.b ^= strseed.charCodeAt(k) | 0;
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.a = f.a;
+  t.b = f.b;
+  t.c = f.c;
+  t.d = f.d;
+  return t;
+};
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.tychei = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 691 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xor128" prng algorithm by
+// George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  me.x = 0;
+  me.y = 0;
+  me.z = 0;
+  me.w = 0;
+
+  // Set up generator function.
+  me.next = function() {
+    var t = me.x ^ (me.x << 11);
+    me.x = me.y;
+    me.y = me.z;
+    me.z = me.w;
+    return me.w ^= (me.w >>> 19) ^ t ^ (t >>> 8);
+  };
+
+  if (seed === (seed | 0)) {
+    // Integer seed.
+    me.x = seed;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 64; k++) {
+    me.x ^= strseed.charCodeAt(k) | 0;
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.x = f.x;
+  t.y = f.y;
+  t.z = f.z;
+  t.w = f.w;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xor128 = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 692 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of Richard Brent's Xorgens xor4096 algorithm.
+//
+// This fast non-cryptographic random number generator is designed for
+// use in Monte-Carlo algorithms. It combines a long-period xorshift
+// generator with a Weyl generator, and it passes all common batteries
+// of stasticial tests for randomness while consuming only a few nanoseconds
+// for each prng generated.  For background on the generator, see Brent's
+// paper: "Some long-period random number generators using shifts and xors."
+// http://arxiv.org/pdf/1004.3115v1.pdf
+//
+// Usage:
+//
+// var xor4096 = require('xor4096');
+// random = xor4096(1);                        // Seed with int32 or string.
+// assert.equal(random(), 0.1520436450538547); // (0, 1) range, 53 bits.
+// assert.equal(random.int32(), 1806534897);   // signed int32, 32 bits.
+//
+// For nonzero numeric keys, this impelementation provides a sequence
+// identical to that by Brent's xorgens 3 implementaion in C.  This
+// implementation also provides for initalizing the generator with
+// string seeds, or for saving and restoring the state of the generator.
+//
+// On Chrome, this prng benchmarks about 2.1 times slower than
+// Javascript's built-in Math.random().
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this;
+
+  // Set up generator function.
+  me.next = function() {
+    var w = me.w,
+        X = me.X, i = me.i, t, v;
+    // Update Weyl generator.
+    me.w = w = (w + 0x61c88647) | 0;
+    // Update xor generator.
+    v = X[(i + 34) & 127];
+    t = X[i = ((i + 1) & 127)];
+    v ^= v << 13;
+    t ^= t << 17;
+    v ^= v >>> 15;
+    t ^= t >>> 12;
+    // Update Xor generator array state.
+    v = X[i] = v ^ t;
+    me.i = i;
+    // Result is the combination.
+    return (v + (w ^ (w >>> 16))) | 0;
+  };
+
+  function init(me, seed) {
+    var t, v, i, j, w, X = [], limit = 128;
+    if (seed === (seed | 0)) {
+      // Numeric seeds initialize v, which is used to generates X.
+      v = seed;
+      seed = null;
+    } else {
+      // String seeds are mixed into v and X one character at a time.
+      seed = seed + '\0';
+      v = 0;
+      limit = Math.max(limit, seed.length);
+    }
+    // Initialize circular array and weyl value.
+    for (i = 0, j = -32; j < limit; ++j) {
+      // Put the unicode characters into the array, and shuffle them.
+      if (seed) v ^= seed.charCodeAt((j + 32) % seed.length);
+      // After 32 shuffles, take v as the starting w value.
+      if (j === 0) w = v;
+      v ^= v << 10;
+      v ^= v >>> 15;
+      v ^= v << 4;
+      v ^= v >>> 13;
+      if (j >= 0) {
+        w = (w + 0x61c88647) | 0;     // Weyl.
+        t = (X[j & 127] ^= (v + w));  // Combine xor and weyl to init array.
+        i = (0 == t) ? i + 1 : 0;     // Count zeroes.
+      }
+    }
+    // We have detected all zeroes; make the key nonzero.
+    if (i >= 128) {
+      X[(seed && seed.length || 0) & 127] = -1;
+    }
+    // Run the generator 512 times to further mix the state before using it.
+    // Factoring this as a function slows the main generator, so it is just
+    // unrolled here.  The weyl generator is not advanced while warming up.
+    i = 127;
+    for (j = 4 * 128; j > 0; --j) {
+      v = X[(i + 34) & 127];
+      t = X[i = ((i + 1) & 127)];
+      v ^= v << 13;
+      t ^= t << 17;
+      v ^= v >>> 15;
+      t ^= t >>> 12;
+      X[i] = v ^ t;
+    }
+    // Storing state as object members is faster than using closure variables.
+    me.w = w;
+    me.X = X;
+    me.i = i;
+  }
+
+  init(me, seed);
+}
+
+function copy(f, t) {
+  t.i = f.i;
+  t.w = f.w;
+  t.X = f.X.slice();
+  return t;
+};
+
+function impl(seed, opts) {
+  if (seed == null) seed = +(new Date);
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (state.X) copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xor4096 = impl;
+}
+
+})(
+  this,                                     // window object or global
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 693 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorshift7" algorithm by
+// François Panneton and Pierre L'ecuyer:
+// "On the Xorgshift Random Number Generators"
+// http://saluc.engr.uconn.edu/refs/crypto/rng/panneton05onthexorshift.pdf
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this;
+
+  // Set up generator function.
+  me.next = function() {
+    // Update xor generator.
+    var X = me.x, i = me.i, t, v, w;
+    t = X[i]; t ^= (t >>> 7); v = t ^ (t << 24);
+    t = X[(i + 1) & 7]; v ^= t ^ (t >>> 10);
+    t = X[(i + 3) & 7]; v ^= t ^ (t >>> 3);
+    t = X[(i + 4) & 7]; v ^= t ^ (t << 7);
+    t = X[(i + 7) & 7]; t = t ^ (t << 13); v ^= t ^ (t << 9);
+    X[i] = v;
+    me.i = (i + 1) & 7;
+    return v;
+  };
+
+  function init(me, seed) {
+    var j, w, X = [];
+
+    if (seed === (seed | 0)) {
+      // Seed state array using a 32-bit integer.
+      w = X[0] = seed;
+    } else {
+      // Seed state using a string.
+      seed = '' + seed;
+      for (j = 0; j < seed.length; ++j) {
+        X[j & 7] = (X[j & 7] << 15) ^
+            (seed.charCodeAt(j) + X[(j + 1) & 7] << 13);
+      }
+    }
+    // Enforce an array length of 8, not all zeroes.
+    while (X.length < 8) X.push(0);
+    for (j = 0; j < 8 && X[j] === 0; ++j);
+    if (j == 8) w = X[7] = -1; else w = X[j];
+
+    me.x = X;
+    me.i = 0;
+
+    // Discard an initial 256 values.
+    for (j = 256; j > 0; --j) {
+      me.next();
+    }
+  }
+
+  init(me, seed);
+}
+
+function copy(f, t) {
+  t.x = f.x.slice();
+  t.i = f.i;
+  return t;
+}
+
+function impl(seed, opts) {
+  if (seed == null) seed = +(new Date);
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (state.x) copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xorshift7 = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 694 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;// A Javascript implementaion of the "xorwow" prng algorithm by
+// George Marsaglia.  See http://www.jstatsoft.org/v08/i14/paper
+
+(function(global, module, define) {
+
+function XorGen(seed) {
+  var me = this, strseed = '';
+
+  // Set up generator function.
+  me.next = function() {
+    var t = (me.x ^ (me.x >>> 2));
+    me.x = me.y; me.y = me.z; me.z = me.w; me.w = me.v;
+    return (me.d = (me.d + 362437 | 0)) +
+       (me.v = (me.v ^ (me.v << 4)) ^ (t ^ (t << 1))) | 0;
+  };
+
+  me.x = 0;
+  me.y = 0;
+  me.z = 0;
+  me.w = 0;
+  me.v = 0;
+
+  if (seed === (seed | 0)) {
+    // Integer seed.
+    me.x = seed;
+  } else {
+    // String seed.
+    strseed += seed;
+  }
+
+  // Mix in string seed, then discard an initial batch of 64 values.
+  for (var k = 0; k < strseed.length + 64; k++) {
+    me.x ^= strseed.charCodeAt(k) | 0;
+    if (k == strseed.length) {
+      me.d = me.x << 10 ^ me.x >>> 4;
+    }
+    me.next();
+  }
+}
+
+function copy(f, t) {
+  t.x = f.x;
+  t.y = f.y;
+  t.z = f.z;
+  t.w = f.w;
+  t.v = f.v;
+  t.d = f.d;
+  return t;
+}
+
+function impl(seed, opts) {
+  var xg = new XorGen(seed),
+      state = opts && opts.state,
+      prng = function() { return (xg.next() >>> 0) / 0x100000000; };
+  prng.double = function() {
+    do {
+      var top = xg.next() >>> 11,
+          bot = (xg.next() >>> 0) / 0x100000000,
+          result = (top + bot) / (1 << 21);
+    } while (result === 0);
+    return result;
+  };
+  prng.int32 = xg.next;
+  prng.quick = prng;
+  if (state) {
+    if (typeof(state) == 'object') copy(state, xg);
+    prng.state = function() { return copy(xg, {}); }
+  }
+  return prng;
+}
+
+if (module && module.exports) {
+  module.exports = impl;
+} else if (__webpack_require__(686) && __webpack_require__(687)) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return impl; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {
+  this.xorwow = impl;
+}
+
+})(
+  this,
+  (typeof module) == 'object' && module,    // present in node.js
+  __webpack_require__(686)   // present with an AMD loader
+);
+
+
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(130)(module)))
+
+/***/ }),
+/* 695 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;/*
+Copyright 2014 David Bau.
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
+(function (pool, math) {
+//
+// The following constants are related to IEEE 754 limits.
+//
+var global = this,
+    width = 256,        // each RC4 output is 0 <= x < 256
+    chunks = 6,         // at least six RC4 outputs for each double
+    digits = 52,        // there are 52 significant digits in a double
+    rngname = 'random', // rngname: name for Math.random and Math.seedrandom
+    startdenom = math.pow(width, chunks),
+    significance = math.pow(2, digits),
+    overflow = significance * 2,
+    mask = width - 1,
+    nodecrypto;         // node.js crypto module, initialized at the bottom.
+
+//
+// seedrandom()
+// This is the seedrandom function described above.
+//
+function seedrandom(seed, options, callback) {
+  var key = [];
+  options = (options == true) ? { entropy: true } : (options || {});
+
+  // Flatten the seed string or build one from local entropy if needed.
+  var shortseed = mixkey(flatten(
+    options.entropy ? [seed, tostring(pool)] :
+    (seed == null) ? autoseed() : seed, 3), key);
+
+  // Use the seed to initialize an ARC4 generator.
+  var arc4 = new ARC4(key);
+
+  // This function returns a random double in [0, 1) that contains
+  // randomness in every bit of the mantissa of the IEEE 754 value.
+  var prng = function() {
+    var n = arc4.g(chunks),             // Start with a numerator n < 2 ^ 48
+        d = startdenom,                 //   and denominator d = 2 ^ 48.
+        x = 0;                          //   and no 'extra last byte'.
+    while (n < significance) {          // Fill up all significant digits by
+      n = (n + x) * width;              //   shifting numerator and
+      d *= width;                       //   denominator and generating a
+      x = arc4.g(1);                    //   new least-significant-byte.
+    }
+    while (n >= overflow) {             // To avoid rounding up, before adding
+      n /= 2;                           //   last byte, shift everything
+      d /= 2;                           //   right using integer math until
+      x >>>= 1;                         //   we have exactly the desired bits.
+    }
+    return (n + x) / d;                 // Form the number within [0, 1).
+  };
+
+  prng.int32 = function() { return arc4.g(4) | 0; }
+  prng.quick = function() { return arc4.g(4) / 0x100000000; }
+  prng.double = prng;
+
+  // Mix the randomness into accumulated entropy.
+  mixkey(tostring(arc4.S), pool);
+
+  // Calling convention: what to return as a function of prng, seed, is_math.
+  return (options.pass || callback ||
+      function(prng, seed, is_math_call, state) {
+        if (state) {
+          // Load the arc4 state from the given state if it has an S array.
+          if (state.S) { copy(state, arc4); }
+          // Only provide the .state method if requested via options.state.
+          prng.state = function() { return copy(arc4, {}); }
+        }
+
+        // If called as a method of Math (Math.seedrandom()), mutate
+        // Math.random because that is how seedrandom.js has worked since v1.0.
+        if (is_math_call) { math[rngname] = prng; return seed; }
+
+        // Otherwise, it is a newer calling convention, so return the
+        // prng directly.
+        else return prng;
+      })(
+  prng,
+  shortseed,
+  'global' in options ? options.global : (this == math),
+  options.state);
+}
+math['seed' + rngname] = seedrandom;
+
+//
+// ARC4
+//
+// An ARC4 implementation.  The constructor takes a key in the form of
+// an array of at most (width) integers that should be 0 <= x < (width).
+//
+// The g(count) method returns a pseudorandom integer that concatenates
+// the next (count) outputs from ARC4.  Its return value is a number x
+// that is in the range 0 <= x < (width ^ count).
+//
+function ARC4(key) {
+  var t, keylen = key.length,
+      me = this, i = 0, j = me.i = me.j = 0, s = me.S = [];
+
+  // The empty key [] is treated as [0].
+  if (!keylen) { key = [keylen++]; }
+
+  // Set up S using the standard key scheduling algorithm.
+  while (i < width) {
+    s[i] = i++;
+  }
+  for (i = 0; i < width; i++) {
+    s[i] = s[j = mask & (j + key[i % keylen] + (t = s[i]))];
+    s[j] = t;
+  }
+
+  // The "g" method returns the next (count) outputs as one number.
+  (me.g = function(count) {
+    // Using instance members instead of closure state nearly doubles speed.
+    var t, r = 0,
+        i = me.i, j = me.j, s = me.S;
+    while (count--) {
+      t = s[i = mask & (i + 1)];
+      r = r * width + s[mask & ((s[i] = s[j = mask & (j + t)]) + (s[j] = t))];
+    }
+    me.i = i; me.j = j;
+    return r;
+    // For robust unpredictability, the function call below automatically
+    // discards an initial batch of values.  This is called RC4-drop[256].
+    // See http://google.com/search?q=rsa+fluhrer+response&btnI
+  })(width);
+}
+
+//
+// copy()
+// Copies internal state of ARC4 to or from a plain object.
+//
+function copy(f, t) {
+  t.i = f.i;
+  t.j = f.j;
+  t.S = f.S.slice();
+  return t;
+};
+
+//
+// flatten()
+// Converts an object tree to nested arrays of strings.
+//
+function flatten(obj, depth) {
+  var result = [], typ = (typeof obj), prop;
+  if (depth && typ == 'object') {
+    for (prop in obj) {
+      try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+    }
+  }
+  return (result.length ? result : typ == 'string' ? obj : obj + '\0');
+}
+
+//
+// mixkey()
+// Mixes a string seed into a key that is an array of integers, and
+// returns a shortened string seed that is equivalent to the result key.
+//
+function mixkey(seed, key) {
+  var stringseed = seed + '', smear, j = 0;
+  while (j < stringseed.length) {
+    key[mask & j] =
+      mask & ((smear ^= key[mask & j] * 19) + stringseed.charCodeAt(j++));
+  }
+  return tostring(key);
+}
+
+//
+// autoseed()
+// Returns an object for autoseeding, using window.crypto and Node crypto
+// module if available.
+//
+function autoseed() {
+  try {
+    var out;
+    if (nodecrypto && (out = nodecrypto.randomBytes)) {
+      // The use of 'out' to remember randomBytes makes tight minified code.
+      out = out(width);
+    } else {
+      out = new Uint8Array(width);
+      (global.crypto || global.msCrypto).getRandomValues(out);
+    }
+    return tostring(out);
+  } catch (e) {
+    var browser = global.navigator,
+        plugins = browser && browser.plugins;
+    return [+new Date, global, plugins, global.screen, tostring(pool)];
+  }
+}
+
+//
+// tostring()
+// Converts an array of charcodes to a string
+//
+function tostring(a) {
+  return String.fromCharCode.apply(0, a);
+}
+
+//
+// When seedrandom.js is loaded, we immediately mix a few bits
+// from the built-in RNG into the entropy pool.  Because we do
+// not want to interfere with deterministic PRNG state later,
+// seedrandom will not call math.random on its own again after
+// initialization.
+//
+mixkey(math.random(), pool);
+
+//
+// Nodejs and AMD support: export the implementation as a module using
+// either convention.
+//
+if ((typeof module) == 'object' && module.exports) {
+  module.exports = seedrandom;
+  // When in node.js, try using crypto package for autoseeding.
+  try {
+    nodecrypto = __webpack_require__(696);
+  } catch (ex) {}
+} else if (true) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = function() { return seedrandom; }.call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}
+
+// End anonymous scope, and pass initial values.
+})(
+  [],     // pool: entropy pool starts empty
+  Math    // math: package containing random, pow, and seedrandom
+);
+
+
+/***/ }),
+/* 696 */
+/***/ (function(module, exports) {
+
+/* (ignored) */
+
+/***/ }),
+/* 697 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(11);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+var Info = function (_Component) {
+  _inherits(Info, _Component);
+
+  function Info() {
+    _classCallCheck(this, Info);
+
+    return _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).apply(this, arguments));
+  }
+
+  _createClass(Info, [{
+    key: 'render',
+    value: function render() {
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'drawer__content' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'drawer__section' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            null,
+            'Good Job! You discovered content of ',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'b',
+              null,
+              '13 sources'
+            ),
+            ' you wouldn\'t have discovered on your internet...'
+          )
+        )
+      );
+    }
+  }]);
+
+  return Info;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+;
+
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["d" /* withRouter */])(Info));
 
 /***/ })
 /******/ ]);

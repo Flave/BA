@@ -6,7 +6,7 @@ const optionsConfig = {
   user: [
     {
       id: 'user_settings',
-      label: 'Settings'
+      label: 'Your Profile'
     },
     {
       id: 'predictions',

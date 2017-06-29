@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _find from 'lodash/find';
 
-class Others extends Component {
+class CheckGroup extends Component {
   constructor(props) {
     super(props);
     this.state = {collapsed: true};
@@ -47,7 +47,7 @@ class Others extends Component {
   }
 
   render() {
-    const { group, options, values } = this.props;
+    const { group, options, values, isOpen } = this.props;
     const { collapsed } = this.state;
     const activeClasses = ['', 'is-semi-active', 'is-active'];
     const activeIcons = ['', 'icon-semi-check', 'icon-check'];
@@ -78,4 +78,8 @@ class Others extends Component {
   }
 };
 
-export default Others;
+CheckGroup.defaultProps = {
+  isOpen: false
+}
+
+export default CheckGroup;

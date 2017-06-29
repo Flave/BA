@@ -4,7 +4,11 @@ import Sidebar from 'app/components/others-people/Sidebar.jsx';
 import BubblesCanvas from 'app/components/others-people/BubblesCanvas.js';
 import Drawer from 'app/components/Drawer.jsx';
 import Loader from 'app/components/common/Loader.jsx';
+import Tooltip from 'app/components/common/Tooltip.jsx';
+import Predictions from 'app/components/common/Predictions.jsx';
 import Options from 'app/components/others-people/Options.jsx';
+import Info from 'app/components/others-people/Info.jsx';
+import { getSelectedPredictions } from 'app/utility';
 import * as actions from 'app/actions';
 import _find from 'lodash/find';
 import { ui } from 'root/constants';
@@ -21,6 +25,9 @@ class Others extends Component {
   constructor(props) {
     super(props);
     this.bubblesCanvas = BubblesCanvas();
+    this.state = {
+      hoveredBubble: null
+    }
   }
 
   componentDidMount() {
@@ -40,8 +47,8 @@ class Others extends Component {
       .dimensions(ui.windowDimensions)
       .canvas(this.bubbleContainer)
       .on('click', this.handleBubbleClick)
-      .on('mouseenter', () => console.log('mouseenter'))
-      .on('mouseleave', () => console.log('mouseleave'));
+      .on('mouseenter', hoveredBubble => this.setState({hoveredBubble}))
+      .on('mouseleave', () => this.setState({hoveredBubble: null}));
   }
 
   handleBubbleClick(d) {
@@ -67,6 +74,25 @@ class Others extends Component {
       .update();
   }
 
+  createTooltip() {
+    const { store } = this.context;
+    const { users, ui } = store.getState();
+    const { hoveredBubble } = this.state;
+    const profile = _find(users, {id: hoveredBubble.id});
+
+    return (
+      <Tooltip
+        modifiers={["dark", "predictions"]}
+        position={{x: hoveredBubble.x, y: hoveredBubble.y}}
+        offset={{x: 0, y: -hoveredBubble.r - 11}}>
+        <Predictions 
+          modifiers={["tooltip"]}
+          predictionsSelection={ui.othersPeopleOptions}
+          profile={profile}/>
+      </Tooltip>
+    )
+  }
+
   handleMenuClick(menuId) {
     this.context.store.dispatch(actions.toggleDrawer(menuId));
   }
@@ -84,6 +110,7 @@ class Others extends Component {
         <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'options') && <Options />}
+          {(ui.drawer === 'info') && <Info />}
         </Drawer>
         {!allLoaded && <Loader copy="Loading remaining users" />}
         <canvas 
@@ -91,6 +118,7 @@ class Others extends Component {
           height={ui.windowDimensions[1]} 
           ref={(el) => this.bubbleContainer = el} 
           className="bubbles"></canvas>
+        { this.state.hoveredBubble && this.createTooltip()}
       </div>
     )
   }

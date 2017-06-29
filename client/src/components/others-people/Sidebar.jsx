@@ -5,8 +5,8 @@ import * as actions from '../../actions';
 
 var options =  [
   {
-    id: 'Predictions',
-    label: 'predictions'
+    id: 'options',
+    label: 'Predictions'
   },
   {
     id: 'info',
