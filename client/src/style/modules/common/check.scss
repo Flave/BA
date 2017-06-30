@@ -4,6 +4,7 @@
 
 .check {
   line-height: 28px;
+  cursor: pointer;
 
   &--header {
     font-weight: 800;
@@ -25,7 +26,6 @@
 .check__collapse-icon {
   font-size: 20px;
   float: right;
-  cursor: pointer;
 }
 
 

@@ -26,20 +26,20 @@ module.exports = [
   },
   { 
     id: 'politics_libertanian',
-    label: 'Libertanian'
+    label: 'Libertarian'
   },
   { 
     id: 'politics_uninvolved',
     label: 'Uninvolved'
   },
-
+  
   { 
     id: 'religion_none',
     label: 'None'
   },
   { 
     id: 'religion_christian_other',
-    label: 'Other Cristian'
+    label: 'Other Christian'
   },
   { 
     id: 'religion_catholic',

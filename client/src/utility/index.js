@@ -1,3 +1,6 @@
+import { max as d3Max } from 'd3-array';
+import _find from 'lodash/find';
+
 // Copies a variable number of methods from source to target.
 export const rebind = function(target, source) {
   var i = 1, n = arguments.length, method;
@@ -51,4 +54,30 @@ export const getSubURL = sub => {
 export const getSelectedPredictions = predictions => {
   let selectedPredictions = predictions.filter(prediction => prediction.value)
   return selectedPredictions.length ? selectedPredictions : predictions;
+}
+
+
+export const calculateSimilarity = (user, users, properties) => {
+  // the differences between max and min of user prediction values
+  // should probably also find the minimums...
+  const maxDifferences = properties.map((property) => {
+    return d3Max(users, (profile) => {
+      const userPrediction = _find(user.predictions, {id: property.id}).value;
+      const profilePrediction = _find(profile.predictions, {id: property.id}).value;
+      return Math.abs(userPrediction - profilePrediction);
+    });
+  });
+
+  return function(profile, overall) {
+    // if overall, use all properties to calculate similarity
+    // otherwise just use the selected ones
+    let similarity = properties.reduce((sum, property, i) => {
+      const userValue = _find(user.predictions, {id: property.id}).value;
+      const profileValue = _find(profile.predictions, {id: property.id}).value;
+      let difference = Math.abs(profileValue - userValue);
+      return sum + difference/maxDifferences[i];
+    }, 0);
+
+    return 1 - similarity/properties.length;
+  }
 }

@@ -1,81 +1,61 @@
 import predictions from 'root/constants/predictions';
 import predictionGroups from 'root/constants/predictionGroups';
+import predictionOptions from 'root/constants/predictionOptions';
+import { getSelectedPredictions, calculateSimilarity } from 'app/utility';
 import { getDistance } from 'app/utility';
 import seedrandom from 'seedrandom';
+import _find from 'lodash/find';
+import { max as d3Max } from 'd3-array';
+import { hsl as d3Hsl } from 'd3-color';
 
-function hexToRgba(hex, opacity){
-  var hex = hex.replace('#', '');
-  var r = parseInt(hex.substring(0, 2), 16);
-  var g = parseInt(hex.substring(2, 4), 16);
-  var b = parseInt(hex.substring(4, 6), 16);
 
-  return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + opacity + ')';
-};
+// var cols = ["#3BE1BC","#5164B3","#1BAEAE","#4FC2E3","#FF6686","#FF9292","#FFC99A"];
 
-var cols = ["#9BD7E1", "#4697FE", "#FFD24C"]
 
-function Bubble(ctx, options) {
+function Bubble(ctx, options, user) {
   let bubble = {...options};
-  const duration = 1000;
-  const delay = 0;
-  const random = new Math.seedrandom(bubble.id);
 
-  bubble.update = function({targetX, targetY, selectedProperties}) {
+  bubble.update = function({targetX, targetY}, selectedGroups) {
     bubble.targetX = targetX;
     bubble.targetY = targetY;
-    bubble.selectedProperties = selectedProperties;
+    bubble.selectedGroups = selectedGroups;
   }
+
 
   bubble.render = function() {
     ctx.save();
     ctx.translate(bubble.x, bubble.y);
-    ctx.beginPath();
-    ctx.fillStyle = bubble.fill;
-    ctx.arc(0, 0, Math.floor(bubble.r), 0, 2*Math.PI);
-    ctx.fill(); 
+
+    predictionOptions.forEach((group, i) => {
+      const difference = _find(bubble.differences, {id: group.id});
+      const angle = Math.PI * 2 / predictionOptions.length * i;
+      const x = Math.cos(angle) * bubble.r + 1.1;
+      const y = Math.sin(angle) * bubble.r + 1.1;
+      const col = d3Hsl(group.col(1));
+      col.s = difference.relativeDifference;
+      col.opacity = difference.relativeDifference;
+      if(bubble.isUser) {
+        col.opacity = 1;
+        col.s = 0;
+      }
+      addDimension({x,y}, bubble.r * 1.4, col);
+    });
+
     ctx.restore();
   }
 
-  // bubble.render = function() {
-  //   const centerX = Math.floor(bubble.x);
-  //   const centerY = Math.floor(bubble.y);
-  //   const radius = Math.floor(bubble.r);
 
-  //   ctx.save();
-  //   ctx.translate(centerX, centerY);
+  function addDimension(center, r, color) {
+    const grad = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, r);
+    //color.opacity = .7;
+    grad.addColorStop(0, color + "");
+    color.opacity = 0;
+    grad.addColorStop(1, color + "");
 
-  //   for(let x = -radius; x < radius; x++) {
-  //     for(let y = -radius; y < radius; y++) {
-  //       const dist = Math.floor(getDistance({x: 0, y: 0}, {x, y}));// Math.sqrt(Math.pow(centerX - x, 2), Math.pow(centerY - y, 2));
-
-  //       if(dist < radius) {
-  //         Math.seedrandom(`${bubble.id}-${x}-${y}`);
-  //         ctx.fillStyle = `rgba(0, 0, 0, ${Math.random() * .1 + .6})`;
-  //         ctx.fillRect(x, y, 1, 1);
-  //       }
-  //     }
-  //   }
-  //   ctx.restore();    
-  // }
-
-  // bubble.render = function() {
-  //   ctx.save();
-  //   ctx.translate(Math.floor(bubble.x), Math.floor(bubble.y));
-  //   addDimension(polarPosition({x:0, y:0}, bubble.r, .5, .8), bubble.r * 1.5, 0, 0, cols[0])
-  //   // addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .2), bubble.r * 1.8, 0, 0, cols[1])
-  //   // addDimension(polarPosition({x:0, y:0}, bubble.r, 1.3, .5), bubble.r * 1.2, 0, 0, cols[2])
-  //   ctx.restore();
-  // }
-
-
-  // draws a circle at position 0 0 with a gradient that starts at the point specified
-  // by rOffset and angleOffset and ends in center
-  function addDimension(center, r, rOffset, angleOffset, color, strength) {
-    const grad = createGradient(center, r, rOffset, angleOffset, color, strength);
-    ctx.fillStyle = grad;
     ctx.beginPath();
+    ctx.fillStyle = grad;
     ctx.arc(0, 0, Math.floor(bubble.r), 0, 2*Math.PI);
-    ctx.fill();    
+    ctx.fill();
   }
 
   function createGradient(center, r, rOffset, angleOffset, color, strength) {

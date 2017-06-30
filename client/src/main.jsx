@@ -35,7 +35,7 @@ const addPromiseSupportToDispatch = (store) => {
     if(typeof action.then === 'function') {
       return action
         .then(rawDispatch, err => console.log(err))
-        .catch(err => console.log(err))
+        .catch(err => {throw err;})
     }
     return rawDispatch(action);
   }
