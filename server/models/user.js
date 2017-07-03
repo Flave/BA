@@ -10,6 +10,7 @@ var userSchema = mongoose.Schema({
     'default': shortid.generate
   },
   predictions: [{id: String, value: Number}],
+  returning: {type: Boolean, default: false},
   email: String,
   facebook : {
     id : String,

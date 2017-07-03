@@ -1,15 +1,15 @@
-import {get} from 'axios';
+import {get, post} from 'axios';
 
 export const fetchLogin = () => {
   return get('/api/login');
 }
 
-export const fetchPredictions = () => {
-  return get('/api/predictions');
-}
-
 export const fetchUser = () => {
   return get('/api/user');
+}
+
+export const updateUser = (data) => {
+  return post('/api/user', data);
 }
 
 export const fetchFeed = (id) => {
@@ -22,8 +22,4 @@ export const fetchAll = () => {
 
 export const fetchProfile = (id) => {
   return get(`/api/profile/${id}`);
-}
-
-export const fetchTest = (id) => {
-  return get(`/api/test`);
 }

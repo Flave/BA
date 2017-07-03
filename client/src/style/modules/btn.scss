@@ -6,13 +6,20 @@
   background: #fff;
   font-size: 16px;
   font-family: $monospace;
-  border-radius: 24px;
+  border-radius: 1.5px;
   padding: 10px 20px;
   margin-right: 20px;
   cursor: pointer;
 
   &--raised {
     box-shadow: 0 0 8px rgba(0, 0, 0, .2);
+  }
+
+  &--cta {
+    background: $c-accent;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
   }
 
   &--big {
@@ -31,7 +38,8 @@
   }
 
   &--facebook {
-    background: $c-facebook;
+    //background: $c-facebook;
+    background: $c-accent;
     color: #fff;
   }
 

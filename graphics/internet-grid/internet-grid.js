@@ -11,10 +11,26 @@ var svg = d3.select("#canvas"),
     maxDistance = getDistance({x: 0, y: 0}, {x: originX, y: originY}),
     num2Color = d3.scaleSequential(d3.interpolateRdYlBu).domain([0, 1]);
 
-var amount = 0.13,
-    spread = 0.09,
-    slant = 0,
-    diversity = .08;
+    num2Color = d3.scaleQuantile().domain([0,1]).range([
+'#3A63FA',
+'#5864E8',
+'#6F64DB',
+'#9065C8',
+'#A364BC',
+'#DB669C',
+'#EC6591',
+'#FE6D87',
+'#FF7B8A',
+'#FE908E',
+'#FE9B91',
+'#FEAF95',
+'#FEC89A'])
+
+
+var amount = 0.4,
+    spread = 0.08,
+    slant = .85,
+    diversity = .1;
 
 function parseNum(num) {
   return num.toString().replace('.', '');
@@ -93,12 +109,14 @@ tile
   .attr('x', 0)
   .attr('y', 0)
   .style('fill', (d) => {
-    return num2Color(d3.randomNormal(slant, diversity)())
+    var col = d3.hsl(num2Color(d3.randomNormal(slant, diversity)()));
+    col.h += d3.randomNormal(10, 5)();
+    col.s += d3.randomNormal(.03, .008)();
+    return col;
   })
   .style('opacity', (d) => {
     if(!d.isActive) return 0;
-    return .8;
-    return d3.randomNormal(.5, .03)();
+    return d3.randomNormal(.7, .03)();
     return 1 - d.distanceToOrigin/510;
   })
   .filter((d) => {

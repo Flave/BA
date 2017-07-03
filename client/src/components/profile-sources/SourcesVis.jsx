@@ -41,7 +41,7 @@ function BubblesCanvas() {
       .force("y", forceY)
       .on("tick", render);
 
-  const colors = ["rgba(80, 140, 230, .5)", "red", "rgba(180, 140, 100, .5)"];
+  const colors = ["#3A63FA", "#EC6591", "#FEC89A"];
 
   _bubblesCanvas.update = function() {
     if(!subs || !canvas) return;
@@ -96,7 +96,6 @@ function BubblesCanvas() {
       return subsGroup.map((sub, subIndex) => 
         Bubble(ctx, {
           ...sub,
-          hasThumb: subIndex < 20,
           x: size[0]/2 + d3RandomNormal(0, 200)(),
           y: size[1]/2 + d3RandomNormal(0, 200)(),
           fill: colors[colIndex],

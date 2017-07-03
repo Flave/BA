@@ -19,6 +19,16 @@ function Bubble(ctx, options, user) {
     bubble.targetX = targetX;
     bubble.targetY = targetY;
     bubble.selectedGroups = selectedGroups;
+
+    bubble.differences.sort((d1, d2) => {
+      const selectedGroup1 = _find(bubble.selectedGroups, {id: d1.id});
+      const selectedGroup2 = _find(bubble.selectedGroups, {id: d2.id});
+      if(selectedGroup1 && selectedGroup2)
+        return d1.relativeDifference - d2.relativeDifference;
+      if(selectedGroup1)
+        return 1;
+      return -1;
+    });
   }
 
 
@@ -28,24 +38,36 @@ function Bubble(ctx, options, user) {
 
     predictionOptions.forEach((group, i) => {
       const difference = _find(bubble.differences, {id: group.id});
+      const selectedGroup = _find(bubble.selectedGroups, {id: group.id});
+      const r = (bubble.r + 1.1) * (bubble.selectedGroups.length/7);
+
       const angle = Math.PI * 2 / predictionOptions.length * i;
-      const x = Math.cos(angle) * bubble.r + 1.1;
-      const y = Math.sin(angle) * bubble.r + 1.1;
-      const col = d3Hsl(group.col(1));
-      col.s = difference.relativeDifference;
-      col.opacity = difference.relativeDifference;
-      if(bubble.isUser) {
-        col.opacity = 1;
-        col.s = 0;
+      const x = Math.cos(angle) * r;
+      const y = Math.sin(angle) * r;
+      const color = d3Hsl(group.color(1));
+
+      color.opacity = difference.relativeDifference;
+
+      if(!selectedGroup) {
+       color.s = 0;
+       color.opacity = .1;
       }
-      addDimension({x,y}, bubble.r * 1.4, col);
+
+      
+      if(bubble.isUser) {
+        color.opacity = .5;
+        color.s = 0;
+      }
+
+      addDimension({x,y}, bubble.r * 1.4, color);
     });
+
 
     ctx.restore();
   }
 
 
-  function addDimension(center, r, color) {
+  function addDimension(center, r, color, strength) {
     const grad = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, r);
     //color.opacity = .7;
     grad.addColorStop(0, color + "");
@@ -56,14 +78,6 @@ function Bubble(ctx, options, user) {
     ctx.fillStyle = grad;
     ctx.arc(0, 0, Math.floor(bubble.r), 0, 2*Math.PI);
     ctx.fill();
-  }
-
-  function createGradient(center, r, rOffset, angleOffset, color, strength) {
-    const offset = polarPosition(center, r, rOffset, angleOffset);
-    const grad = ctx.createRadialGradient(offset.x, offset.y, 0, center.x, center.y, r);
-    grad.addColorStop(0, hexToRgba(color, 1));
-    grad.addColorStop(1, hexToRgba(color, 0));
-    return grad;
   }
 
   function cartesianPosition(xRatio, yRatio) {

@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-long-arrow-forward:before {
+  content: "\e90b";
+}
 .icon-carret-down:before {
   content: "\e900";
 }

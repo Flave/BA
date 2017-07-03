@@ -18,7 +18,8 @@ class ProfileSubs extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hoveredSub: null
+      hoveredSub: null,
+      hoveredSubs: []
     }
   }
 
@@ -88,15 +89,11 @@ class ProfileSubs extends Component {
   }
 
   createThumbImages() {
-    const subs = this.getTheSubs();
+    const subs = this.state.hoveredSubs;
     return (
       <div className="subs-vis__thumbs">
-        {subs.map((subsGroup, i) => (
-          <div key={i}>
-            {subsGroup.slice(0, 20).map(sub => (
-              <img key={sub.id} src={sub.thumb} id={`subs-vis__thumb--${sub.id}`} />
-            ))}
-          </div>
+        {subs.map((sub, i) => (
+          <img key={sub.id} src={sub.thumb} id={`subs-vis__thumb--${sub.id}`} />
         ))}
       </div>
     )
@@ -129,7 +126,6 @@ class ProfileSubs extends Component {
           return (
             <div key={i} style={style} className={`subs-vis__label`}>
               <div className="subs-vis__label-text">{labelText}</div>
-              <div className="subs-vis__label-value">{subsGroup.length}</div>
             </div>
           )
         })}

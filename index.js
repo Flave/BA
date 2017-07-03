@@ -3,6 +3,7 @@ var app      = express();
 var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
+var bodyParser = require('body-parser');
 
 mongoose.Promise = require('promise');
 var configDB = require('./config/db');
@@ -15,8 +16,9 @@ require('./server/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(require('morgan')('combined'));
-app.use(require ('cookie-parser')()); // read cookies (needed for auth)
-app.use(require ('body-parser').urlencoded({extended: true})); // get information from html forms
+app.use(require('cookie-parser')()); // read cookies (needed for auth)
+app.use(bodyParser.urlencoded({extended: true})); // get information from html forms
+app.use(bodyParser.json());
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 

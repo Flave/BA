@@ -11,19 +11,24 @@ const { getConnectedPlatforms, isLoggedInAjax } = require('../util');
 
 const router = new express.Router();
 
+let cachedUser;
+let userCount;
 
 // USER
 router.get('/api/user', ({ user }, res) => {
+  if(cachedUser) {
+    res.json(cachedUser);
+    return;
+  }
   User.find()
     .count()
     .then(count => {
       log.rainbow('Sending USER');
-      if(user)
-        res.json({
-          name: user.facebook.name,
-          login: user._id,
-          userCount: count
-        });
+      userCount = count;
+      if(user) {
+        cachedUser = stripUser(user);
+        res.json(cachedUser);
+      }
       else
         res.json({ login: null });
     })
@@ -44,8 +49,15 @@ router.get('/api/profile/:id', isLoggedInAjax, (req, res) => {
     })
 });
 
+let all;
+
 // ALL
 router.get('/api/all', isLoggedInAjax, (req, res) => {
+  if(all) {
+    log.rainbow('Sending ALL');
+    res.json(all);
+    return;
+  }
   User.find({}).then((users) => {
     let strippedUsers = _(users).map(user => {
       if(!user.predictions) return;
@@ -56,13 +68,32 @@ router.get('/api/all', isLoggedInAjax, (req, res) => {
     })
     .compact()
     .value();
-
+    all = strippedUsers;
     log.rainbow('Sending ALL');
     res.json(strippedUsers);
   });
 });
 
+
+// UPDATE USER
+router.post('/api/user', isLoggedInAjax, (req, res) => {
+  req.user = _.assign(req.user, req.body);
+  req.user.save().then(user => {
+    log.rainbow('Sending USER UPDATE');
+    res.json(stripUser(user));
+  })
+  .catch(err => console.log(err));
+});
+
 //User.find({}, {_id: true, predictions: true}).then((users) => {
 
+function stripUser(user) {
+  return {
+    name: user.facebook.name,
+    login: user._id,
+    returning: user.returning,
+    userCount
+  }
+}
 
 module.exports = router;

@@ -12,12 +12,12 @@ function Bubble(ctx, options) {
     ctx.fillStyle = bubble.fill;
     ctx.beginPath();
     ctx.arc(0, 0, bubble.r,0,2*Math.PI);
-    if(bubble.hasThumb) {
+    var img = window.document.getElementById(`subs-vis__thumb--${bubble.id}`);
+    if(img) {
       ctx.clip();
-      var img = window.document.getElementById(`subs-vis__thumb--${bubble.id}`);
-      if(img)
-        ctx.drawImage(img, -bubble.r, -bubble.r, bubble.r * 2, bubble.r * 2);
-    } else {
+      ctx.drawImage(img, -bubble.r, -bubble.r, bubble.r * 2, bubble.r * 2);
+    }
+    else {
       ctx.fill();
     }
     ctx.restore();

@@ -38,6 +38,7 @@ class Others extends Component {
             key={group.id}
             option={group}
             value={options.length}
+            color={group.color(1) + ""}
             onChange={this.handleOptionsChange.bind(this)}/>
         })}
       </div>

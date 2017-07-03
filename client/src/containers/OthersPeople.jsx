@@ -8,6 +8,7 @@ import Tooltip from 'app/components/common/Tooltip.jsx';
 import Predictions from 'app/components/common/Predictions.jsx';
 import Options from 'app/components/others-people/Options.jsx';
 import Info from 'app/components/others-people/Info.jsx';
+import Onboarding from 'app/components/onboarding/Onboarding.jsx';
 import { getSelectedPredictions } from 'app/utility';
 import * as actions from 'app/actions';
 import _find from 'lodash/find';
@@ -46,6 +47,7 @@ class Others extends Component {
       .data(allLoaded ? users : null)
       .dimensions(ui.windowDimensions)
       .canvas(this.bubbleContainer)
+      .showUser(ui.onboarding === false)
       .on('click', this.handleBubbleClick)
       .on('mouseenter', hoveredBubble => this.setState({hoveredBubble}))
       .on('mouseleave', () => this.setState({hoveredBubble: null}));
@@ -68,6 +70,7 @@ class Others extends Component {
       .dimensions(ui.windowDimensions)
       .data(allLoaded ? users : null)
       .canvas(this.bubbleContainer)
+      .showUser(ui.onboarding === false)
       .margins({left: ui.drawer ? DRAWER_WIDTH : 0})
       .user(_find(users, {id: user.login}))
       .properties(ui.othersPeopleOptions)
@@ -101,13 +104,15 @@ class Others extends Component {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
+    const onboardingDone = ui.onboarding === false;
 
     if(!users)
       return <Loader copy="Loading Users" />
 
     return (
       <div>
-        <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />
+        {!onboardingDone && <Onboarding currentStep={ui.onboarding} />}
+        {onboardingDone && <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />}
         <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
           {(ui.drawer === 'options') && <Options />}
           {(ui.drawer === 'info') && <Info />}

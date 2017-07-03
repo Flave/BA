@@ -10,7 +10,7 @@ const initialState = {
   },
   drawer: null,
   othersPeopleOptions: predictions.map(({ id }) => (
-      id === 'age' ? {id, value: true} : {id, value: false}
+      id === 'age' ? {id, value: true} : {id, value: true}
     )
   ),
   itemsShown: 5,
@@ -22,7 +22,9 @@ const initialState = {
   userLoading: true,
   profileLoading: true,
   feedLoading: true,
-  usersLoading: true
+  usersLoading: true,
+
+  onboarding: false
 }
 
 export default (state = initialState, action) => {
@@ -43,7 +45,7 @@ export default (state = initialState, action) => {
     case 'RESET_UI':
       return {
         ...state,
-        drawer: null
+        drawer: false
       }
 
     case 'SET_OTHERS_PEOPLE_OPTIONS':
@@ -55,7 +57,14 @@ export default (state = initialState, action) => {
     case 'RECEIVE_USER':
       return {
         ...state,
-        userCount: action.data && action.data.userCount
+        userCount: action.data && action.data.userCount,
+        onboarding: action.data.returning ? false : 3
+      }
+
+    case 'RECEIVE_UPDATED_USER':
+      return {
+        ...state,
+        onboarding: action.data.returning ? false : 0
       }
 
     case 'SHOW_MORE_ITEMS':
@@ -84,7 +93,17 @@ export default (state = initialState, action) => {
         itemsShown: initialState.itemsShown,
         lastItemsShown: initialState.lastItemsShown,
         maxItems: action.profile && action.profile.feed ? action.profile.feed.length : null
-      };
+      }
+    case 'NEXT_ONBOARDING':
+      return {
+        ...state,
+        onboarding: state.onboarding + 1,
+      }
+    case 'PREV_ONBOARDING':
+      return {
+        ...state,
+        onboarding: state.onboarding - 1,
+      }
     default:
       return state;
   }

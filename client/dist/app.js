@@ -2057,6 +2057,7 @@ function create(node, id, self) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return fetchAll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return fetchProfile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return updateUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setWindowDimensions; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return toggleDrawer; });
 /* unused harmony export setFeedItemHeight */
@@ -2066,12 +2067,22 @@ function create(node, id, self) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return resetFeed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return resetUi; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return setProfileVisited; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return nextOnboarding; });
+/* unused harmony export prevOnboarding */
+/* unused harmony export completeOnboarding */
 
 
 // API
 var receiveUser = function receiveUser(data) {
   return {
     type: 'RECEIVE_USER',
+    data: data
+  };
+};
+
+var receiveUpdatedUser = function receiveUpdatedUser(data) {
+  return {
+    type: 'RECEIVE_UPDATED_USER',
     data: data
   };
 };
@@ -2115,6 +2126,12 @@ var fetchAll = function fetchAll() {
 var fetchProfile = function fetchProfile(id) {
   return __WEBPACK_IMPORTED_MODULE_0__api__["c" /* fetchProfile */](id).then(function (response) {
     return receiveProfile(response.data, id);
+  });
+};
+
+var updateUser = function updateUser(data) {
+  return __WEBPACK_IMPORTED_MODULE_0__api__["d" /* updateUser */](data).then(function (response) {
+    return receiveUpdatedUser(response.data);
   });
 };
 
@@ -2182,6 +2199,24 @@ var setProfileVisited = function setProfileVisited(id) {
   return {
     type: 'SET_PROFILE_VISITED',
     id: id
+  };
+};
+
+var nextOnboarding = function nextOnboarding(id) {
+  return {
+    type: 'NEXT_ONBOARDING'
+  };
+};
+
+var prevOnboarding = function prevOnboarding(id) {
+  return {
+    type: 'PREV_ONBOARDING'
+  };
+};
+
+var completeOnboarding = function completeOnboarding(id) {
+  return {
+    type: 'COMPLETE_ONBOARDING'
   };
 };
 
@@ -7049,24 +7084,23 @@ module.exports = defaults;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(253);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 /* unused harmony export fetchLogin */
-/* unused harmony export fetchPredictions */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return fetchUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return updateUser; });
 /* unused harmony export fetchFeed */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchAll; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return fetchProfile; });
-/* unused harmony export fetchTest */
 
 
 var fetchLogin = function fetchLogin() {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/login');
 };
 
-var fetchPredictions = function fetchPredictions() {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/predictions');
-};
-
 var fetchUser = function fetchUser() {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/user');
+};
+
+var updateUser = function updateUser(data) {
+  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["post"])('/api/user', data);
 };
 
 var fetchFeed = function fetchFeed(id) {
@@ -7079,10 +7113,6 @@ var fetchAll = function fetchAll() {
 
 var fetchProfile = function fetchProfile(id) {
   return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/profile/' + id);
-};
-
-var fetchTest = function fetchTest(id) {
-  return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_axios__["get"])('/api/test');
 };
 
 /***/ }),
@@ -12784,7 +12814,7 @@ module.exports = __webpack_require__.p + "618646a8c9af7b7deafa786c0c610d04.eot";
 /* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "b0ad7ebb1dae1fd03059f09e89c0e05f.eot";
+module.exports = __webpack_require__.p + "975cad457ca9ce49bc3f7f5f7843881a.eot";
 
 /***/ }),
 /* 184 */
@@ -18070,44 +18100,43 @@ module.exports = {
 
 /***/ }),
 /* 251 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
 const d3InterpolateHsl = __webpack_require__(60).interpolateHsl;
 
 
 module.exports = [
   {
     'id': 'female',
-    'col': d3InterpolateHsl('#BEC6E9', '#404A73'),
+    'color': d3InterpolateHsl('#BEC6E9', '#3A63FA'),
     label: 'Psychological Gender',
     'unit': '%',
     properties: ['female']
   },
   {
     'id': 'age',
-    'col': d3InterpolateHsl('#D3C7E3', '#5F4682'),
+    'color': d3InterpolateHsl('#D3C7E3', '#6F64DB'),
     label: 'Age',
     'unit': 'y',
     properties: ['age']
   },
   {
     'id': 'intelligence',
-    'col': d3InterpolateHsl('#DBBACD', '#A95686'),
+    'color': d3InterpolateHsl('#DBBACD', '#A364BC'),
     label: 'Intelligence',
     'unit': '%',
     properties: ['intelligence']
   },
   {
     'id': 'satisfaction_life',
-    'col': d3InterpolateHsl('#E5C3D0', '#CC658C'),
+    'color': d3InterpolateHsl('#E5C3D0', '#EC6591'),
     label: 'Life satisfaction',
     'unit': '%',
     properties: ['satisfaction_life']
   },
   {
     'id': 'politics',
-    'col': d3InterpolateHsl('#F1D3D9', '#ED7890'),
+    'color': d3InterpolateHsl('#F1D3D9', '#FF7B8A'),
     'label': 'Political Orientation',
     'unit': '%',
     'properties': [
@@ -18119,7 +18148,7 @@ module.exports = [
   },
   {
     'id': 'religion',
-    'col': d3InterpolateHsl('#F9E0E0', '#FB9B9B'),
+    'color': d3InterpolateHsl('#F9E0E0', '#FE9B91'),
     'label': 'Religious Orientation',
     'unit': '%',
     'properties': [
@@ -18133,7 +18162,7 @@ module.exports = [
   },
   {
     'id': 'big5',
-    'col': d3InterpolateHsl('#F9E7E4', '#F7BCB3'),
+    'color': d3InterpolateHsl('#F9E7E4', '#FEC89A'),
     'label': 'Personality',
     'unit': '%',
     'properties': [
@@ -18145,6 +18174,97 @@ module.exports = [
     ]
   }
 ]
+
+// Pink turkis yellow
+// #FDB0FF
+// #BEBFE8
+// #81CFD4
+// #44DEBF
+// #80DFA8
+// #FADC84
+// #C3DD94
+
+
+
+// Blue orange red
+
+// #3A63FA
+// #7685DC
+// #B6A5BE
+// #FEC59A
+// #FFB296
+// #FF888D
+// #FF6786
+
+
+// Blue red Orange
+// #3A63FA
+// #6F64DB
+// #A364BC
+// #EC6591
+// #FF7B8A
+// #FE9B91
+// #FEC89A
+
+
+
+//Orange red blue
+// #FEC89A
+// #FE9B91
+// #FF7B8A
+// #EC6591
+// #A364BC
+// #6F64DB
+// #3A63FA
+
+
+
+// Dark Blue, wine red, turkis
+
+// #133758
+// #523E69
+// #9B3C7C
+// #D14E8E
+// #DB7FB8
+// #BCB6DA
+// #89F1E4
+
+// Dark purple, red, yellow
+// #504E7Bs
+// #996D87
+// #D48590
+// #FC9596
+// #FFAF9B
+// #FECAA0
+// #FDE8A5
+
+
+// Pink yellow blue -> redo
+// #FD8DF9
+// #FFA0C4
+// #FFBD92
+// #FFCB7B
+// #8FCFF6
+// #8F87E3
+// #3967FB
+
+// Pink yellow blue
+// #F691F2
+// #FFAECC
+// #FEC39D
+// #FECE86
+// #B6D1E2
+// #9497C2
+// #3967FB
+
+// Redish sunset sky
+// #404A73
+// #5F4682
+// #A95686
+// #CC658C
+// #ED7890
+// #FB9B9B
+// #F7BCB3
 
 /***/ }),
 /* 252 */
@@ -18999,52 +19119,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 271 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-
-var Login = function Login(_ref) {
-  var user = _ref.user;
-
-  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    "div",
-    { className: "intro__slide" },
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "p",
-      { className: "intro__lead" },
-      "The web is bigger than what you see in your browser. \u2028Do you want to know what the ",
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "i",
-        null,
-        "internet of someone else"
-      ),
-      " looks like?"
-    ),
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "div",
-      { className: "login" },
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "p",
-        { className: "login__copy" },
-        "Check it out with \u2026"
-      ),
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "a",
-        { className: "btn btn--big btn--facebook", href: "/auth/facebook" },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon-facebook" }),
-        "Facebook"
-      )
-    )
-  );
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (Login);
-
-/***/ }),
+/* 271 */,
 /* 272 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19056,10 +19131,12 @@ var Login = function Login(_ref) {
 /* harmony default export */ __webpack_exports__["a"] = (function (_ref) {
   var option = _ref.option,
       value = _ref.value,
+      color = _ref.color,
       onChange = _ref.onChange;
 
   var activeClass = value ? 'is-active' : '';
   var iconClass = value ? 'icon-check' : '';
+  var style = value ? { borderColor: color, backgroundColor: color } : { borderColor: color };
 
   return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
     'div',
@@ -19071,6 +19148,7 @@ var Login = function Login(_ref) {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'span',
       {
+        style: style,
         className: 'check__box' },
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'check__icon ' + iconClass })
     ),
@@ -19587,6 +19665,14 @@ function Bubble(ctx, options, user) {
     bubble.targetX = targetX;
     bubble.targetY = targetY;
     bubble.selectedGroups = selectedGroups;
+
+    bubble.differences.sort(function (d1, d2) {
+      var selectedGroup1 = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(bubble.selectedGroups, { id: d1.id });
+      var selectedGroup2 = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(bubble.selectedGroups, { id: d2.id });
+      if (selectedGroup1 && selectedGroup2) return d1.relativeDifference - d2.relativeDifference;
+      if (selectedGroup1) return 1;
+      return -1;
+    });
   };
 
   bubble.render = function () {
@@ -19595,23 +19681,33 @@ function Bubble(ctx, options, user) {
 
     __WEBPACK_IMPORTED_MODULE_2_root_constants_predictionOptions___default.a.forEach(function (group, i) {
       var difference = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(bubble.differences, { id: group.id });
+      var selectedGroup = __WEBPACK_IMPORTED_MODULE_5_lodash_find___default()(bubble.selectedGroups, { id: group.id });
+      var r = (bubble.r + 1.1) * (bubble.selectedGroups.length / 7);
+
       var angle = Math.PI * 2 / __WEBPACK_IMPORTED_MODULE_2_root_constants_predictionOptions___default.a.length * i;
-      var x = Math.cos(angle) * bubble.r + 1.1;
-      var y = Math.sin(angle) * bubble.r + 1.1;
-      var col = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_d3_color__["e" /* hsl */])(group.col(1));
-      col.s = difference.relativeDifference;
-      col.opacity = difference.relativeDifference;
-      if (bubble.isUser) {
-        col.opacity = 1;
-        col.s = 0;
+      var x = Math.cos(angle) * r;
+      var y = Math.sin(angle) * r;
+      var color = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_d3_color__["e" /* hsl */])(group.color(1));
+
+      color.opacity = difference.relativeDifference;
+
+      if (!selectedGroup) {
+        color.s = 0;
+        color.opacity = .1;
       }
-      addDimension({ x: x, y: y }, bubble.r * 1.4, col);
+
+      if (bubble.isUser) {
+        color.opacity = .5;
+        color.s = 0;
+      }
+
+      addDimension({ x: x, y: y }, bubble.r * 1.4, color);
     });
 
     ctx.restore();
   };
 
-  function addDimension(center, r, color) {
+  function addDimension(center, r, color, strength) {
     var grad = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, r);
     //color.opacity = .7;
     grad.addColorStop(0, color + "");
@@ -19622,14 +19718,6 @@ function Bubble(ctx, options, user) {
     ctx.fillStyle = grad;
     ctx.arc(0, 0, Math.floor(bubble.r), 0, 2 * Math.PI);
     ctx.fill();
-  }
-
-  function createGradient(center, r, rOffset, angleOffset, color, strength) {
-    var offset = polarPosition(center, r, rOffset, angleOffset);
-    var grad = ctx.createRadialGradient(offset.x, offset.y, 0, center.x, center.y, r);
-    grad.addColorStop(0, hexToRgba(color, 1));
-    grad.addColorStop(1, hexToRgba(color, 0));
-    return grad;
   }
 
   function cartesianPosition(xRatio, yRatio) {
@@ -19701,8 +19789,9 @@ function BubblesCanvas() {
   var _bubblesCanvas = {};
   var bubbles = void 0;
   var user = void 0;
+  var showUser = void 0;
   var properties = void 0;
-  var maxBubbleRadius = 50;
+  var maxBubbleRadius = 55;
   var minDist = 150;
   var pixRatio = .15;
   var invertPixRatio = 1 / pixRatio;
@@ -19710,7 +19799,7 @@ function BubblesCanvas() {
   // to have a natural movement...
   var strengthGenerator = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0.02, 0.007);
   var collide = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["a" /* forceCollide */])(function (d) {
-    return d.r + d.r * 0.05;
+    return d.r + d.r * 0.1;
   });
   var forceX = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["c" /* forceX */])().strength(strengthGenerator).x(function (d) {
     return d.targetX;
@@ -19776,6 +19865,12 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   };
 
+  _bubblesCanvas.showUser = function (_) {
+    if (!arguments.length) return showUser;
+    showUser = _;
+    return _bubblesCanvas;
+  };
+
   function calculateGroupDifferences(profile, group) {
     return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["b" /* mean */])(group.properties, function (prop) {
       var userValue = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(user.predictions, { id: prop }).value;
@@ -19812,7 +19907,7 @@ function BubblesCanvas() {
     bubbles = data.map(function (profile, i) {
       var similarity = getSimilarity(profile);
       var angle = Math.PI * 2 / data.length * i + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0, 0.1)();
-      var dist = Math.random() * 10 + 10;
+      var dist = Math.random() * 20 + 50;
       var x = Math.cos(angle) * dist + pixDimensions[0] / 2;
       var y = Math.sin(angle) * dist + pixDimensions[1] / 2;
 
@@ -19847,7 +19942,7 @@ function BubblesCanvas() {
     var shorterSide = Math.min.apply(Math, _toConsumableArray(dimensions));
     // TODO: margins need to be incoorporated correctly to account for height > width
     var maxDist = shorterSide / 2 - margins.top - margins.bottom;
-    var distScope = maxDist - minDist;
+    var distScope = showUser ? maxDist - minDist : maxDist;
     var centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
 
     bubbles.forEach(function (bubble) {
@@ -19876,7 +19971,8 @@ function BubblesCanvas() {
     ctx.fill();
 
     bubbles && bubbles.forEach(function (bubble) {
-      return bubble.render();
+      if (isUser(bubble) && !showUser) return;
+      bubble.render();
     });
     ctx.drawImage(canvas, 0, 0, pixDimensions[0], pixDimensions[1], 0, 0, dimensions[0], dimensions[1]);
   }
@@ -20077,6 +20173,7 @@ var Others = function (_Component) {
             key: group.id,
             option: group,
             value: options.length,
+            color: group.color(1) + "",
             onChange: _this2.handleOptionsChange.bind(_this2) });
         })
       );
@@ -20673,10 +20770,10 @@ function Bubble(ctx, options) {
     ctx.fillStyle = bubble.fill;
     ctx.beginPath();
     ctx.arc(0, 0, bubble.r, 0, 2 * Math.PI);
-    if (bubble.hasThumb) {
+    var img = window.document.getElementById("subs-vis__thumb--" + bubble.id);
+    if (img) {
       ctx.clip();
-      var img = window.document.getElementById("subs-vis__thumb--" + bubble.id);
-      if (img) ctx.drawImage(img, -bubble.r, -bubble.r, bubble.r * 2, bubble.r * 2);
+      ctx.drawImage(img, -bubble.r, -bubble.r, bubble.r * 2, bubble.r * 2);
     } else {
       ctx.fill();
     }
@@ -20741,7 +20838,7 @@ function BubblesCanvas() {
 
   var simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["e" /* forceSimulation */])(bubbles).force("collide", collide).velocityDecay(0.2).force("charge", charge).force("x", forceX).force("y", forceY).on("tick", render);
 
-  var colors = ["rgba(80, 140, 230, .5)", "red", "rgba(180, 140, 100, .5)"];
+  var colors = ["#3A63FA", "#EC6591", "#FEC89A"];
 
   _bubblesCanvas.update = function () {
     if (!subs || !canvas) return;
@@ -20795,7 +20892,6 @@ function BubblesCanvas() {
       var colIndex = isUser && subscriberIndex === 1 ? 0 : subscriberIndex;
       return subsGroup.map(function (sub, subIndex) {
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__Bubble__["a" /* default */])(ctx, _extends({}, sub, {
-          hasThumb: subIndex < 20,
           x: size[0] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
           y: size[1] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
           fill: colors[colIndex],
@@ -20873,13 +20969,9 @@ function BubblesCanvas() {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_redux__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_LoginSlide_jsx__ = __webpack_require__(271);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_common_Loader_jsx__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__api__ = __webpack_require__(81);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_app_components_common_Loader_jsx__ = __webpack_require__(59);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_app_components_intro__ = __webpack_require__(713);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_components_intro_Slide_jsx__ = __webpack_require__(709);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20893,29 +20985,46 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-
-
 var Intro = function (_Component) {
   _inherits(Intro, _Component);
 
-  function Intro() {
+  function Intro(props) {
     _classCallCheck(this, Intro);
 
-    return _possibleConstructorReturn(this, (Intro.__proto__ || Object.getPrototypeOf(Intro)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Intro.__proto__ || Object.getPrototypeOf(Intro)).call(this, props));
+
+    _this.state = {
+      slideIndex: 0
+    };
+
+    _this.handleNext = _this.handleNext.bind(_this);
+    return _this;
   }
 
   _createClass(Intro, [{
+    key: 'handleNext',
+    value: function handleNext() {
+      this.setState({ slideIndex: this.state.slideIndex + 1 });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var user = this.props.user;
 
-      if (!user) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_app_components_common_Loader_jsx__["a" /* default */], { copy: 'Loading App' });
+      if (!user) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_app_components_common_Loader_jsx__["a" /* default */], { copy: 'Loading App' });
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'intro' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__components_LoginSlide_jsx__["a" /* default */], null)
+        __WEBPACK_IMPORTED_MODULE_2_app_components_intro__["a" /* default */].map(function (SlideContent, i) {
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_3_app_components_intro_Slide_jsx__["a" /* default */],
+            { key: i, onNext: _this2.handleNext, index: i, currentIndex: _this2.state.slideIndex },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(SlideContent, null)
+          );
+        })
       );
     }
   }]);
@@ -21015,13 +21124,14 @@ Others.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_components_common_Predictions_jsx__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_app_components_others_people_Options_jsx__ = __webpack_require__(281);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_app_components_others_people_Info_jsx__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_utility__ = __webpack_require__(45);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_actions__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_lodash_find__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_root_constants__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_react_router_dom__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_components_onboarding_Onboarding_jsx__ = __webpack_require__(714);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_utility__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_app_actions__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash_find__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_lodash_find__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_root_constants__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_root_constants__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_router_dom__ = __webpack_require__(10);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21047,7 +21157,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_13_root_constants__["ui"].DRAWER_WIDTH;
+
+var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_14_root_constants__["ui"].DRAWER_WIDTH;
 
 var Others = function (_Component) {
   _inherits(Others, _Component);
@@ -21081,11 +21192,11 @@ var Others = function (_Component) {
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["d" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["d" /* resetUi */]());
       // if user landed on profile there will be already 1-2 profiles
-      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["j" /* fetchAll */]());
+      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["j" /* fetchAll */]());
 
-      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
+      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).showUser(ui.onboarding === false).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
         return _this2.setState({ hoveredBubble: hoveredBubble });
       }).on('mouseleave', function () {
         return _this2.setState({ hoveredBubble: null });
@@ -21099,7 +21210,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleTransitionStart',
     value: function handleTransitionStart() {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["d" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["d" /* resetUi */]());
     }
   }, {
     key: 'componentDidUpdate',
@@ -21113,7 +21224,7 @@ var Others = function (_Component) {
 
       var allLoaded = users && users.length === ui.userCount;
 
-      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
+      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).showUser(ui.onboarding === false).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_13_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
     }
   }, {
     key: 'createTooltip',
@@ -21126,7 +21237,7 @@ var Others = function (_Component) {
 
       var hoveredBubble = this.state.hoveredBubble;
 
-      var profile = __WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: hoveredBubble.id });
+      var profile = __WEBPACK_IMPORTED_MODULE_13_lodash_find___default()(users, { id: hoveredBubble.id });
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_6_app_components_common_Tooltip_jsx__["a" /* default */],
@@ -21143,7 +21254,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleMenuClick',
     value: function handleMenuClick(menuId) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["f" /* toggleDrawer */](menuId));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["f" /* toggleDrawer */](menuId));
     }
   }, {
     key: 'render',
@@ -21158,13 +21269,15 @@ var Others = function (_Component) {
           ui = _store$getState4.ui;
 
       var allLoaded = users && users.length === ui.userCount;
+      var onboardingDone = ui.onboarding === false;
 
       if (!users) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_common_Loader_jsx__["a" /* default */], { copy: 'Loading Users' });
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_app_components_others_people_Sidebar_jsx__["a" /* default */], { onMenuClick: this.handleMenuClick.bind(this), drawer: ui.drawer, offset: DRAWER_WIDTH }),
+        !onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_app_components_onboarding_Onboarding_jsx__["a" /* default */], { currentStep: ui.onboarding }),
+        onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_app_components_others_people_Sidebar_jsx__["a" /* default */], { onMenuClick: this.handleMenuClick.bind(this), drawer: ui.drawer, offset: DRAWER_WIDTH }),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__["a" /* default */],
           { width: DRAWER_WIDTH, isOpen: ui.drawer },
@@ -21193,7 +21306,7 @@ Others.contextTypes = {
   store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_14_react_router_dom__["d" /* withRouter */])(Others));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_15_react_router_dom__["d" /* withRouter */])(Others));
 
 /***/ }),
 /* 292 */
@@ -21501,7 +21614,8 @@ var ProfileSubs = function (_Component) {
     var _this = _possibleConstructorReturn(this, (ProfileSubs.__proto__ || Object.getPrototypeOf(ProfileSubs)).call(this, props));
 
     _this.state = {
-      hoveredSub: null
+      hoveredSub: null,
+      hoveredSubs: []
     };
     return _this;
   }
@@ -21590,18 +21704,12 @@ var ProfileSubs = function (_Component) {
   }, {
     key: 'createThumbImages',
     value: function createThumbImages() {
-      var subs = this.getTheSubs();
+      var subs = this.state.hoveredSubs;
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'subs-vis__thumbs' },
-        subs.map(function (subsGroup, i) {
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'div',
-            { key: i },
-            subsGroup.slice(0, 20).map(function (sub) {
-              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { key: sub.id, src: sub.thumb, id: 'subs-vis__thumb--' + sub.id });
-            })
-          );
+        subs.map(function (sub, i) {
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { key: sub.id, src: sub.thumb, id: 'subs-vis__thumb--' + sub.id });
         })
       );
     }
@@ -21650,11 +21758,6 @@ var ProfileSubs = function (_Component) {
               'div',
               { className: 'subs-vis__label-text' },
               labelText
-            ),
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'div',
-              { className: 'subs-vis__label-value' },
-              subsGroup.length
             )
           );
         })
@@ -21834,7 +21937,7 @@ var initialState = {
   drawer: null,
   othersPeopleOptions: __WEBPACK_IMPORTED_MODULE_0_root_constants__["predictions"].map(function (_ref) {
     var id = _ref.id;
-    return id === 'age' ? { id: id, value: true } : { id: id, value: false };
+    return id === 'age' ? { id: id, value: true } : { id: id, value: true };
   }),
   itemsShown: 5,
   lastItemsShown: 0,
@@ -21845,7 +21948,9 @@ var initialState = {
   userLoading: true,
   profileLoading: true,
   feedLoading: true,
-  usersLoading: true
+  usersLoading: true,
+
+  onboarding: false
 };
 
 /* harmony default export */ __webpack_exports__["a"] = (function () {
@@ -21866,7 +21971,7 @@ var initialState = {
 
     case 'RESET_UI':
       return _extends({}, state, {
-        drawer: null
+        drawer: false
       });
 
     case 'SET_OTHERS_PEOPLE_OPTIONS':
@@ -21876,7 +21981,13 @@ var initialState = {
 
     case 'RECEIVE_USER':
       return _extends({}, state, {
-        userCount: action.data && action.data.userCount
+        userCount: action.data && action.data.userCount,
+        onboarding: action.data.returning ? false : 3
+      });
+
+    case 'RECEIVE_UPDATED_USER':
+      return _extends({}, state, {
+        onboarding: action.data.returning ? false : 0
       });
 
     case 'SHOW_MORE_ITEMS':
@@ -21900,6 +22011,14 @@ var initialState = {
         itemsShown: initialState.itemsShown,
         lastItemsShown: initialState.lastItemsShown,
         maxItems: action.profile && action.profile.feed ? action.profile.feed.length : null
+      });
+    case 'NEXT_ONBOARDING':
+      return _extends({}, state, {
+        onboarding: state.onboarding + 1
+      });
+    case 'PREV_ONBOARDING':
+      return _extends({}, state, {
+        onboarding: state.onboarding - 1
       });
     default:
       return state;
@@ -21961,6 +22080,8 @@ function increaseItemsShown(_ref4) {
 
   switch (action.type) {
     case 'RECEIVE_USER':
+      return action.data;
+    case 'RECEIVE_UPDATED_USER':
       return action.data;
     default:
       return state;
@@ -24088,7 +24209,7 @@ exports = module.exports = __webpack_require__(302)(undefined);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(183) + ");\n  src: url(" + __webpack_require__(183) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(458) + ") format(\"truetype\"), url(" + __webpack_require__(459) + ") format(\"woff\"), url(" + __webpack_require__(457) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(182) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(182) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(456) + ") format(\"woff2\"), url(" + __webpack_require__(455) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(181) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(181) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(454) + ") format(\"woff2\"), url(" + __webpack_require__(453) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace; }\n\na {\n  color: #2E2E2E; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  bottom: 20%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center; }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 18px;\n  margin-bottom: 5px; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    color: #3163FF; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      border: 1px solid #3163FF; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 1px solid rgba(0, 0, 0, 0.5); }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  display: flex; }\n  .predictions--tooltip .prediction__group {\n    width: 160px;\n    padding-right: 25px;\n    margin-bottom: 0; }\n  .predictions--tooltip .prediction__bar {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .predictions--tooltip .prediction__bar-value {\n    background-color: white; }\n  .predictions--tooltip .prediction__group-label {\n    height: 45px; }\n\n.prediction__group {\n  margin-bottom: 30px; }\n  .prediction__group:last-child {\n    padding-right: 0; }\n\n.prediction__group-label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  margin-bottom: 10px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.prediction__label {\n  font-size: 14px; }\n\n.prediction__value {\n  font-size: 14px; }\n\n.prediction__bar {\n  margin-top: 5px;\n  position: relative;\n  height: 2px;\n  width: 100%;\n  background-color: rgba(46, 46, 46, 0.3); }\n\n.prediction__bar-value {\n  height: 100%;\n  background-color: #2e2e2e; }\n\n.intro {\n  text-align: center;\n  max-width: 900px;\n  margin: 0 auto; }\n\n.intro__slide {\n  padding-top: 200px; }\n\n.intro__lead {\n  font-size: 38px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 24px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #4962B5;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(183) + ");\n  src: url(" + __webpack_require__(183) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(458) + ") format(\"truetype\"), url(" + __webpack_require__(459) + ") format(\"woff\"), url(" + __webpack_require__(457) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-long-arrow-forward:before {\n  content: \"\\E90B\"; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(182) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(182) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(456) + ") format(\"woff2\"), url(" + __webpack_require__(455) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(181) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(181) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(454) + ") format(\"woff2\"), url(" + __webpack_require__(453) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace; }\n\na {\n  color: #2E2E2E; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  bottom: 20%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center; }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 18px;\n  margin-bottom: 5px; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active .check__box, .check.is-semi-active .check__box {\n    color: #fcfcfc; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 2px solid;\n  text-align: center;\n  border-radius: 100%; }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  font-size: 14px; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  display: flex; }\n  .predictions--tooltip .prediction__group {\n    width: 160px;\n    padding-right: 25px;\n    margin-bottom: 0; }\n  .predictions--tooltip .prediction__bar {\n    background-color: rgba(255, 255, 255, 0.2); }\n  .predictions--tooltip .prediction__bar-value {\n    background-color: white; }\n  .predictions--tooltip .prediction__group-label {\n    height: 45px; }\n\n.prediction__group {\n  margin-bottom: 30px; }\n  .prediction__group:last-child {\n    padding-right: 0; }\n\n.prediction__group-label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  margin-bottom: 10px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.prediction__label {\n  font-size: 14px; }\n\n.prediction__value {\n  font-size: 14px; }\n\n.prediction__bar {\n  margin-top: 5px;\n  position: relative;\n  height: 2px;\n  width: 100%;\n  background-color: rgba(46, 46, 46, 0.3); }\n\n.prediction__bar-value {\n  height: 100%;\n  background-color: #2e2e2e; }\n\n.slide {\n  max-width: 780px;\n  margin: 0 auto;\n  opacity: 0;\n  visibility: hidden;\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  transition: all .3s;\n  transform: translateX(20px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .slide.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .slide.was-active {\n    transform: translateX(-20px); }\n\n.slide__content {\n  position: relative;\n  top: -5%; }\n\n.slide__lead {\n  font-size: 32px;\n  line-height: 1.3em;\n  padding-right: 120px; }\n\n.slide__next {\n  cursor: pointer;\n  color: #3163FF;\n  text-transform: uppercase;\n  font-size: 18px;\n  letter-spacing: .05em;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  margin-top: -10px; }\n\n.slide__highlight {\n  font-style: normal;\n  color: #3163FF; }\n\n.slide__title {\n  font-family: \"Playfair Display\", serif;\n  font-size: 48px;\n  color: #3163FF;\n  line-height: 53px; }\n\n.slide__login {\n  margin-top: 50px; }\n\n.slide__login-copy {\n  font-size: 18px;\n  margin-bottom: 25px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 1.5px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--cta {\n    background: #3163FF;\n    color: #fff;\n    text-transform: uppercase;\n    letter-spacing: 0.08em; }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #3163FF;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 30px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 25px;\n  font-weight: 900;\n  line-height: 27px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute;\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 35px 0 35px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__section-header {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px 25px 35px;\n  margin-top: -10px;\n  font-weight: bold; }\n\n/* \n  DRAWER ITEM\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 35px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 35px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n\n.onboarding__step {\n  position: fixed;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  visibility: hidden;\n  transition: all .3s;\n  transform: translateX(20px);\n  width: 430px;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  height: 100%;\n  padding: 30px;\n  overflow: scroll; }\n  .onboarding__step.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .onboarding__step.was-active {\n    transform: translateX(-20px); }\n\n.onboarding__title {\n  font-family: \"Playfair Display\", serif;\n  color: #3163FF;\n  font-size: 38px;\n  margin-bottom: 25px;\n  margin-top: 15px; }\n\n.onboarding__copy {\n  font-size: 20px;\n  line-height: 28px;\n  margin-bottom: 30px; }\n\n.onboarding__next {\n  float: right; }\n\n.onboarding__predictions {\n  margin-top: 100px;\n  clear: both; }\n\n.onboarding__group {\n  font-size: 14px;\n  margin-bottom: 15px; }\n  .onboarding__group--expandable .onboarding__group-name {\n    cursor: pointer; }\n\n.onboarding__group-name {\n  font-weight: bold;\n  margin-right: 10px;\n  text-transform: uppercase;\n  letter-spacing: 0.04em; }\n\n.onboarding__group-color {\n  width: 18px;\n  height: 18px;\n  border-radius: 100%;\n  vertical-align: middle;\n  display: inline-block;\n  margin-right: 8px;\n  position: relative;\n  top: -2px; }\n\n.onboarding__group-icon {\n  display: inline-block;\n  margin-left: 10px;\n  vertical-align: middle;\n  font-size: 16px; }\n\n.onboarding__prediction {\n  padding-left: 30px;\n  margin-bottom: 4px; }\n  .onboarding__prediction:first-child {\n    margin-top: 15px; }\n  .onboarding__prediction:last-child {\n    margin-bottom: 25px; }\n", ""]);
 
 // exports
 
@@ -30407,19 +30528,19 @@ module.exports = __webpack_require__.p + "387234bc0d03b3b1273fb50641b9e10e.woff2
 /* 457 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "1f5b91e17d9dff002160b13a3b5b4bfb.svg";
+module.exports = __webpack_require__.p + "fd77653b355b51006f674a4125c46e6f.svg";
 
 /***/ }),
 /* 458 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "8969d8365ad612f37a018e84aac37365.ttf";
+module.exports = __webpack_require__.p + "162d7eaba8a659c4c15de3689f1ae337.ttf";
 
 /***/ }),
 /* 459 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "1a32271bb2b1c5b25ca77d299eacc7e5.woff";
+module.exports = __webpack_require__.p + "a8cc05629aaa3b386232251f5a5893fe.woff";
 
 /***/ }),
 /* 460 */
@@ -50484,6 +50605,520 @@ exports.default = valueEqual;
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 703 */,
+/* 704 */,
+/* 705 */,
+/* 706 */,
+/* 707 */,
+/* 708 */,
+/* 709 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Slide = function Slide(_ref) {
+  var index = _ref.index,
+      currentIndex = _ref.currentIndex,
+      onNext = _ref.onNext,
+      children = _ref.children;
+
+  var activeClass = "";
+  if (index === currentIndex) activeClass = "is-active";
+  if (index < currentIndex) activeClass = "was-active";
+
+  var childrenWithProps = __WEBPACK_IMPORTED_MODULE_0_react___default.a.Children.map(children, function (child) {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.cloneElement(child, { onNext: onNext });
+  });
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "slide " + activeClass },
+    childrenWithProps
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Slide);
+
+/***/ }),
+/* 710 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Login = function Login() {
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "slide__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "h1",
+      { className: "slide__title" },
+      "the internet ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("br", null),
+      " of other people"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "slide__lead" },
+      "The web is bigger than what you see in your browser. \u2028Do you want to know what the ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "i",
+        null,
+        "internet of someone else"
+      ),
+      " looks like?"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "div",
+      { className: "slide__login" },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "p",
+        { className: "slide__login-copy" },
+        "Dive in with \u2026"
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "a",
+        { className: "btn btn--big btn--facebook", href: "/auth/facebook" },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("i", { className: "icon-facebook" }),
+        "Facebook"
+      )
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Login);
+
+/***/ }),
+/* 711 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Slide0 = function Slide0(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "slide__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "slide__lead" },
+      "\u201CIt will be very hard for people to watch or consume something that has not in some sense been tailored for them\u201D"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "slide__meta" },
+      "\u2014 Eric Schmidt (CEO Google) 2010"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "span",
+      { onClick: onNext, className: "slide__next" },
+      "Next ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Slide0);
+
+/***/ }),
+/* 712 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Slide1 = function Slide1(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "slide__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "slide__lead" },
+      "Our experiences on the web are ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "em",
+        { className: "slide__highlight" },
+        "highly personalised"
+      ),
+      ". Machines decide what we might like or what we might be looking for. It is now easier than ever to block out what we don\u2019t like and only let in what we agree with."
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "span",
+      { onClick: onNext, className: "slide__next" },
+      "Next ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Slide1);
+
+/***/ }),
+/* 713 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Slide0_jsx__ = __webpack_require__(711);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Slide1_jsx__ = __webpack_require__(712);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__LoginSlide_jsx__ = __webpack_require__(710);
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ([__WEBPACK_IMPORTED_MODULE_0__Slide0_jsx__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__Slide1_jsx__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__LoginSlide_jsx__["a" /* default */]]);
+
+/***/ }),
+/* 714 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__index__ = __webpack_require__(715);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_actions__ = __webpack_require__(20);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+var Onboarding = function (_Component) {
+  _inherits(Onboarding, _Component);
+
+  function Onboarding(props) {
+    _classCallCheck(this, Onboarding);
+
+    var _this = _possibleConstructorReturn(this, (Onboarding.__proto__ || Object.getPrototypeOf(Onboarding)).call(this, props));
+
+    _this.handleNext = _this.handleNext.bind(_this);
+    return _this;
+  }
+
+  _createClass(Onboarding, [{
+    key: 'handleNext',
+    value: function handleNext() {
+      if (this.props.currentStep < __WEBPACK_IMPORTED_MODULE_2__index__["a" /* default */].length - 1) this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["l" /* nextOnboarding */]());else this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["m" /* updateUser */]({ returning: true }));
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      var currentStep = this.props.currentStep;
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'onboarding' },
+        __WEBPACK_IMPORTED_MODULE_2__index__["a" /* default */].map(function (Step, i) {
+          var activeClass = "";
+          if (i === currentStep) activeClass = "is-active";
+          if (i < currentStep) activeClass = "was-active";
+
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { key: i, className: 'onboarding__step ' + activeClass },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(Step, { onNext: _this2.handleNext, activeClass: activeClass })
+          );
+        })
+      );
+    }
+  }]);
+
+  return Onboarding;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+Onboarding.contextTypes = {
+  store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Onboarding);
+
+/***/ }),
+/* 715 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__OthersStep0_jsx__ = __webpack_require__(716);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__OthersStep1_jsx__ = __webpack_require__(717);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__OthersStep2_jsx__ = __webpack_require__(718);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__OthersStep3_jsx__ = __webpack_require__(719);
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["a"] = ([__WEBPACK_IMPORTED_MODULE_0__OthersStep0_jsx__["a" /* default */], __WEBPACK_IMPORTED_MODULE_1__OthersStep1_jsx__["a" /* default */], __WEBPACK_IMPORTED_MODULE_2__OthersStep2_jsx__["a" /* default */], __WEBPACK_IMPORTED_MODULE_3__OthersStep3_jsx__["a" /* default */]]);
+
+/***/ }),
+/* 716 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Step0 = function Step0(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "onboarding__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "h2",
+      { className: "onboarding__title" },
+      "Other people"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "onboarding__copy" },
+      "Every bubble here is one person\u2019s internet. Their internet consists of the platforms they spend time on on a daily basis such as Facebook, Twitter, Instagram and Youtube."
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "span",
+      { onClick: onNext, className: "btn btn--cta onboarding__next" },
+      "Continue ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Step0);
+
+/***/ }),
+/* 717 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Step1 = function Step1(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "onboarding__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "h2",
+      { className: "onboarding__title" },
+      "You"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "onboarding__copy" },
+      "Your bubble is the one in the middle. The closer other bubbles are, the more similar the person it to you."
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "span",
+      { onClick: onNext, className: "btn btn--cta onboarding__next" },
+      "Continue ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Step1);
+
+/***/ }),
+/* 718 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Step2 = function Step2(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    "div",
+    { className: "onboarding__content" },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "h2",
+      { className: "onboarding__title" },
+      "Machine Predictions"
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "p",
+      { className: "onboarding__copy" },
+      "In order to show you similarities I used a machine based prediction of your which is based on your Facebook likes. Similar predictions are made of you by Facebook, Google & co. to determine what content they should show you and what to hide."
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      "span",
+      { onClick: onNext, className: "btn btn--cta onboarding__next" },
+      "Continue ",
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+    )
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Step2);
+
+/***/ }),
+/* 719 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__ = __webpack_require__(720);
+
+
+
+var Step3 = function Step3(_ref) {
+  var onNext = _ref.onNext;
+
+
+  return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+    'div',
+    { className: 'onboarding__content' },
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'h2',
+      { className: 'onboarding__title' },
+      'Machine Predictions'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'p',
+      { className: 'onboarding__copy' },
+      'In order to show you similarities I used a machine based prediction of your which is based on your Facebook likes. Similar predictions are made of you by Facebook, Google & co. to determine what content they should show you and what to hide.'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'span',
+      { onClick: onNext, className: 'btn btn--cta onboarding__next' },
+      'Continue ',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-long-arrow-forward' })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__["a" /* default */], null)
+  );
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (Step3);
+
+/***/ }),
+/* 720 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants_predictionOptions__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_root_constants_predictionOptions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_root_constants_predictionOptions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_root_constants_predictions__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_root_constants_predictions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_root_constants_predictions__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_find__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+
+var Predictions = function (_Component) {
+  _inherits(Predictions, _Component);
+
+  function Predictions(props) {
+    _classCallCheck(this, Predictions);
+
+    var _this = _possibleConstructorReturn(this, (Predictions.__proto__ || Object.getPrototypeOf(Predictions)).call(this, props));
+
+    _this.state = {
+      expandedGroups: []
+    };
+    return _this;
+  }
+
+  _createClass(Predictions, [{
+    key: 'handleCollapseToggle',
+    value: function handleCollapseToggle(group) {
+      var index = this.state.expandedGroups.indexOf(group.id);
+      if (index === -1) {
+        this.setState({ expandedGroups: [].concat(_toConsumableArray(this.state.expandedGroups), [group.id]) });
+      } else {
+        this.state.expandedGroups.splice(index, 1);
+        this.setState({ expandedGroups: this.state.expandedGroups });
+      }
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'onboarding__predictions' },
+        __WEBPACK_IMPORTED_MODULE_1_root_constants_predictionOptions___default.a.map(function (group) {
+          var isExpanded = _this2.state.expandedGroups.indexOf(group.id) !== -1;
+          var hasProperties = group.properties.length > 1;
+
+          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'onboarding__group ' + (hasProperties && "onboarding__group--expandable"), key: group.id },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+              'div',
+              { onClick: _this2.handleCollapseToggle.bind(_this2, group), className: 'onboarding__group-name' },
+              __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { style: { background: group.color(1) }, className: 'onboarding__group-color' }),
+              group.label,
+              hasProperties && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'onboarding__group-icon icon-carret-' + (isExpanded ? "up" : "down") })
+            ),
+            isExpanded && hasProperties && group.properties.map(function (id) {
+              var property = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(__WEBPACK_IMPORTED_MODULE_2_root_constants_predictions___default.a, { id: id });
+              return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'onboarding__prediction', key: property.id },
+                property.label
+              );
+            })
+          );
+        })
+      );
+    }
+  }]);
+
+  return Predictions;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (Predictions);
 
 /***/ })
 /******/ ]);

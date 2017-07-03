@@ -27,15 +27,16 @@ function BubblesCanvas() {
   let _bubblesCanvas = {};
   let bubbles;
   let user;
+  let showUser;
   let properties;
-  let maxBubbleRadius = 50;
+  let maxBubbleRadius = 55;
   let minDist = 150;
   let pixRatio = .15;
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
   const strengthGenerator = d3RandomNormal(0.02, 0.007);
-  const collide = d3ForceCollide( function(d){return d.r + d.r * 0.05 });
+  const collide = d3ForceCollide( function(d){return d.r + d.r * 0.1 });
   const forceX = d3ForceX().strength(strengthGenerator).x((d) => d.targetX);
   const forceY = d3ForceY().strength(strengthGenerator).y((d) => d.targetY);
   let hoveredBubble = null;
@@ -102,6 +103,12 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   }
 
+  _bubblesCanvas.showUser = function(_) {
+    if(!arguments.length) return showUser;
+    showUser = _;
+    return _bubblesCanvas;
+  }
+
 
   function calculateGroupDifferences(profile, group) {
     return d3Mean(group.properties, prop => {
@@ -110,6 +117,7 @@ function BubblesCanvas() {
       return Math.abs(userValue - profileValue);
     });
   }
+
 
   function calculateMaxGroupDifferences() {
     return predictionOptions.map(group => {
@@ -140,7 +148,7 @@ function BubblesCanvas() {
     bubbles = data.map((profile, i) => {
       const similarity = getSimilarity(profile);
       let angle = (Math.PI * 2) / data.length * i + d3RandomNormal(0, 0.1)();
-      let dist = Math.random() * 10 + 10;
+      let dist = Math.random() * 20 + 50;
       let x = Math.cos(angle) * dist + pixDimensions[0]/2;
       let y = Math.sin(angle) * dist + pixDimensions[1]/2;
 
@@ -175,7 +183,7 @@ function BubblesCanvas() {
     const shorterSide = Math.min(...dimensions);
     // TODO: margins need to be incoorporated correctly to account for height > width
     const maxDist = shorterSide/2 - margins.top - margins.bottom;
-    const distScope = maxDist - minDist;
+    const distScope = showUser ? (maxDist - minDist) : maxDist;
     const centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
 
     bubbles.forEach((bubble) => {
@@ -203,7 +211,10 @@ function BubblesCanvas() {
     ctx.rect(0, 0, pixDimensions[0], pixDimensions[1]);
     ctx.fill();
 
-    bubbles && bubbles.forEach((bubble) => bubble.render());
+    bubbles && bubbles.forEach((bubble) => {
+      if(isUser(bubble) && !showUser) return;
+      bubble.render();
+    });
     ctx.drawImage(canvas, 0, 0, pixDimensions[0], pixDimensions[1], 0, 0, dimensions[0], dimensions[1]);
   }
 

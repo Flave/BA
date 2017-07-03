@@ -6,6 +6,11 @@ const receiveUser = (data) => ({
   data
 });
 
+const receiveUpdatedUser = (data) => ({
+  type: 'RECEIVE_UPDATED_USER',
+  data
+});
+
 const receiveAll = (data) => ({
   type: 'RECEIVE_ALL_USERS',
   data
@@ -16,6 +21,7 @@ const receiveProfile = (data, id) => ({
   data,
   id
 });
+
 
 const receiveError = (data) => ({
   type: 'RECEIVE_ERROR',
@@ -40,6 +46,10 @@ export const fetchProfile = (id) =>
     return receiveProfile(response.data, id);
   })
 
+export const updateUser = (data) =>
+  api.updateUser(data).then(response => {
+    return receiveUpdatedUser(response.data);
+  })
 
 
 // UI
@@ -89,4 +99,16 @@ export const resetUi = () => ({
 export const setProfileVisited = (id) => ({
   type: 'SET_PROFILE_VISITED',
   id
+});
+
+export const nextOnboarding = (id) => ({
+  type: 'NEXT_ONBOARDING'
+});
+
+export const prevOnboarding = (id) => ({
+  type: 'PREV_ONBOARDING'
+});
+
+export const completeOnboarding = (id) => ({
+  type: 'COMPLETE_ONBOARDING'
 });
