@@ -35,11 +35,12 @@ class Others extends Component {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
+    const showUser = ui.onboarding === false || ui.onboarding > 0;
 
     this.handleBubbleClick = this.handleBubbleClick.bind(this);
     this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-    this.context.store.dispatch(actions.resetUi());
+    this.context.store.dispatch(actions.resetUi({drawer: 'options'}));
     // if user landed on profile there will be already 1-2 profiles
     !allLoaded && store.dispatch(actions.fetchAll());
 
@@ -47,7 +48,7 @@ class Others extends Component {
       .data(allLoaded ? users : null)
       .dimensions(ui.windowDimensions)
       .canvas(this.bubbleContainer)
-      .showUser(ui.onboarding === false)
+      .showUser(showUser)
       .on('click', this.handleBubbleClick)
       .on('mouseenter', hoveredBubble => this.setState({hoveredBubble}))
       .on('mouseleave', () => this.setState({hoveredBubble: null}));
@@ -61,16 +62,18 @@ class Others extends Component {
     this.context.store.dispatch(actions.resetUi());
   }
 
+
   componentDidUpdate() {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
+    const showUser = ui.onboarding === false || ui.onboarding > 0;
 
     this.bubblesCanvas
       .dimensions(ui.windowDimensions)
       .data(allLoaded ? users : null)
       .canvas(this.bubbleContainer)
-      .showUser(ui.onboarding === false)
+      .showUser(showUser)
       .margins({left: ui.drawer ? DRAWER_WIDTH : 0})
       .user(_find(users, {id: user.login}))
       .properties(ui.othersPeopleOptions)
@@ -90,7 +93,7 @@ class Others extends Component {
         offset={{x: 0, y: -hoveredBubble.r - 11}}>
         <Predictions 
           modifiers={["tooltip"]}
-          predictionsSelection={ui.othersPeopleOptions}
+          selection={ui.othersPeopleOptions}
           profile={profile}/>
       </Tooltip>
     )
@@ -112,10 +115,10 @@ class Others extends Component {
     return (
       <div>
         {!onboardingDone && <Onboarding currentStep={ui.onboarding} />}
-        {onboardingDone && <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />}
-        <Drawer width={DRAWER_WIDTH} isOpen={ui.drawer}>
-          {(ui.drawer === 'options') && <Options />}
-          {(ui.drawer === 'info') && <Info />}
+        <h1 className="page-title">the internet<br/>of other people</h1>
+        {/*onboardingDone && <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />*/}
+        <Drawer width={DRAWER_WIDTH} isOpen={true}>
+          <Options />
         </Drawer>
         {!allLoaded && <Loader copy="Loading remaining users" />}
         <canvas 

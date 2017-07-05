@@ -7,6 +7,7 @@ import predictionGroups from 'root/constants/predictionGroups';
 import predictionOptions from 'root/constants/predictionOptions';
 import predictions from 'root/constants/predictions';
 import CheckGroup from 'app/components/common/Check.jsx';
+import BubblesLegend from './BubblesLegend.jsx';
 
 import {
   withRouter,
@@ -28,27 +29,36 @@ class Others extends Component {
     const { ui } = store.getState();
 
     return (
-      <div className="drawer__section">
-        {predictionOptions.map((group, i) => {
-          const options = ui.othersPeopleOptions.filter(option => 
-            (group.properties.indexOf(option.id) !== -1) && option.value
-          )
+        <div className="drawer__section">
+          {predictionOptions.map((group, i) => {
+            const options = ui.othersPeopleOptions.filter(option => 
+              (group.properties.indexOf(option.id) !== -1) && option.value
+            )
 
-          return <CheckGroup
-            key={group.id}
-            option={group}
-            value={options.length}
-            color={group.color(1) + ""}
-            onChange={this.handleOptionsChange.bind(this)}/>
-        })}
-      </div>
+            return <CheckGroup
+              key={group.id}
+              option={group}
+              value={options.length}
+              color={group.color(1) + ""}
+              onChange={this.handleOptionsChange.bind(this)}/>
+          })}
+        </div>
     )
   }
 
   render() {
+    const { ui } = this.context.store.getState();
+
     return (
       <div className="drawer__content">
+        <div className="drawer__section">
+          <h3 className="drawer__section-title">Machine Predictions</h3>
+          <p className="drawer__copy">Use the same mechanisms that are used to create your bubble, to find bubbles that are <b>different</b> from yours. Select or deselect the predictions below to visualise <b>similarities</b>.</p>
+        </div>
         {this.createChecks()}
+        <div className="drawer__section drawer__section--full">
+          <BubblesLegend predictionsState={ui.othersPeopleOptions} />
+        </div>
       </div>
     )
   }

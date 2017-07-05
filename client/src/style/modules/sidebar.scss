@@ -1,6 +1,6 @@
 .sidebar {
   height: 100%;
-  padding: 20px 30px;
+  padding: 20px 35px;
   position: fixed;
   min-width: 200px;
   top: 0;
@@ -13,9 +13,9 @@
 .sidebar__title {
   color: $c-accent;
   font-family: $serif;
-  font-size: 25px;
+  font-size: 27px;
   font-weight: 900;
-  line-height: 27px;
+  line-height: 28px;
   transition: all .3s;
   margin-bottom: 60px;
 }

@@ -14,8 +14,9 @@ class Tooltip extends Component {
       className = "tooltip--bottom";
     }
 
-    root.style.left = `${position.x}px`;
-    root.style.top = `${top}px`;
+    root.style.left = `${Math.floor(position.x)}px`;
+    root.style.top = `${Math.floor(top)}px`;
+    root.style.width = Math.floor(width / 2) * 2 + "px";
     root.classList.add(className);
   }
 

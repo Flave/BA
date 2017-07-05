@@ -53,6 +53,7 @@ let all;
 
 // ALL
 router.get('/api/all', isLoggedInAjax, (req, res) => {
+  console.log(req.body);
   if(all) {
     log.rainbow('Sending ALL');
     res.json(all);

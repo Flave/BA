@@ -1,40 +1,33 @@
 .predictions {
   &--tooltip {
-    display: flex;
+    width: 245px;
 
-    .prediction__group {
-      width: 160px;
-      padding-right: 25px;
-      margin-bottom: 0;
+    .chart__range-bar {
+      background-color: rgba(255, 255, 255, .15);
     }
+  }
 
-    .prediction__bar {
-      background-color: rgba(255, 255, 255, .2);
+  &--profile {
+    .chart__value-bar:after {
+      background: #fdfdfd;
     }
-
-    .prediction__bar-value {
-      background-color: rgba(255, 255, 255, 1); 
-    }
-
-    .prediction__group-label {
-      height: 45px;
-    }
-  }  
-}
-
-.prediction__group {
-  margin-bottom: 30px;
-
-  &:last-child {
-    padding-right: 0;
   }
 }
 
-.prediction__group-label {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-bottom: 10px;
+.predictions__group {
+  margin-bottom: 30px;
+
+  &:last-child {
+    margin-bottom: -15px;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.predictions__option-group {
+  margin-bottom: 15px;
 }
 
 .prediction {
@@ -45,23 +38,67 @@
   }
 }
 
-.prediction__label {
-  font-size: 14px;
+.chart {
+  &--minor {
+    margin-bottom: 10px;
+    .chart__label {
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 400;
+      opacity: .6;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
-.prediction__value {
-  font-size: 14px;
+.chart__label,
+.chart-group__label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: 12px;
+  margin-bottom: 7px;
 }
 
-.prediction__bar {
-  margin-top: 5px;
-  position: relative;
-  height: 2px;
+.chart__range-bar {
   width: 100%;
-  background-color: rgba($c-black, .3);
+  height: 3px;
+  background-color: rgba($c-black, .15);
 }
 
-.prediction__bar-value {
+.chart__header {
+  position: relative;
+}
+
+.chart__footer {
+  margin-top: 3px;
+}
+
+.chart__value {
+  font-size: 12px;
+
+  &--right {
+    float: right;
+  }
+}
+
+.chart__value-bar {
   height: 100%;
-  background-color: rgba($c-black, 1);
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+
+  &:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    height: 100%;
+    right: 0;
+    top: 0;
+    width: 1px;
+    background: $c-black;
+  }
 }

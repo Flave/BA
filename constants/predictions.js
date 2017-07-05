@@ -1,81 +1,101 @@
 module.exports = [
   { 
     id: 'age',
-    label: 'Age'
+    label: 'Age',
+    unit: 'y'
   },
   { 
     id: 'intelligence',
-    label: 'Intelligence'
+    label: 'Intelligence',
+    unit: '%'
   },
   { 
     id: 'female',
-    label: 'Psychological Gender'
+    label: 'Psychological Gender',
+    unit: '%',
+    categories: ['F', 'M']
   },
   { 
     id: 'satisfaction_life',
-    label: 'Life Satisfaction'
+    label: 'Life Satisfaction',
+    unit: '%'
   },
 
   { 
     id: 'politics_liberal',
-    label: 'Liberal'
+    label: 'Liberal',
+    unit: '%'
   },
   { 
     id: 'politics_conservative',
-    label: 'Conservative'
+    label: 'Conservative',
+    unit: '%'
   },
   { 
     id: 'politics_libertanian',
-    label: 'Libertarian'
+    label: 'Libertarian',
+    unit: '%'
   },
   { 
     id: 'politics_uninvolved',
-    label: 'Uninvolved'
+    label: 'Uninvolved',
+    unit: '%'
   },
   
   { 
     id: 'religion_none',
-    label: 'None'
+    label: 'None',
+    unit: '%'
   },
   { 
     id: 'religion_christian_other',
-    label: 'Other Christian'
+    label: 'Other Christian',
+    unit: '%'
   },
   { 
     id: 'religion_catholic',
-    label: 'Catholic'
+    label: 'Catholic',
+    unit: '%'
   },
   { 
     id: 'religion_jewish',
-    label: 'Jewish'
+    label: 'Jewish',
+    unit: '%'
   },
   { 
     id: 'religion_lutheran',
-    label: 'Lutheran'
+    label: 'Lutheran',
+    unit: '%'
   },
   { 
     id: 'religion_mormon',
-    label: 'Mormon'
+    label: 'Mormon',
+    unit: '%'
   },
 
   { 
     id: 'big5_neuroticism',
-    label: 'Neuroticism'
+    label: 'Neuroticism',
+    unit: '%'
   },
   { 
     id: 'big5_openness',
-    label: 'Openness'
+    label: 'Openness',
+    unit: '%'
   },
   { 
     id: 'big5_conscientiousness',
-    label: 'Conscientiousness'
+    label: 'Conscientiousness',
+    unit: '%'
   },
   { 
     id: 'big5_agreeableness',
-    label: 'Agreeableness'
+    label: 'Agreeableness',
+    unit: '%'
   },
   { 
     id: 'big5_extraversion',
-    label: 'Extraversion'
+    label: 'Extraversion',
+    unit: '%'
   }
 ]

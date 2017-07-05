@@ -75,7 +75,7 @@ class SettingsDrawer extends Component {
     return (
       <div className="drawer__content">
         <div className="drawer__section drawer__section--full">
-          <div className="drawer__section-header">
+          <div className="drawer__title">
             Platforms
           </div>
           <div className="drawer__list">

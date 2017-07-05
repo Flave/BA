@@ -30,8 +30,8 @@ function BubblesCanvas() {
   let showUser;
   let properties;
   let maxBubbleRadius = 55;
-  let minDist = 150;
-  let pixRatio = .15;
+  let minDist = 80;
+  let pixRatio = .11;
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
@@ -179,6 +179,8 @@ function BubblesCanvas() {
   function updateBubbles() {
     let selectedProperties = getSelectedPredictions(properties);
     let selectedGroups = getSelectedGroups();
+    // TODO: Calculate similarity based on a max similarity which depends on 
+    // the selected properties
     const getSimilarity = calculateSimilarity(user, data, selectedProperties);
     const shorterSide = Math.min(...dimensions);
     // TODO: margins need to be incoorporated correctly to account for height > width

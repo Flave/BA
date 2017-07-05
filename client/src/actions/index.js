@@ -92,8 +92,9 @@ export const resetFeed = (profile) => ({
   profile
 });
 
-export const resetUi = () => ({
-  type: 'RESET_UI'
+export const resetUi = (data) => ({
+  type: 'RESET_UI',
+  data
 });
 
 export const setProfileVisited = (id) => ({
@@ -103,10 +104,6 @@ export const setProfileVisited = (id) => ({
 
 export const nextOnboarding = (id) => ({
   type: 'NEXT_ONBOARDING'
-});
-
-export const prevOnboarding = (id) => ({
-  type: 'PREV_ONBOARDING'
 });
 
 export const completeOnboarding = (id) => ({

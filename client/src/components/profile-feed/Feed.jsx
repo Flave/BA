@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../../actions';
-import FacebookPost from 'app/components/common/FacebookPost.jsx';
-import Tweet from 'app/components/common/Tweet.jsx';
-import InstagramPost from 'app/components/common/InstagramPost.jsx';
-import YoutubeVideo from 'app/components/common/YoutubeVideo.jsx';
+import FacebookPost from 'app/components/common/posts/FacebookPost.jsx';
+import Tweet from 'app/components/common/posts/Tweet.jsx';
+import InstagramPost from 'app/components/common/posts/InstagramPost.jsx';
+import YoutubeVideo from 'app/components/common/posts/YoutubeVideo.jsx';
 import Loader from 'app/components/common/Loader.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
 import { select as d3Select } from 'd3-selection';
@@ -107,9 +107,9 @@ class Feed extends Component {
     const className = `feed ${loading ? "is-loading" : ""}`;
 
     return (
-      <div ref={(root) => this.root = root} className={className}>
+      <div onClick={() => console.log('click')} ref={(root) => this.root = root} className={className}>
         {(loading) && <Loader copy="Loading Feed" />}
-        <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
+        <div onMouseUp={() => console.log('mouse up')} ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
           {feed && this.createFeed()}
         </div>
       </div>

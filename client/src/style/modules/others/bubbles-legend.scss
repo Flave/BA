@@ -1,0 +1,25 @@
+.bubbles-legend {
+  position: relative
+}
+
+.bubbles-legend__canvas {
+
+}
+
+.bubbles-legend__textbox {
+  font-size: 12px;
+  position: absolute;
+  max-width: 125px;
+}
+
+.bubbles-legend__textbox-title {
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.bubbles-legend__textbox-copy {
+  margin: 0;
+}

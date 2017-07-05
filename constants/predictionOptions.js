@@ -3,39 +3,40 @@ const d3InterpolateHsl = require('d3-interpolate').interpolateHsl;
 
 module.exports = [
   {
-    'id': 'female',
-    'color': d3InterpolateHsl('#BEC6E9', '#3A63FA'),
+    id: 'female',
+    color: d3InterpolateHsl('#BEC6E9', '#3A63FA'),
     label: 'Psychological Gender',
-    'unit': '%',
+    unit: '%',
+    categories: ['F', 'M'],
     properties: ['female']
   },
   {
-    'id': 'age',
-    'color': d3InterpolateHsl('#D3C7E3', '#6F64DB'),
+    id: 'age',
+    color: d3InterpolateHsl('#D3C7E3', '#6F64DB'),
     label: 'Age',
-    'unit': 'y',
+    unit: 'y',
     properties: ['age']
   },
   {
-    'id': 'intelligence',
-    'color': d3InterpolateHsl('#DBBACD', '#A364BC'),
+    id: 'intelligence',
+    color: d3InterpolateHsl('#DBBACD', '#A364BC'),
     label: 'Intelligence',
-    'unit': '%',
+    unit: '%',
     properties: ['intelligence']
   },
   {
-    'id': 'satisfaction_life',
-    'color': d3InterpolateHsl('#E5C3D0', '#EC6591'),
+    id: 'satisfaction_life',
+    color: d3InterpolateHsl('#E5C3D0', '#EC6591'),
     label: 'Life satisfaction',
-    'unit': '%',
+    unit: '%',
     properties: ['satisfaction_life']
   },
   {
-    'id': 'politics',
-    'color': d3InterpolateHsl('#F1D3D9', '#FF7B8A'),
-    'label': 'Political Orientation',
-    'unit': '%',
-    'properties': [
+    id: 'politics',
+    color: d3InterpolateHsl('#F1D3D9', '#FF7B8A'),
+    label: 'Political Orientation',
+    unit: '%',
+    properties: [
       'politics_liberal',
       'politics_conservative',
       'politics_libertanian',
@@ -43,11 +44,11 @@ module.exports = [
     ]
   },
   {
-    'id': 'religion',
-    'color': d3InterpolateHsl('#F9E0E0', '#FE9B91'),
-    'label': 'Religious Orientation',
-    'unit': '%',
-    'properties': [
+    id: 'religion',
+    color: d3InterpolateHsl('#F9E0E0', '#FE9B91'),
+    label: 'Religious Orientation',
+    unit: '%',
+    properties: [
       'religion_catholic',
       'religion_lutheran',
       'religion_jewish',
@@ -57,11 +58,11 @@ module.exports = [
     ]
   },
   {
-    'id': 'big5',
-    'color': d3InterpolateHsl('#F9E7E4', '#FEC89A'),
-    'label': 'Personality',
-    'unit': '%',
-    'properties': [
+    id: 'big5',
+    color: d3InterpolateHsl('#F9E7E4', '#FEC89A'),
+    label: 'Personality',
+    unit: '%',
+    properties: [
       'big5_agreeableness',
       'big5_openness',
       'big5_conscientiousness',

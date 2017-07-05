@@ -4,6 +4,7 @@
   left: 0;
   bottom: 0;
   right: 0;
+  user-select: none;
 
   &.is-loading {
     .feed__canvas {
@@ -28,6 +29,7 @@
   border-radius: 4px;
   transition: box-shadow .1s, opacity .5s;
 
+
   &:hover {
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19);
   }
@@ -49,5 +51,9 @@
     &:hover {
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23);
     }
+  }
+
+  iframe body * {
+      user-select: none;
   }
 }

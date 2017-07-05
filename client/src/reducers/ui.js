@@ -1,6 +1,8 @@
 import { predictions, ui } from 'root/constants';
 import _find from 'lodash/find';
 
+const deselectedOptions = ['female', 'satisfaction_life']
+
 const initialState = {
   windowDimensions: [window.innerWidth, window.innerHeight],
   canvasDimensions: {
@@ -8,14 +10,14 @@ const initialState = {
     height: window.innerHeight,
     left: ui.SIDEBAR_WIDTH
   },
-  drawer: null,
+  drawer: 'options',
   othersPeopleOptions: predictions.map(({ id }) => (
-      id === 'age' ? {id, value: true} : {id, value: true}
+      deselectedOptions.indexOf(id) !== -1 ? {id, value: false} : {id, value: true}
     )
   ),
-  itemsShown: 5,
+  itemsShown: 1,
   lastItemsShown: 0,
-  itemsIncrement: 5,
+  itemsIncrement: 1,
   maxItems: null,
   userCount: Infinity,
 
@@ -45,7 +47,8 @@ export default (state = initialState, action) => {
     case 'RESET_UI':
       return {
         ...state,
-        drawer: false
+        drawer: null,
+        ...action.data
       }
 
     case 'SET_OTHERS_PEOPLE_OPTIONS':
@@ -98,11 +101,6 @@ export default (state = initialState, action) => {
       return {
         ...state,
         onboarding: state.onboarding + 1,
-      }
-    case 'PREV_ONBOARDING':
-      return {
-        ...state,
-        onboarding: state.onboarding - 1,
       }
     default:
       return state;

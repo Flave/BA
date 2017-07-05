@@ -12,7 +12,7 @@ import { hsl as d3Hsl } from 'd3-color';
 // var cols = ["#3BE1BC","#5164B3","#1BAEAE","#4FC2E3","#FF6686","#FF9292","#FFC99A"];
 
 
-function Bubble(ctx, options, user) {
+function Bubble(ctx, options) {
   let bubble = {...options};
 
   bubble.update = function({targetX, targetY}, selectedGroups) {
@@ -29,6 +29,7 @@ function Bubble(ctx, options, user) {
         return 1;
       return -1;
     });
+    return bubble;
   }
 
 
@@ -50,7 +51,7 @@ function Bubble(ctx, options, user) {
 
       if(!selectedGroup) {
        color.s = 0;
-       color.opacity = .1;
+       color.opacity = .08;
       }
 
       
@@ -64,6 +65,7 @@ function Bubble(ctx, options, user) {
 
 
     ctx.restore();
+    return bubble;
   }
 
 

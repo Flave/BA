@@ -1,3 +1,5 @@
+$padding: 38px;
+
 .drawer {
   position: fixed;
   z-index: 1;
@@ -21,7 +23,7 @@
 
 .drawer__section {
   border-bottom: 1px solid $c-shade-superlight;
-  padding: 25px 35px 0 35px;
+  padding: 25px $padding 25px $padding;
 
   &--full {
     padding-left: 0;
@@ -29,20 +31,35 @@
   }
 }
 
-.drawer__section-header {
-  border-bottom: 1px solid $c-shade-superlight;
-  padding: 10px 35px 25px 35px;
-  margin-top: -10px;
+
+
+.drawer__title {
+  padding: 30px $padding 5px $padding;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.drawer__section-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin: 0;
+}
+
+.drawer__copy {
+  font-size: 13px;
+  line-height: 17px;
+  margin-bottom: 0;
 }
 
 /* 
-  DRAWER ITEM
+  DRAWER ITEM — List item for account connection etc.
 */
 
 .drawer__item {
   border-bottom: 1px solid $c-shade-superlight;
-  padding: 10px 35px;
+  padding: 10px $padding;
   position: relative;
 
   &:last-child {
@@ -73,7 +90,7 @@
 .drawer__item-meta {
   transition: all .2s;
   position: absolute;
-  right: 35px;
+  right: $padding;
   line-height: 28px;
   opacity: 1;
   visibility: visible;
