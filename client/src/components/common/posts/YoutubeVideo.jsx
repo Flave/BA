@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { select as d3Select } from 'd3-selection';
+import LoadingItem from 'app/components/profile-feed/LoadingItem.jsx';
 
 const ASPECT_RATIO = 1.777777778;
 
@@ -13,22 +14,26 @@ export default class FecebookPost extends Component {
 
   render() {
     const { item, show, options } = this.props;
-    let style = {
-      top: item.y,
-      left: item.x,
-      opacity: show ? 1 : 0,
-      height: options.width / ASPECT_RATIO
+    let itemStyle = {
+      top: item.y === null ? item.siblingTop : item.y,
+      left: item.x
+    }
+    const containerStyle = {
+      opacity: show ? 1 : 0
     }
 
     return (
-      <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--youtube">
-        <iframe 
-          width={options.width} 
-          height={options.width / ASPECT_RATIO} 
-          src={`https://www.youtube.com/embed/${item.id}`} 
-          frameBorder="0"
-          autoPlay="false"
-          allowFullScreen></iframe>
+      <div style={itemStyle} className="feed__item feed__item--youtube">
+        {!show && <LoadingItem item={item} />}
+        <div ref={(root) => this.root = root} style={containerStyle} className="feed__item-container">
+          <iframe 
+            width={options.width} 
+            height={options.width / ASPECT_RATIO} 
+            src={`https://www.youtube.com/embed/${item.id}`} 
+            frameBorder="0"
+            autoPlay="false"
+            allowFullScreen></iframe>
+        </div>
       </div>
     );
   }

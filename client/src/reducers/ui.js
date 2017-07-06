@@ -86,7 +86,7 @@ export default (state = initialState, action) => {
     case 'RECEIVE_FEED_ITEM':
       return {
         ...state,
-        feedLoading: setFeedLoading(state, action)
+        feedLoading: false//setFeedLoading(state, action)
       }
 
     case 'RESET_FEED':

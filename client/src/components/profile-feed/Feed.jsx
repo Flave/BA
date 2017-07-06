@@ -7,13 +7,12 @@ import InstagramPost from 'app/components/common/posts/InstagramPost.jsx';
 import YoutubeVideo from 'app/components/common/posts/YoutubeVideo.jsx';
 import Loader from 'app/components/common/Loader.jsx';
 import { zoom as d3Zoom } from 'd3-zoom';
+import { zoomTransform as d3ZoomTransform } from 'd3-zoom';
 import { select as d3Select } from 'd3-selection';
 import { event as d3Event } from 'd3-selection';
-import _compact from 'lodash/compact';
-import { randomNormal as d3RandomNormal } from 'd3-random';
+import { getFreeSpots } from 'app/utility';
 
-
-window.d3RandomNormal = d3RandomNormal;
+const COL_WIDTH = 500;
 
 class Feed extends Component {
   constructor(props) {
@@ -28,7 +27,7 @@ class Feed extends Component {
 
   componentDidMount() {
     this.zoom = d3Zoom()
-      .scaleExtent([0.1, 1])
+      .scaleExtent([1, 1])
       .on('zoom', this.zoomed)
       .on('start', this.zoomStart)
       .on('end', this.zoomEnd);
@@ -43,6 +42,11 @@ class Feed extends Component {
   }
 
   zoomEnd() {
+    const transform = d3ZoomTransform(this.root);
+    const { profile } = this.props;
+    getFreeSpots(transform, profile).forEach(spot => {
+      this.context.store.dispatch(actions.initializeFeedItem(spot, profile.id));
+    });
     this.setState({zooming: false});
   }
 
@@ -58,43 +62,35 @@ class Feed extends Component {
 
   createFeed() {
     const { profile, itemsShown, batchStartIndex, loading } = this.props;
-    const feed = profile.feed.slice(0, itemsShown);
+    const feed = profile.feed.filter(item => item.initialized);
 
     return feed.map((item, index) => {
-      let show = true;
-
-      // only show items that belong to a earlier batch or all if all loaded
-      if(loading && index >= batchStartIndex)
-        show = false;
-
-      //console.log(index, batchStartIndex, loading, show);
-
       if(item.platform === 'twitter')
         return <Tweet 
           item={item}
           key={item.id} 
-          show={show}
+          show={item.loaded}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'facebook')
         return <FacebookPost  
           item={item}
           key={item.id}
-          show={show}
+          show={item.loaded}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'instagram')
         return <InstagramPost
           item={item}
           key={item.id}
-          show={show}
+          show={item.loaded}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
       if(item.platform === 'youtube')
         return <YoutubeVideo
           item={item}
           key={item.id}
-          show={show}
+          show={item.loaded}
           onLoadSuccess={this.handleLoadSuccess.bind(this)} 
           options={{width: 350}} />
     })
@@ -107,9 +103,8 @@ class Feed extends Component {
     const className = `feed ${loading ? "is-loading" : ""}`;
 
     return (
-      <div onClick={() => console.log('click')} ref={(root) => this.root = root} className={className}>
-        {(loading) && <Loader copy="Loading Feed" />}
-        <div onMouseUp={() => console.log('mouse up')} ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
+      <div ref={(root) => this.root = root} className={className}>
+        <div ref={(canvas) => this.canvas = canvas} className={`feed__canvas ${zoomClass}`}>
           {feed && this.createFeed()}
         </div>
       </div>

@@ -20,7 +20,7 @@ router.get('/api/user', ({ user }, res) => {
     res.json(cachedUser);
     return;
   }
-  User.find()
+  User.find({predictions: {$ne: null}})
     .count()
     .then(count => {
       log.rainbow('Sending USER');
@@ -53,7 +53,6 @@ let all;
 
 // ALL
 router.get('/api/all', isLoggedInAjax, (req, res) => {
-  console.log(req.body);
   if(all) {
     log.rainbow('Sending ALL');
     res.json(all);

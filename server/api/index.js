@@ -23,7 +23,7 @@ const fetchFeed = (user) => {
     return platformApis[platform.id].fetchFeed(user, 12)
   });
   return Promise.all(promises)
-    .then(_.flatten);
+    .then(items => _(items).flatten(items).shuffle());
 }
 
 const getCombinedSubs = (user) =>

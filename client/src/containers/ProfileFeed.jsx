@@ -19,8 +19,7 @@ class Profile extends Component {
     const profile = _find(users, {id: profileId});
 
     // reset feed ui to initial state and set all feed items to loaded: false
-    if(profile) 
-      store.dispatch(actions.resetFeed(profile));
+    // 
   }
 
   handleLoadMoreClick(maxItems, itemsShown) {
@@ -43,9 +42,6 @@ class Profile extends Component {
           batchStartIndex={ui.lastItemsShown}
           loading={ui.feedLoading} 
           profile={profile} />
-        {!ui.feedLoading && <LoadMoreBtn 
-          onClick={this.handleLoadMoreClick.bind(this)}
-          more={ui.maxItems > ui.itemsShown} />}
       </div>
     )
   }

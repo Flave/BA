@@ -1,5 +1,8 @@
 import _find from 'lodash/find';
+import _omit from 'lodash/omit';
 import { range as d3Range } from 'd3-array';
+import { randomNormal as d3RandomNormal } from 'd3-random';
+import { getFreeSpots } from 'app/utility';
 
 
 const ITEM_WIDTH = 350;
@@ -34,6 +37,8 @@ export default (state = null, action) => {
       return setProfileVisited(state, action);
     case 'RESET_FEED':
       return resetFeed(state, action);
+    case 'INITIALIZE_FEED_ITEM':
+      return initializeFeedItem(state, action);
     default:
       return state;
   }
@@ -62,7 +67,7 @@ function resetFeed(state, {profile}) {
     if(!profile.feed) return profile;
     return {
       ...profile,
-      feed: profile.feed.map(item => ({...item, loaded: false}))
+      feed: initializeFeed(profile)
     }
   })
 }
@@ -85,6 +90,7 @@ function receiveAllUsers(state, action) {
 }
 
 function receiveProfile(state, { id, data }) {
+  data.feed = initializeFeed(data);
   // if state not initialized, just wrap the profile in an array
   if(!state) return [data];
   // if profile already exists, just add the received profile data to it
@@ -98,21 +104,45 @@ function receiveProfile(state, { id, data }) {
   return state.concat(data);
 }
 
+// used to initialize whole feed from scratch when receiving profile or when
+// navigated to profile
+function initializeFeed(profile) {
+  const feed = profile.feed.map(item => 
+    _omit(item, ['loaded', 'initialized', 'x', 'y', 'colIndex', 'siblingTop'])
+  );
 
+  let freeSpots = getFreeSpots({x: 0, y: 0}, {feed});
 
-function setFeedItemPosition(state, {height, item: loadedItem, id}) {
+  return feed.map((item, i) => {
+    if(i >= freeSpots.length) return item;
+
+    return {
+      ...item,
+      ...freeSpots[i],
+      loaded: false,
+      initialized: true
+    }
+  })
+}
+
+// Function used to initialize individual feed item after pan
+function initializeFeedItem(state, {data, id}) {
+  const {x, y, colIndex, siblingTop} = data;
   return state.map((profile) => {
     if(profile.id !== id) return profile;
+    let uninitializedItem = _find(profile.feed, item => !item.initialized);
+
     let feed = profile.feed.map((item) => {
-      if(item.id !== loadedItem.id) return item;
-      const {x, y} = generateScatterPosition(item, height, profile.feed);
+      if(item.id !== uninitializedItem.id) return item;
 
       return {
         ...item,
         x,
         y,
-        height,
-        loaded: true
+        colIndex,
+        siblingTop,
+        loaded: false,
+        initialized: true
       }
     });
 
@@ -124,8 +154,26 @@ function setFeedItemPosition(state, {height, item: loadedItem, id}) {
 }
 
 
-function getLoadedItems(items) {
-  return items.filter((item) => item.height !== undefined);
+function setFeedItemPosition(state, {height, item: loadedItem, id}) {
+  return state.map((profile) => {
+    if(profile.id !== id) return profile;
+    let feed = profile.feed.map((item) => {
+      if(item.id !== loadedItem.id) return item;
+      //let {x, y} = generateScatterPosition(item, height, profile.feed);
+
+      return {
+        ...item,
+        height,
+        loaded: true,
+        y: item.y === null ? (item.siblingTop - height - (Math.random() * 50 + 20)) : item.y
+      }
+    });
+
+    return {
+      ...profile,
+      feed
+    };
+  });  
 }
 
 
@@ -143,7 +191,7 @@ function generateScatterPosition(item, height, positionedItems) {
 */
 function getNewPosition(item, height, items) {
   const windowWidth = window.innerWidth;
-  const windowHeight = window.innerWidth;
+  const windowHeight = window.innerHeight;
   const centerX = windowWidth / 2;
   const centerY = windowHeight / 2;
   let spread = 0;

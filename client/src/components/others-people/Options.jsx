@@ -53,7 +53,7 @@ class Others extends Component {
       <div className="drawer__content">
         <div className="drawer__section">
           <h3 className="drawer__section-title">Machine Predictions</h3>
-          <p className="drawer__copy">Use the same mechanisms that are used to create your bubble, to find bubbles that are <b>different</b> from yours. Select or deselect the predictions below to visualise <b>similarities</b>.</p>
+          <p className="drawer__copy">Use the same mechanisms that are used to create your bubble, to find bubbles that are <b>different</b> from yours. Select or deselect the predictions below to visualise <b>similarities</b>. <br/> Thes kinds of machine predictions can be very useful in certain situations. Nevetheless they have to be treated with caution...</p>
         </div>
         {this.createChecks()}
         <div className="drawer__section drawer__section--full">

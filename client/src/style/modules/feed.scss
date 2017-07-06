@@ -25,14 +25,6 @@
 
 .feed__item {
   position: absolute;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);
-  border-radius: 4px;
-  transition: box-shadow .1s, opacity .5s;
-
-
-  &:hover {
-    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19);
-  }
 
   &--instagram {
     iframe {
@@ -52,8 +44,19 @@
       box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23);
     }
   }
+}
 
-  iframe body * {
-      user-select: none;
+.feed__item-container {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);
+  border-radius: 4px;
+  transition: box-shadow .1s, opacity .5s;
+
+
+  &:hover {
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19);
   }
+}
+
+.feed__item-loader {
+  position: absolute;
 }

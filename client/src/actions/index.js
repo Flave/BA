@@ -52,6 +52,13 @@ export const updateUser = (data) =>
   })
 
 
+export const initializeFeedItem = (data, id) => ({
+  type: 'INITIALIZE_FEED_ITEM',
+  data,
+  id
+});
+
+
 // UI
 export const setWindowDimensions = (dimensions) => ({
   type: 'SET_WINDOW_DIMENSIONS',

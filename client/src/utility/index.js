@@ -1,5 +1,6 @@
 import { max as d3Max } from 'd3-array';
 import _find from 'lodash/find';
+import { ui } from 'root/constants';
 
 // Copies a variable number of methods from source to target.
 export const rebind = function(target, source) {
@@ -79,5 +80,61 @@ export const calculateSimilarity = (user, users, properties) => {
     }, 0);
 
     return 1 - similarity/properties.length;
+  }
+}
+
+
+const getFreeSpotsGenerator = () => {
+  const initialWidth = window.innerWidth;
+  const initialHeight = window.innerHeight;
+  const initialCenterX = initialWidth / 2;
+  const xOffset = (initialCenterX % ui.FEED_COL_WIDTH) / 2;
+
+  return (transform, profile) => {
+      const feed = profile.feed.filter(item => item.initialized);
+      const windowWidth = window.innerWidth;
+      const windowHeight = window.innerHeight;
+      const centerX = windowWidth / 2 - transform.x;
+      const centerY = windowHeight / 2 - transform.y;
+      const bottom = windowHeight - transform.y;
+      const centerIndex = Math.floor(centerX / ui.FEED_COL_WIDTH);
+      const colsInView = [centerIndex - 1, centerIndex, centerIndex + 1];
+      const freeSpots = [];
+      const availableItems = profile.feed.length - feed.length;
+
+      colsInView.forEach(colIndex => {
+        const itemsInCol = feed.filter(item => item.colIndex === colIndex);
+        if(!itemsInCol.length) {
+          freeSpots.push(createNewSpot(colIndex, {y: centerY, height: 0}, 'bottom', xOffset));
+          freeSpots.push(createNewSpot(colIndex, {y: centerY}, 'top', xOffset));
+          return;
+        }
+        
+        itemsInCol.sort((itemA, itemB) => itemA.y - itemB.y);
+        let topItem = itemsInCol[0];
+        let bottomItem = itemsInCol[itemsInCol.length - 1];
+        if(!topItem.loading && topItem.y < transform.y) {
+          freeSpots.push(createNewSpot(colIndex, topItem, 'top', xOffset));
+        }
+        if(!bottomItem.loading && (bottomItem.y + bottomItem.height) < bottom) {
+          freeSpots.push(createNewSpot(colIndex, bottomItem, 'bottom', xOffset));
+        }
+
+      });
+
+      return freeSpots.slice(0, availableItems);
+  }  
+}
+
+export const getFreeSpots = getFreeSpotsGenerator();
+
+
+function createNewSpot(colIndex, sibling, direction, offset) {
+  return {
+    x: colIndex * ui.FEED_COL_WIDTH + offset + (Math.random() * 180 - 90),
+    // if item should be placed at top, y is set when item is loaded
+    siblingTop: sibling.y,
+    y: (direction === 'top') ? null : sibling.y + sibling.height + Math.random() * 50 + 20,
+    colIndex,      
   }
 }

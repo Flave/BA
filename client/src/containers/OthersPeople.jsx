@@ -54,8 +54,8 @@ class Others extends Component {
       .on('mouseleave', () => this.setState({hoveredBubble: null}));
   }
 
-  handleBubbleClick(d) {
-    this.props.history.push(`/${d.id}/feed`);
+  handleBubbleClick({id}) {
+    this.props.history.push(`/${id}/feed`);
   }
 
   handleTransitionStart() {

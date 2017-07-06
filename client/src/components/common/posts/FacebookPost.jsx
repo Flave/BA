@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { select as d3Select } from 'd3-selection';
 import { development as authConfig } from 'root/config/auth';
+import LoadingItem from 'app/components/profile-feed/LoadingItem.jsx';
 
 const callbacks = [];
 /*const fbRoot = document.createElement('div');
@@ -97,16 +98,21 @@ export default class FBEmbedPost extends Component {
   }
 
   render() {
-    const { item, show, options, allLoaded } = this.props;
-    let style = {
-      top: item.y,
-      left: item.x,
+    const { item, show, options } = this.props;
+    let itemStyle = {
+      top: item.y === null ? item.siblingTop : item.y,
+      left: item.x
+    }
+    const containerStyle = {
       opacity: show ? 1 : 0
     }
 
     return (
-      <div style={style} ref={(root) => this.root = root} className="feed__item feed__item--facebook">
-        <div className="fb-post" data-href={item.id} data-width={options.width}></div>
+      <div style={itemStyle} className="feed__item feed__item--facebook">
+        {!show && <LoadingItem item={item} />}
+        <div ref={(root) => this.root = root} style={containerStyle} className="feed__item-container">
+          <div className="fb-post" data-href={item.id} data-width={options.width}></div>
+        </div>
       </div>
     );
   }

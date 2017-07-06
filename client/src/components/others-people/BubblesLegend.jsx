@@ -178,8 +178,7 @@ class BubblesLegend extends Component {
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">Vivid color</h4>
-          <p className="bubbles-legend__textbox-copy">Less similar</p>
+          <h4 className="bubbles-legend__textbox-title">1. Bubble<br/>Size</h4>
         </div>
         <div 
           style={{
@@ -187,8 +186,7 @@ class BubblesLegend extends Component {
             top: bubbleSpecs[2].y * INVERT_RATIO + 45
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">Further away</h4>
-          <p className="bubbles-legend__textbox-copy">Less similar in  selected predictions</p>
+          <h4 className="bubbles-legend__textbox-title">2. Distance</h4>
         </div>
         <div 
           style={{
@@ -197,8 +195,7 @@ class BubblesLegend extends Component {
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">Big Bubble</h4>
-          <p className="bubbles-legend__textbox-copy">More similar<br/> overall</p>
+          <h4 className="bubbles-legend__textbox-title">3. Color intensity</h4>
         </div>
         <div 
           style={{
