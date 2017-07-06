@@ -16,10 +16,11 @@ const receiveAll = (data) => ({
   data
 });
 
-const receiveProfile = (data, id) => ({
+const receiveProfile = (data, id, urlId) => ({
   type: 'RECEIVE_PROFILE',
   data,
-  id
+  id,
+  urlId
 });
 
 
@@ -41,9 +42,9 @@ export const fetchAll = () =>
     return receiveAll(response.data);
   })
 
-export const fetchProfile = (id) =>
+export const fetchProfile = (id, urlId) =>
   api.fetchProfile(id).then(response => {
-    return receiveProfile(response.data, id);
+    return receiveProfile(response.data, id, urlId);
   })
 
 export const updateUser = (data) =>

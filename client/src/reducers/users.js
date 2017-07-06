@@ -20,7 +20,8 @@ const GRID_PADDING = 20;
         }],
     predictions,
     loading,
-    platforms
+    platforms,
+    feedNeedsInit
   }
 ]
 */
@@ -67,6 +68,7 @@ function resetFeed(state, {profile}) {
     if(!profile.feed) return profile;
     return {
       ...profile,
+      feedNeedsInit: false,
       feed: initializeFeed(profile)
     }
   })
@@ -89,15 +91,18 @@ function receiveAllUsers(state, action) {
   });
 }
 
-function receiveProfile(state, { id, data }) {
+// initializes feed and sets necessary profile variables
+function receiveProfile(state, { id, data, urlId }) {
   data.feed = initializeFeed(data);
+  data.visited = id === urlId;
+  data.feedNeedsInit = false;
   // if state not initialized, just wrap the profile in an array
   if(!state) return [data];
   // if profile already exists, just add the received profile data to it
   const containsProfile = _find(state, {id: id}) !== undefined;
   if(containsProfile)
     return applyToProfile(state, id, user => ({
-      ...user, 
+      ...user,
       ...data
     }))
   // else push the new profile data into the state array
@@ -148,18 +153,19 @@ function initializeFeedItem(state, {data, id}) {
 
     return {
       ...profile,
-      feed
+      feed,
+      feedNeedsInit: true
     };
   });  
 }
 
 
+// Set the definitive position of the item after it is loaded
 function setFeedItemPosition(state, {height, item: loadedItem, id}) {
   return state.map((profile) => {
     if(profile.id !== id) return profile;
     let feed = profile.feed.map((item) => {
       if(item.id !== loadedItem.id) return item;
-      //let {x, y} = generateScatterPosition(item, height, profile.feed);
 
       return {
         ...item,
@@ -174,56 +180,4 @@ function setFeedItemPosition(state, {height, item: loadedItem, id}) {
       feed
     };
   });  
-}
-
-
-// SCATTER CALCULATION
-
-function generateScatterPosition(item, height, positionedItems) {
-  return getNewPosition(item, height, positionedItems);
-}
-
-/*
-  Gets a random position based on the center of the screen that doesn't collide
-  with any of the existing positions.
-  Can be optimised by taking into account the center item instead of the center position
-  and then looking at the outer most items to calculate the initial spread
-*/
-function getNewPosition(item, height, items) {
-  const windowWidth = window.innerWidth;
-  const windowHeight = window.innerHeight;
-  const centerX = windowWidth / 2;
-  const centerY = windowHeight / 2;
-  let spread = 0;
-
-  function getPosition() {
-    var newPos = {
-      x: d3RandomNormal(centerX, spread)() - ITEM_WIDTH/2,
-      y: d3RandomNormal(centerY, spread)() - height/2,
-      height: height
-    }
-    if(!doesItemCollide(newPos, items)) {
-      return newPos;
-    }
-    spread += 4;
-    return getPosition();
-  }
-
-  return getPosition();
-}
-
-
-function doesItemCollide(item1,  items) {
-  let doesCollide = false;
-
-  items.forEach((item2) => {
-    if(doesCollide) return;
-    if(
-      ((item2.x > (item1.x - ITEM_WIDTH - GRID_PADDING)) && (item2.x < (item1.x + ITEM_WIDTH + GRID_PADDING))) &&
-      ((item2.y > (item1.y - item2.height - GRID_PADDING)) && (item2.y < (item1.y + item1.height + GRID_PADDING)))
-    ) {
-      doesCollide = true;
-    }
-  });
-  return doesCollide;
 }

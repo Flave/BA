@@ -19,7 +19,8 @@ class Profile extends Component {
     const profile = _find(users, {id: profileId});
 
     // reset feed ui to initial state and set all feed items to loaded: false
-    // 
+    if(profile && profile.feedNeedsInit)
+      store.dispatch(actions.resetFeed(profile));
   }
 
   handleLoadMoreClick(maxItems, itemsShown) {

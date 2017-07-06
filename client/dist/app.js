@@ -2055,20 +2055,20 @@ function create(node, id, self) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__api__ = __webpack_require__(141);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return fetchUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return fetchAll; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return fetchProfile; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return updateUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return initializeFeedItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return fetchAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return fetchProfile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return updateUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return initializeFeedItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setWindowDimensions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return toggleDrawer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return toggleDrawer; });
 /* unused harmony export setFeedItemHeight */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return receiveFeedItem; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return setOthersPeopleOptions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return showMoreItems; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return resetFeed; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return resetUi; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return setProfileVisited; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return nextOnboarding; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return receiveFeedItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return setOthersPeopleOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return showMoreItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return resetFeed; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return resetUi; });
+/* unused harmony export setProfileVisited */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return nextOnboarding; });
 /* unused harmony export completeOnboarding */
 
 
@@ -2094,11 +2094,12 @@ var receiveAll = function receiveAll(data) {
   };
 };
 
-var receiveProfile = function receiveProfile(data, id) {
+var receiveProfile = function receiveProfile(data, id, urlId) {
   return {
     type: 'RECEIVE_PROFILE',
     data: data,
-    id: id
+    id: id,
+    urlId: urlId
   };
 };
 
@@ -2123,9 +2124,9 @@ var fetchAll = function fetchAll() {
   });
 };
 
-var fetchProfile = function fetchProfile(id) {
+var fetchProfile = function fetchProfile(id, urlId) {
   return __WEBPACK_IMPORTED_MODULE_0__api__["c" /* fetchProfile */](id).then(function (response) {
-    return receiveProfile(response.data, id);
+    return receiveProfile(response.data, id, urlId);
   });
 };
 
@@ -20416,7 +20417,7 @@ var Onboarding = function (_Component) {
   _createClass(Onboarding, [{
     key: 'handleNext',
     value: function handleNext() {
-      if (this.props.currentStep < __WEBPACK_IMPORTED_MODULE_2__index__["a" /* default */].length - 1) this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["m" /* nextOnboarding */]());else this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["n" /* updateUser */]({ returning: true }));
+      if (this.props.currentStep < __WEBPACK_IMPORTED_MODULE_2__index__["a" /* default */].length - 1) this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["l" /* nextOnboarding */]());else this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_3_app_actions__["m" /* updateUser */]({ returning: true }));
     }
   }, {
     key: 'render',
@@ -20765,9 +20766,9 @@ function BubblesCanvas() {
   var user = void 0;
   var showUser = void 0;
   var properties = void 0;
-  var maxBubbleRadius = 55;
+  var maxBubbleRadius = 40;
   var minDist = 80;
-  var pixRatio = .11;
+  var pixRatio = .09;
   var invertPixRatio = 1 / pixRatio;
   var pixDimensions = void 0;
   // to have a natural movement...
@@ -21386,7 +21387,7 @@ var Others = function (_Component) {
         return { id: id, value: value };
       });
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["l" /* setOthersPeopleOptions */](options));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2_app_actions__["k" /* setOthersPeopleOptions */](options));
     }
   }, {
     key: 'createChecks',
@@ -21555,7 +21556,7 @@ var Feed = function (_Component) {
       var profile = this.props.profile;
 
       __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_10_app_utility__["c" /* getFreeSpots */])(transform, profile).forEach(function (spot) {
-        _this2.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["i" /* initializeFeedItem */](spot, profile.id));
+        _this2.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["h" /* initializeFeedItem */](spot, profile.id));
       });
       this.setState({ zooming: false });
     }
@@ -21569,7 +21570,7 @@ var Feed = function (_Component) {
     value: function handleLoadSuccess(itemHeight, item) {
       var profile = this.props.profile;
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["j" /* receiveFeedItem */](item, itemHeight, profile.id, profile));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["i" /* receiveFeedItem */](item, itemHeight, profile.id, profile));
     }
   }, {
     key: 'createFeed',
@@ -22470,9 +22471,9 @@ var Others = function (_Component) {
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["d" /* resetUi */]({ drawer: 'options' }));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["c" /* resetUi */]({ drawer: 'options' }));
       // if user landed on profile there will be already 1-2 profiles
-      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["k" /* fetchAll */]());
+      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["j" /* fetchAll */]());
 
       this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).showUser(showUser).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
         return _this2.setState({ hoveredBubble: hoveredBubble });
@@ -22490,7 +22491,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleTransitionStart',
     value: function handleTransitionStart() {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["d" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["c" /* resetUi */]());
     }
   }, {
     key: 'componentDidUpdate',
@@ -22535,7 +22536,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleMenuClick',
     value: function handleMenuClick(menuId) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["g" /* toggleDrawer */](menuId));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["e" /* toggleDrawer */](menuId));
     }
   }, {
     key: 'render',
@@ -22668,20 +22669,20 @@ var Profile = function (_Component) {
       var userProfile = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(users, { id: user.login });
       var isUser = user.login === profileId;
 
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["c" /* setProfileVisited */](profileId));
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* resetUi */]());
+      store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["c" /* resetUi */]());
 
-      if (profile && profile.feed) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* resetFeed */](profile));
+      /*    if(profile && profile.feed)
+            store.dispatch(actions.resetFeed(profile));*/
 
       // Bit of an annoying way to make sure the necessary things are
       // being loaded but not too much
-      if (!userProfile || !userProfile.platforms) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["f" /* fetchProfile */](user.login));
-      if ((!profile || !profile.platforms) && !isUser) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["f" /* fetchProfile */](profileId));
+      if (!userProfile || !userProfile.platforms) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* fetchProfile */](user.login, profileId));
+      if ((!profile || !profile.platforms) && !isUser) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["d" /* fetchProfile */](profileId, profileId));
     }
   }, {
     key: 'handleMenuClick',
     value: function handleMenuClick(menuId) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["g" /* toggleDrawer */](menuId));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["e" /* toggleDrawer */](menuId));
     }
   }, {
     key: 'render',
@@ -22798,12 +22799,12 @@ var Profile = function (_Component) {
       var profile = __WEBPACK_IMPORTED_MODULE_3_lodash_find___default()(users, { id: profileId });
 
       // reset feed ui to initial state and set all feed items to loaded: false
-      // 
+      if (profile && profile.feedNeedsInit) store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["f" /* resetFeed */](profile));
     }
   }, {
     key: 'handleLoadMoreClick',
     value: function handleLoadMoreClick(maxItems, itemsShown) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["h" /* showMoreItems */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_2__actions__["g" /* showMoreItems */]());
     }
   }, {
     key: 'render',
@@ -23406,7 +23407,8 @@ var GRID_PADDING = 20;
         }],
     predictions,
     loading,
-    platforms
+    platforms,
+    feedNeedsInit
   }
 ]
 */
@@ -23458,6 +23460,7 @@ function resetFeed(state, _ref2) {
   return applyToProfile(state, profile.id, function (profile) {
     if (!profile.feed) return profile;
     return _extends({}, profile, {
+      feedNeedsInit: false,
       feed: initializeFeed(profile)
     });
   });
@@ -23476,11 +23479,15 @@ function receiveAllUsers(state, action) {
   });
 }
 
+// initializes feed and sets necessary profile variables
 function receiveProfile(state, _ref3) {
   var id = _ref3.id,
-      data = _ref3.data;
+      data = _ref3.data,
+      urlId = _ref3.urlId;
 
   data.feed = initializeFeed(data);
+  data.visited = id === urlId;
+  data.feedNeedsInit = false;
   // if state not initialized, just wrap the profile in an array
   if (!state) return [data];
   // if profile already exists, just add the received profile data to it
@@ -23540,11 +23547,13 @@ function initializeFeedItem(state, _ref4) {
     });
 
     return _extends({}, profile, {
-      feed: feed
+      feed: feed,
+      feedNeedsInit: true
     });
   });
 }
 
+// Set the definitive position of the item after it is loaded
 function setFeedItemPosition(state, _ref5) {
   var height = _ref5.height,
       loadedItem = _ref5.item,
@@ -23554,7 +23563,6 @@ function setFeedItemPosition(state, _ref5) {
     if (profile.id !== id) return profile;
     var feed = profile.feed.map(function (item) {
       if (item.id !== loadedItem.id) return item;
-      //let {x, y} = generateScatterPosition(item, height, profile.feed);
 
       return _extends({}, item, {
         height: height,
@@ -23567,53 +23575,6 @@ function setFeedItemPosition(state, _ref5) {
       feed: feed
     });
   });
-}
-
-// SCATTER CALCULATION
-
-function generateScatterPosition(item, height, positionedItems) {
-  return getNewPosition(item, height, positionedItems);
-}
-
-/*
-  Gets a random position based on the center of the screen that doesn't collide
-  with any of the existing positions.
-  Can be optimised by taking into account the center item instead of the center position
-  and then looking at the outer most items to calculate the initial spread
-*/
-function getNewPosition(item, height, items) {
-  var windowWidth = window.innerWidth;
-  var windowHeight = window.innerHeight;
-  var centerX = windowWidth / 2;
-  var centerY = windowHeight / 2;
-  var spread = 0;
-
-  function getPosition() {
-    var newPos = {
-      x: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(centerX, spread)() - ITEM_WIDTH / 2,
-      y: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(centerY, spread)() - height / 2,
-      height: height
-    };
-    if (!doesItemCollide(newPos, items)) {
-      return newPos;
-    }
-    spread += 4;
-    return getPosition();
-  }
-
-  return getPosition();
-}
-
-function doesItemCollide(item1, items) {
-  var doesCollide = false;
-
-  items.forEach(function (item2) {
-    if (doesCollide) return;
-    if (item2.x > item1.x - ITEM_WIDTH - GRID_PADDING && item2.x < item1.x + ITEM_WIDTH + GRID_PADDING && item2.y > item1.y - item2.height - GRID_PADDING && item2.y < item1.y + item1.height + GRID_PADDING) {
-      doesCollide = true;
-    }
-  });
-  return doesCollide;
 }
 
 /***/ }),

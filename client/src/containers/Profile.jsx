@@ -30,18 +30,17 @@ class Profile extends Component {
     const userProfile = _find(users, {id: user.login});
     const isUser = user.login === profileId;
 
-    store.dispatch(actions.setProfileVisited(profileId));
     store.dispatch(actions.resetUi());
 
-    if(profile && profile.feed)
-      store.dispatch(actions.resetFeed(profile));
+/*    if(profile && profile.feed)
+      store.dispatch(actions.resetFeed(profile));*/
 
     // Bit of an annoying way to make sure the necessary things are
     // being loaded but not too much
     if(!userProfile || !userProfile.platforms)
-      store.dispatch(actions.fetchProfile(user.login));
+      store.dispatch(actions.fetchProfile(user.login, profileId));
     if((!profile || !profile.platforms) && !isUser)
-      store.dispatch(actions.fetchProfile(profileId));
+      store.dispatch(actions.fetchProfile(profileId, profileId));
   }
 
   handleMenuClick(menuId) {

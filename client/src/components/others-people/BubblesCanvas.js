@@ -29,9 +29,9 @@ function BubblesCanvas() {
   let user;
   let showUser;
   let properties;
-  let maxBubbleRadius = 55;
+  let maxBubbleRadius = 40;
   let minDist = 80;
-  let pixRatio = .11;
+  let pixRatio = .09;
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
