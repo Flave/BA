@@ -15,9 +15,10 @@ import { hsl as d3Hsl } from 'd3-color';
 function Bubble(ctx, options) {
   let bubble = {...options};
 
-  bubble.update = function({targetX, targetY}, selectedGroups) {
+  bubble.update = function({targetX, targetY, colored, selectedGroups}) {
     bubble.targetX = targetX;
     bubble.targetY = targetY;
+    bubble.colored = colored;
     bubble.selectedGroups = selectedGroups;
 
     bubble.differences.sort((d1, d2) => {
@@ -55,7 +56,7 @@ function Bubble(ctx, options) {
       }
 
       
-      if(bubble.isUser) {
+      if(bubble.isUser || !bubble.colored) {
         color.opacity = .5;
         color.s = 0;
       }

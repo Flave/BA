@@ -41,16 +41,17 @@ const bubbleSpecs = [
         relativeDifference: .3
       }
     ],
+    colored: false,
     isUser: true,
-    x: WIDTH * .49 * PIX_RATIO,
-    y: HEIGHT * .56 * PIX_RATIO,
+    x: WIDTH * .5 * PIX_RATIO,
+    y: HEIGHT * .61 * PIX_RATIO,
     r: 7
   },
   {
     differences: [
       {
         id: 'female',
-        relativeDifference: .1
+        relativeDifference: .2
       },
       {
         id: 'age',
@@ -62,7 +63,7 @@ const bubbleSpecs = [
       },
       {
         id: 'satisfaction_life',
-        relativeDifference: .3
+        relativeDifference: .4
       },
       {
         id: 'politics',
@@ -74,12 +75,13 @@ const bubbleSpecs = [
       },
       {
         id: 'big5',
-        relativeDifference: .1
+        relativeDifference: .2
       }
     ],
+    colored: true,
     x: WIDTH * .55 * PIX_RATIO,
     y: HEIGHT * .9 * PIX_RATIO,
-    r: 6
+    r: 3
   },
   {
     differences: [
@@ -112,9 +114,10 @@ const bubbleSpecs = [
         relativeDifference: 1
       }
     ],
-    x: WIDTH * .4 * PIX_RATIO,
-    y: HEIGHT * .05 * PIX_RATIO,
-    r: 3
+    colored: true,
+    x: WIDTH * .41 * PIX_RATIO,
+    y: HEIGHT * .1 * PIX_RATIO,
+    r: 6
   }
 ]
 
@@ -141,7 +144,7 @@ class BubblesLegend extends Component {
     ctx.fill();
     bubbleSpecs.forEach(bubbleSpec => 
       Bubble(ctx, bubbleSpec)
-        .update({}, selectedGroups)
+        .update({selectedGroups, colored: true})
         .render()
     )
     ctx.drawImage(canvas, 0, 0, pixSize[0], pixSize[1], 0, 0, WIDTH, HEIGHT);
@@ -152,7 +155,7 @@ class BubblesLegend extends Component {
     ctx.moveTo(bubbleSpecs[0].x * INVERT_RATIO - 8, bubbleSpecs[0].y * INVERT_RATIO - 48);
     ctx.lineTo(bubbleSpecs[2].x * INVERT_RATIO + 5, bubbleSpecs[2].y * INVERT_RATIO + 25);
     ctx.moveTo(bubbleSpecs[0].x * INVERT_RATIO + 10, bubbleSpecs[0].y * INVERT_RATIO + 49);
-    ctx.lineTo(bubbleSpecs[1].x * INVERT_RATIO - 5, bubbleSpecs[1].y * INVERT_RATIO - 35);
+    ctx.lineTo(bubbleSpecs[1].x * INVERT_RATIO - 3, bubbleSpecs[1].y * INVERT_RATIO - 28);
     ctx.stroke();
   }
 
@@ -173,7 +176,7 @@ class BubblesLegend extends Component {
           className="bubbles-legend__canvas" ref={el => this.canvas = el}/>
         <div 
           style={{
-            left: bubbleSpecs[2].x * INVERT_RATIO + 26, 
+            left: bubbleSpecs[2].x * INVERT_RATIO + 45, 
             top: bubbleSpecs[2].y * INVERT_RATIO - 15
           }}
           className="bubbles-legend__textbox">
@@ -189,8 +192,8 @@ class BubblesLegend extends Component {
         </div>
         <div 
           style={{
-            right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 35, 
-            top: bubbleSpecs[2].y * INVERT_RATIO - 15,
+            right: WIDTH - (bubbleSpecs[2].x * INVERT_RATIO - 48),
+            top: bubbleSpecs[2].y * INVERT_RATIO - 23,
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
@@ -200,7 +203,7 @@ class BubblesLegend extends Component {
         <div 
           style={{
             left: bubbleSpecs[2].x * INVERT_RATIO + 40, 
-            top: bubbleSpecs[2].y * INVERT_RATIO + 55
+            top: bubbleSpecs[2].y * INVERT_RATIO + 60
           }}
           className="bubbles-legend__textbox">
           <h4 className="bubbles-legend__textbox-title">2.Distance</h4>
@@ -208,8 +211,8 @@ class BubblesLegend extends Component {
         </div>
         <div 
           style={{
-            right: WIDTH - bubbleSpecs[1].x * INVERT_RATIO + 50, 
-            top: bubbleSpecs[1].y * INVERT_RATIO - 10,
+            right: WIDTH - bubbleSpecs[1].x * INVERT_RATIO + 45, 
+            top: bubbleSpecs[1].y * INVERT_RATIO - 30,
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
@@ -219,11 +222,11 @@ class BubblesLegend extends Component {
         <div 
           style={{
             right: WIDTH - bubbleSpecs[0].x * INVERT_RATIO + 50,
-            top: bubbleSpecs[0].y * INVERT_RATIO - 8,
+            top: bubbleSpecs[0].y * INVERT_RATIO - 15,
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-lead">YOUR<br/>BUBBLE</h4>
+          <h4 className="bubbles-legend__textbox-lead">Your<br/>Bubble</h4>
         </div>
       </div>
     )

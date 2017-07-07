@@ -9,10 +9,10 @@
   visibility: hidden;
   transition: all .3s;
   transform: translateX(20px);
-  width: 430px;
+  width: 450px;
   background: linear-gradient(to right, rgba(255,255,255, .89) 40%,rgba(255,255,255,0) 100%);
   height: 100%;
-  padding: 30px;
+  padding: 50px;
   overflow: scroll;
 
   &.is-active {
@@ -35,13 +35,17 @@
   color: $c-accent;
   font-size: 38px;
   margin-bottom: 25px;
-  margin-top: 15px;
+  margin-top: 0;
 }
 
 .onboarding__copy {
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 19px;
+  line-height: 26px;
   margin-bottom: 30px;
+
+  p {
+    margin-bottom: 7px;
+  }
 }
 
 .onboarding__next {
@@ -69,6 +73,7 @@
   margin-right: 10px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  margin-bottom: 10px;
 }
 
 .onboarding__group-color {
@@ -90,7 +95,7 @@
 }
 
 .onboarding__prediction {
-  padding-left: 30px;
+  padding-left: 26px;
   margin-bottom: 4px;
   &:first-child {
     margin-top: 15px;

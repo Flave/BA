@@ -12001,12 +12001,15 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 function Bubble(ctx, options) {
   var bubble = _extends({}, options);
 
-  bubble.update = function (_ref, selectedGroups) {
+  bubble.update = function (_ref) {
     var targetX = _ref.targetX,
-        targetY = _ref.targetY;
+        targetY = _ref.targetY,
+        colored = _ref.colored,
+        selectedGroups = _ref.selectedGroups;
 
     bubble.targetX = targetX;
     bubble.targetY = targetY;
+    bubble.colored = colored;
     bubble.selectedGroups = selectedGroups;
 
     bubble.differences.sort(function (d1, d2) {
@@ -12040,7 +12043,7 @@ function Bubble(ctx, options) {
         color.opacity = .08;
       }
 
-      if (bubble.isUser) {
+      if (bubble.isUser || !bubble.colored) {
         color.opacity = .5;
         color.s = 0;
       }
@@ -20474,17 +20477,26 @@ var Step0 = function Step0(_ref) {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       "h2",
       { className: "onboarding__title" },
-      "Other people"
+      "The Personalised Internet"
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "p",
+      "div",
       { className: "onboarding__copy" },
-      "Every bubble here is one person\u2019s internet. Their internet consists of the platforms they spend time on on a daily basis such as Facebook, Twitter, Instagram and Youtube."
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "p",
+        null,
+        "The Social Platforms you use create computer predictions about who you are and what you might like."
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "p",
+        null,
+        "Ultimately they play a big role in what has to become known as The Filter Bubble \u2014\xA0filter mechanisms that only show you things that falls into your interests and reflect your oppinion."
+      )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       "span",
       { onClick: onNext, className: "btn btn--cta onboarding__next" },
-      "Continue ",
+      "Let's turn the tables ",
       __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
     )
   );
@@ -20499,35 +20511,47 @@ var Step0 = function Step0(_ref) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__ = __webpack_require__(291);
 
 
-var Step1 = function Step1(_ref) {
+
+var Step2 = function Step2(_ref) {
   var onNext = _ref.onNext;
 
 
   return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    "div",
-    { className: "onboarding__content" },
+    'div',
+    { className: 'onboarding__content' },
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "h2",
-      { className: "onboarding__title" },
-      "You"
+      'h2',
+      { className: 'onboarding__title' },
+      'Turning the tables'
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "p",
-      { className: "onboarding__copy" },
-      "Your bubble is the one in the middle. The closer other bubbles are, the more similar the person it to you."
+      'div',
+      { className: 'onboarding__copy' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'I used a service to create similar predictions about you and everyone else based on the pages they liked on Facebook. You can use these predictions to find other people and to peek into their bubbles.'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'Every prediction includes the following charater traits:'
+      )
     ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__["a" /* default */], null),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "span",
-      { onClick: onNext, className: "btn btn--cta onboarding__next" },
-      "Continue ",
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
+      'span',
+      { onClick: onNext, className: 'btn btn--cta onboarding__next' },
+      'Continue ',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-long-arrow-forward' })
     )
   );
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (Step1);
+/* harmony default export */ __webpack_exports__["a"] = (Step2);
 
 /***/ }),
 /* 289 */
@@ -20536,35 +20560,47 @@ var Step1 = function Step1(_ref) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__ = __webpack_require__(291);
 
 
-var Step2 = function Step2(_ref) {
+
+var Step1 = function Step1(_ref) {
   var onNext = _ref.onNext;
 
 
   return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    "div",
-    { className: "onboarding__content" },
+    'div',
+    { className: 'onboarding__content' },
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "h2",
-      { className: "onboarding__title" },
-      "Machine Predictions"
+      'h2',
+      { className: 'onboarding__title' },
+      'Machine Predictions'
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "p",
-      { className: "onboarding__copy" },
-      "In order to show you similarities I used a machine based prediction of your which is based on your Facebook likes. Similar predictions are made of you by Facebook, Google & co. to determine what content they should show you and what to hide."
+      'div',
+      { className: 'onboarding__copy' },
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'These kinds of models and machine predictions have to be treated with caution. They are statistical probabilities that are calculated based on our interactions with these platforms such as things we click on or things we like.'
+      ),
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'They are often based on our unconscious bahviour which doesn\'t always reflect our own best interest.'
+      )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      "span",
-      { onClick: onNext, className: "btn btn--cta onboarding__next" },
-      "Continue ",
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement("span", { className: "icon-long-arrow-forward" })
-    )
+      'span',
+      { onClick: onNext, className: 'btn btn--cta onboarding__next' },
+      'Continue ',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('span', { className: 'icon-long-arrow-forward' })
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1__Predictions_jsx__["a" /* default */], null)
   );
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (Step2);
+/* harmony default export */ __webpack_exports__["a"] = (Step1);
 
 /***/ }),
 /* 290 */
@@ -20587,12 +20623,16 @@ var Step3 = function Step3(_ref) {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'h2',
       { className: 'onboarding__title' },
-      'Machine Predictions'
+      'Your Bubble'
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'p',
+      'div',
       { className: 'onboarding__copy' },
-      'In order to show you similarities I used a machine based prediction of your which is based on your Facebook likes. Similar predictions are made of you by Facebook, Google & co. to determine what content they should show you and what to hide.'
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'Every bubble represents one person who used this application before. Your bubble is the one in the middle. The closer another bubble is to yours, the more similar this person it to you.'
+      )
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'span',
@@ -20735,8 +20775,6 @@ var Predictions = function (_Component) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions__);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 
 
 
@@ -20767,7 +20805,7 @@ function BubblesCanvas() {
   var _bubblesCanvas = {};
   var bubbles = void 0;
   var user = void 0;
-  var showUser = void 0;
+  var onboarding = void 0;
   var properties = void 0;
   var maxBubbleRadius = 35;
   var minBubbleRadius = 20;
@@ -20776,7 +20814,7 @@ function BubblesCanvas() {
   var invertPixRatio = 1 / pixRatio;
   var pixDimensions = void 0;
   // to have a natural movement...
-  var strengthGenerator = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0.02, 0.007);
+  var strengthGenerator = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0.02, 0.005);
   var collide = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["a" /* forceCollide */])(function (d) {
     return d.r + d.r * 0.1;
   });
@@ -20788,7 +20826,7 @@ function BubblesCanvas() {
   });
   var hoveredBubble = null;
 
-  var simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["e" /* forceSimulation */])().force("collide", collide).force("x", forceX).force("y", forceY).velocityDecay(0.2).on("tick", render);
+  var simulation = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["e" /* forceSimulation */])().force("collide", collide).force("x", forceX).force("y", forceY).velocityDecay(0.13).on("tick", render);
 
   _bubblesCanvas.update = function () {
     if (!data || !canvas) return;
@@ -20844,9 +20882,9 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   };
 
-  _bubblesCanvas.showUser = function (_) {
-    if (!arguments.length) return showUser;
-    showUser = _;
+  _bubblesCanvas.onboarding = function (_) {
+    if (!arguments.length) return onboarding;
+    onboarding = _;
     return _bubblesCanvas;
   };
 
@@ -20997,23 +21035,35 @@ function BubblesCanvas() {
       var thisIsUser = isUser(profile);
       var overallDifference = thisIsUser ? 0 : (overallDifferences[i] - overallDifferenceExtent[0]) / overallDifferenceDelta;
       var profileGroupDifferences = getProfileGroupDifferences(groupDifferences[i], groupDifferencesExtent);
-
       var angle = Math.PI * 2 / data.length * i + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0, 0.1)();
-      var dist = Math.random() * 20 + 50;
-      var x = Math.cos(angle) * dist + pixDimensions[0] / 2;
-      var y = Math.sin(angle) * dist + pixDimensions[1] / 2;
-      var r = (Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius) * pixRatio;
+      var dist = Math.random() * dimensions[1] / 2 + 100;
+      var centerX = (dimensions[0] - margins.left) / 2 + margins.left;
+      var centerY = dimensions[1] / 2;
+      var initialPos = getInitialPos(angle);
+
+      var x = Math.cos(angle) * dist + centerX;
+      var y = Math.sin(angle) * dist + centerY;
+      var colored = true;
+      var r = Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius;
+
+      if (onboarding !== false && onboarding < 2) {
+        x = initialPos.x;
+        y = initialPos.y + Math.random() * 50 + 100;
+      }
+
+      if (onboarding !== false && onboarding < 1) colored = false;
 
       return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__Bubble__["a" /* default */])(ctx, {
         predictions: profile.predictions,
         id: profile.id,
-        x: thisIsUser ? pixDimensions[0] / 2 : x,
-        y: thisIsUser ? pixDimensions[1] / 2 : y,
-        fill: thisIsUser ? "#3163FF" : "rgba(0, 0, 0, .3)",
-        r: thisIsUser ? minBubbleRadius * 1.5 * pixRatio : r,
-        angle: angle,
+        x: thisIsUser ? centerX * pixRatio : x * pixRatio,
+        y: thisIsUser ? pixDimensions[1] / 2 : y * pixRatio,
+        r: thisIsUser ? minBubbleRadius * 1.5 * pixRatio : r * pixRatio,
         isUser: thisIsUser,
-        differences: profileGroupDifferences
+        differences: profileGroupDifferences,
+        colored: colored,
+        angle: angle,
+        initialPos: initialPos
       }, user);
     });
     registerEvents();
@@ -21028,6 +21078,22 @@ function BubblesCanvas() {
     });
   }
 
+  function getInitialPos(angle) {
+    var centerX = (dimensions[0] - margins.left) / 2 + margins.left;
+
+    function getPos() {
+      var dist = Math.random() * dimensions[0] / 2;
+      var pos = {
+        x: Math.cos(angle) * dist + centerX,
+        y: Math.sin(angle) * dist + dimensions[1] / 2
+      };
+      if (pos.x > dimensions[0] || pos.x < 0 || pos.y > dimensions[1] || pos.y < 0) return getPos();
+      return pos;
+    }
+
+    return getPos();
+  }
+
   function updateBubbles() {
     var _getDifferenceValues2 = getDifferenceValues(),
         selectionDifferences = _getDifferenceValues2.selectionDifferences,
@@ -21035,28 +21101,33 @@ function BubblesCanvas() {
         selectionDifferenceDelta = _getDifferenceValues2.selectionDifferenceDelta;
 
     var selectedGroups = getSelectedGroups();
-    var shorterSide = Math.min.apply(Math, _toConsumableArray(dimensions));
-    // TODO: margins need to be incoorporated correctly to account for height > width
-    var maxDist = shorterSide / 2 - margins.top - margins.bottom;
-    var distScope = showUser ? maxDist - minDist : maxDist;
     var centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
+    var centerY = dimensions[1] / 2;
+    var distScope = centerY - minDist;
 
     bubbles.forEach(function (bubble, i) {
       var thisIsUser = isUser(bubble);
       var selectionDifference = thisIsUser ? 0 : (selectionDifferences[i] - selectionDifferenceExtent[0]) / selectionDifferenceDelta;
-
-      var dist = maxDist - (1 - selectionDifference) * distScope;
+      var dist = centerY - (1 - selectionDifference) * distScope;
       var targetX = Math.cos(bubble.angle) * dist + centerX;
-      var targetY = Math.sin(bubble.angle) * dist + dimensions[1] / 2;
+      var targetY = Math.sin(bubble.angle) * dist + centerY;
+      var colored = true;
+
+      if (onboarding !== false && onboarding < 2) {
+        targetX = bubble.initialPos.x;
+        targetY = bubble.initialPos.y;
+      }
+
+      if (onboarding !== false && onboarding < 1) colored = false;
 
       if (isUser(bubble)) {
         targetX = centerX;
-        targetY = dimensions[1] / 2;
+        targetY = centerY;
       }
 
       targetX *= pixRatio;
       targetY *= pixRatio;
-      bubble.update({ targetX: targetX, targetY: targetY }, selectedGroups);
+      bubble.update({ targetX: targetX, targetY: targetY, colored: colored, selectedGroups: selectedGroups });
     });
   }
 
@@ -21068,9 +21139,10 @@ function BubblesCanvas() {
     ctx.fill();
 
     bubbles && bubbles.forEach(function (bubble) {
-      if (isUser(bubble) && !showUser) return;
+      if (isUser(bubble) && onboarding !== false && onboarding < 2) return;
       bubble.render();
     });
+
     ctx.drawImage(canvas, 0, 0, pixDimensions[0], pixDimensions[1], 0, 0, dimensions[0], dimensions[1]);
   }
 
@@ -21181,14 +21253,15 @@ var bubbleSpecs = [{
     id: 'big5',
     relativeDifference: .3
   }],
+  colored: false,
   isUser: true,
-  x: WIDTH * .49 * PIX_RATIO,
-  y: HEIGHT * .56 * PIX_RATIO,
+  x: WIDTH * .5 * PIX_RATIO,
+  y: HEIGHT * .61 * PIX_RATIO,
   r: 7
 }, {
   differences: [{
     id: 'female',
-    relativeDifference: .1
+    relativeDifference: .2
   }, {
     id: 'age',
     relativeDifference: .3
@@ -21197,7 +21270,7 @@ var bubbleSpecs = [{
     relativeDifference: .1
   }, {
     id: 'satisfaction_life',
-    relativeDifference: .3
+    relativeDifference: .4
   }, {
     id: 'politics',
     relativeDifference: .2
@@ -21206,11 +21279,12 @@ var bubbleSpecs = [{
     relativeDifference: .2
   }, {
     id: 'big5',
-    relativeDifference: .1
+    relativeDifference: .2
   }],
+  colored: true,
   x: WIDTH * .55 * PIX_RATIO,
   y: HEIGHT * .9 * PIX_RATIO,
-  r: 6
+  r: 3
 }, {
   differences: [{
     id: 'female',
@@ -21234,9 +21308,10 @@ var bubbleSpecs = [{
     id: 'big5',
     relativeDifference: 1
   }],
-  x: WIDTH * .4 * PIX_RATIO,
-  y: HEIGHT * .05 * PIX_RATIO,
-  r: 3
+  colored: true,
+  x: WIDTH * .41 * PIX_RATIO,
+  y: HEIGHT * .1 * PIX_RATIO,
+  r: 6
 }];
 
 var BubblesLegend = function (_Component) {
@@ -21274,7 +21349,7 @@ var BubblesLegend = function (_Component) {
       ctx.rect(0, 0, pixSize[0], pixSize[1]);
       ctx.fill();
       bubbleSpecs.forEach(function (bubbleSpec) {
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__Bubble__["a" /* default */])(ctx, bubbleSpec).update({}, selectedGroups).render();
+        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3__Bubble__["a" /* default */])(ctx, bubbleSpec).update({ selectedGroups: selectedGroups, colored: true }).render();
       });
       ctx.drawImage(canvas, 0, 0, pixSize[0], pixSize[1], 0, 0, WIDTH, HEIGHT);
 
@@ -21284,7 +21359,7 @@ var BubblesLegend = function (_Component) {
       ctx.moveTo(bubbleSpecs[0].x * INVERT_RATIO - 8, bubbleSpecs[0].y * INVERT_RATIO - 48);
       ctx.lineTo(bubbleSpecs[2].x * INVERT_RATIO + 5, bubbleSpecs[2].y * INVERT_RATIO + 25);
       ctx.moveTo(bubbleSpecs[0].x * INVERT_RATIO + 10, bubbleSpecs[0].y * INVERT_RATIO + 49);
-      ctx.lineTo(bubbleSpecs[1].x * INVERT_RATIO - 5, bubbleSpecs[1].y * INVERT_RATIO - 35);
+      ctx.lineTo(bubbleSpecs[1].x * INVERT_RATIO - 3, bubbleSpecs[1].y * INVERT_RATIO - 28);
       ctx.stroke();
     }
   }, {
@@ -21316,7 +21391,7 @@ var BubblesLegend = function (_Component) {
           'div',
           {
             style: {
-              left: bubbleSpecs[2].x * INVERT_RATIO + 26,
+              left: bubbleSpecs[2].x * INVERT_RATIO + 45,
               top: bubbleSpecs[2].y * INVERT_RATIO - 15
             },
             className: 'bubbles-legend__textbox' },
@@ -21348,8 +21423,8 @@ var BubblesLegend = function (_Component) {
           'div',
           {
             style: {
-              right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 35,
-              top: bubbleSpecs[2].y * INVERT_RATIO - 15,
+              right: WIDTH - (bubbleSpecs[2].x * INVERT_RATIO - 48),
+              top: bubbleSpecs[2].y * INVERT_RATIO - 23,
               textAlign: "right"
             },
             className: 'bubbles-legend__textbox' },
@@ -21371,7 +21446,7 @@ var BubblesLegend = function (_Component) {
           {
             style: {
               left: bubbleSpecs[2].x * INVERT_RATIO + 40,
-              top: bubbleSpecs[2].y * INVERT_RATIO + 55
+              top: bubbleSpecs[2].y * INVERT_RATIO + 60
             },
             className: 'bubbles-legend__textbox' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -21389,8 +21464,8 @@ var BubblesLegend = function (_Component) {
           'div',
           {
             style: {
-              right: WIDTH - bubbleSpecs[1].x * INVERT_RATIO + 50,
-              top: bubbleSpecs[1].y * INVERT_RATIO - 10,
+              right: WIDTH - bubbleSpecs[1].x * INVERT_RATIO + 45,
+              top: bubbleSpecs[1].y * INVERT_RATIO - 30,
               textAlign: "right"
             },
             className: 'bubbles-legend__textbox' },
@@ -21410,16 +21485,16 @@ var BubblesLegend = function (_Component) {
           {
             style: {
               right: WIDTH - bubbleSpecs[0].x * INVERT_RATIO + 50,
-              top: bubbleSpecs[0].y * INVERT_RATIO - 8,
+              top: bubbleSpecs[0].y * INVERT_RATIO - 15,
               textAlign: "right"
             },
             className: 'bubbles-legend__textbox' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
             { className: 'bubbles-legend__textbox-lead' },
-            'YOUR',
+            'Your',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-            'BUBBLE'
+            'Bubble'
           )
         )
       );
@@ -21563,10 +21638,7 @@ var Others = function (_Component) {
               'b',
               null,
               'similarities'
-            ),
-            '. ',
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-            ' Thes kinds of machine predictions can be very useful in certain situations. Nevetheless they have to be treated with caution...'
+            )
           )
         ),
         this.createChecks(),
@@ -21792,7 +21864,20 @@ var PredictionsDrawer = function PredictionsDrawer(_ref) {
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'drawer__title' },
-      'Predictions'
+      'Machine Predictions'
+    ),
+    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+      'div',
+      { className: 'drawer__section' },
+      'These are the personality predictions ',
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'a',
+        { href: 'https://applymagicsauce.com/', target: '_blank' },
+        'a computer'
+      ),
+      ' made about ',
+      isMe ? "you" : "this person",
+      '. Similar predictions are made by Facebook & co. to decide what to show you and what to hide.'
     ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
@@ -21949,12 +22034,21 @@ var SettingsDrawer = function (_Component) {
         { className: 'drawer__content' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
-          { className: 'drawer__section drawer__section--full' },
+          { className: 'drawer__title' },
+          'Platforms'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'drawer__section' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
-            { className: 'drawer__title' },
-            'Platforms'
-          ),
+            { className: 'drawer__copy' },
+            'If you connect to more platforms you will be able to view the corresponding feeds of other people and vice versa. Only posts made by accounts you follow will be visible to others so it is very unlikely that you will be identifiable.'
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          { className: 'drawer__section drawer__section--full' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'drawer__list' },
@@ -22176,10 +22270,10 @@ function BubblesCanvas() {
     return d.r + 2;
   }).iterations(2);
   var charge = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["b" /* forceManyBody */])().strength(-0.5);
-  var forceX = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["c" /* forceX */])().strength(.018).x(function (d) {
+  var forceX = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["c" /* forceX */])().strength(.02).x(function (d) {
     return d.targetX;
   });
-  var forceY = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["d" /* forceY */])().strength(.018).y(function (d) {
+  var forceY = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_d3_force__["d" /* forceY */])().strength(.02).y(function (d) {
     return d.targetY;
   });
   var isUser = void 0;
@@ -22241,11 +22335,12 @@ function BubblesCanvas() {
     var groupedBubbles = subs.map(function (subsGroup, subscriberIndex) {
       var colIndex = isUser && subscriberIndex === 1 ? 0 : subscriberIndex;
       return subsGroup.map(function (sub, subIndex) {
+        var pos = getPosition(subscriberIndex);
         return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4__Bubble__["a" /* default */])(ctx, _extends({}, sub, {
-          x: size[0] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
-          y: size[1] / 2 + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 200)(),
+          x: pos.x + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 100)(),
+          y: pos.y + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(0, 100)(),
           fill: colors[colIndex],
-          r: sub.relevance * (maxRadius - minRadius) + minRadius,
+          r: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_random__["a" /* randomNormal */])(7, .4)(), //sub.relevance * (maxRadius - minRadius) + minRadius,
           subscriber: subscriberIndex
         }));
       });
@@ -22265,7 +22360,7 @@ function BubblesCanvas() {
 
   function updateBubbles() {
     bubbles.forEach(function (bubble) {
-      var _getPosition = getPosition(bubble),
+      var _getPosition = getPosition(bubble.subscriber),
           targetX = _getPosition.x,
           targetY = _getPosition.y;
 
@@ -22285,9 +22380,9 @@ function BubblesCanvas() {
     simulation.alpha(1).alphaTarget(0).force("x", forceX).force("y", forceY).restart();
   }
 
-  function getPosition(sub) {
+  function getPosition(index) {
     return {
-      x: (sub.subscriber + 1) * (size[0] - margins.left) / 4 + margins.left,
+      x: (index + 1) * (size[0] - margins.left) / 4 + margins.left,
       y: size[1] / 2
     };
   }
@@ -22464,7 +22559,6 @@ var Others = function (_Component) {
           ui = _store$getState.ui;
 
       var allLoaded = users && users.length === ui.userCount;
-      var showUser = ui.onboarding === false || ui.onboarding > 0;
 
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
@@ -22473,7 +22567,7 @@ var Others = function (_Component) {
       // if user landed on profile there will be already 1-2 profiles
       !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["j" /* fetchAll */]());
 
-      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).showUser(showUser).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
+      this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).onboarding(ui.onboarding).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
         return _this2.setState({ hoveredBubble: hoveredBubble });
       }).on('mouseleave', function () {
         return _this2.setState({ hoveredBubble: null });
@@ -22502,9 +22596,8 @@ var Others = function (_Component) {
           ui = _store$getState2.ui;
 
       var allLoaded = users && users.length === ui.userCount;
-      var showUser = ui.onboarding === false || ui.onboarding > 0;
 
-      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).showUser(showUser).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
+      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).onboarding(ui.onboarding).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
     }
   }, {
     key: 'createTooltip',
@@ -25523,7 +25616,7 @@ exports = module.exports = __webpack_require__(317)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(186) + ");\n  src: url(" + __webpack_require__(186) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(472) + ") format(\"truetype\"), url(" + __webpack_require__(473) + ") format(\"woff\"), url(" + __webpack_require__(471) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-long-arrow-forward:before {\n  content: \"\\E90B\"; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(185) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(185) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(470) + ") format(\"woff2\"), url(" + __webpack_require__(469) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(184) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(184) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(468) + ") format(\"woff2\"), url(" + __webpack_require__(467) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace;\n  overflow: hidden; }\n\na {\n  color: #2E2E2E; }\n\n.page-title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  height: 120px;\n  padding: 31px 38px;\n  z-index: 999;\n  margin: 0;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 999; }\n  .page-title.is-inside-drawer {\n    background-color: rgba(250, 250, 250, 0.96);\n    border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n    border-right: 1px solid rgba(0, 0, 0, 0.08); }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.bubbles-legend {\n  position: relative; }\n\n.bubbles-legend__textbox {\n  font-size: 12px;\n  position: absolute;\n  max-width: 130px; }\n\n.bubbles-legend__textbox-lead {\n  font-size: 14px;\n  font-weight: 600;\n  letter-spacing: .05em;\n  text-transform: uppercase;\n  margin: 0; }\n\n.bubbles-legend__textbox-title {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 4px; }\n\n.bubbles-legend__textbox-copy {\n  margin: 0; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  top: 15%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center;\n  max-width: 130px;\n  /*   &:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    left: 50%;\n    bottom: -10px;\n    height: 50px;\n    width: 1px;\n    border-right: 1px dashed $c-shade-light;\n  } */ }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 14px;\n  margin-bottom: 5px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    font-weight: 600; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      color: #fcfcfc; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 2px solid;\n  text-align: center;\n  border-radius: 100%; }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  font-size: 14px; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff;\n    padding: 20px; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  width: 245px; }\n  .predictions--tooltip .chart__range-bar {\n    background-color: rgba(255, 255, 255, 0.15); }\n\n.predictions--profile .chart__value-bar:after {\n  background: #fdfdfd; }\n\n.predictions__group {\n  margin-bottom: 30px; }\n  .predictions__group:last-child {\n    margin-bottom: -15px; }\n  .predictions__group:last-child {\n    margin-right: 0; }\n\n.predictions__option-group {\n  margin-bottom: 15px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.chart--minor {\n  margin-bottom: 10px; }\n  .chart--minor .chart__label {\n    text-transform: none;\n    letter-spacing: 0;\n    font-weight: 400;\n    opacity: .6; }\n  .chart--minor:last-child {\n    margin-bottom: 0; }\n\n.chart__label,\n.chart-group__label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  font-size: 12px;\n  margin-bottom: 7px; }\n\n.chart__range-bar {\n  width: 100%;\n  height: 3px;\n  background-color: rgba(46, 46, 46, 0.15); }\n\n.chart__header {\n  position: relative; }\n\n.chart__footer {\n  margin-top: 3px; }\n\n.chart__value {\n  font-size: 12px; }\n  .chart__value--right {\n    float: right; }\n\n.chart__value-bar {\n  height: 100%;\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n  .chart__value-bar:after {\n    content: \"\";\n    position: absolute;\n    display: inline-block;\n    height: 100%;\n    right: 0;\n    top: 0;\n    width: 1px;\n    background: #2E2E2E; }\n\n.bit-spinner {\n  animation: spin 1s linear infinite;\n  height: 10px;\n  width: 10px; }\n\n@keyframes spin {\n  0% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  6.25% {\n    box-shadow: 0px -30px transparent, 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  12.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  18.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  31.25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  37.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px transparent, -10px -30px transparent; }\n  43.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px transparent; }\n  50% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  56.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  62.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  68.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  81.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  87.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  93.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px rgba(0, 0, 0, 0.3); }\n  100% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; } }\n\n.slide {\n  max-width: 780px;\n  margin: 0 auto;\n  opacity: 0;\n  visibility: hidden;\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  transition: all .3s;\n  transform: translateX(20px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .slide.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .slide.was-active {\n    transform: translateX(-20px); }\n\n.slide__content {\n  position: relative;\n  top: -5%; }\n\n.slide__lead {\n  font-size: 32px;\n  line-height: 1.3em;\n  padding-right: 120px; }\n\n.slide__next {\n  cursor: pointer;\n  color: #3163FF;\n  text-transform: uppercase;\n  font-size: 18px;\n  letter-spacing: .05em;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  margin-top: -10px; }\n\n.slide__highlight {\n  font-style: normal;\n  color: #3163FF; }\n\n.slide__title {\n  font-family: \"Playfair Display\", serif;\n  font-size: 48px;\n  color: #3163FF;\n  line-height: 53px; }\n\n.slide__login {\n  margin-top: 50px; }\n\n.slide__login-copy {\n  font-size: 18px;\n  margin-bottom: 25px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 1.5px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--cta {\n    background: #3163FF;\n    color: #fff;\n    text-transform: uppercase;\n    letter-spacing: 0.08em; }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #3163FF;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 35px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 900;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600;\n  font-size: 14px; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E;\n  font-size: 14px; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute; }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.feed__item-container {\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item-container:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n\n.feed__item-loader {\n  position: absolute; }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  margin-top: 120px;\n  padding-bottom: 120px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08);\n  overflow: scroll; }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 38px 25px 38px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__title {\n  padding: 30px 38px 5px 38px;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.drawer__section-title {\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 12px; }\n\n.drawer__copy {\n  font-size: 13px;\n  line-height: 17px;\n  margin: 0; }\n\n/* \n  DRAWER ITEM — List item for account connection etc.\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 38px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 38px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n\n.onboarding__step {\n  position: fixed;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  visibility: hidden;\n  transition: all .3s;\n  transform: translateX(20px);\n  width: 430px;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  height: 100%;\n  padding: 30px;\n  overflow: scroll; }\n  .onboarding__step.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .onboarding__step.was-active {\n    transform: translateX(-20px); }\n\n.onboarding__title {\n  font-family: \"Playfair Display\", serif;\n  color: #3163FF;\n  font-size: 38px;\n  margin-bottom: 25px;\n  margin-top: 15px; }\n\n.onboarding__copy {\n  font-size: 20px;\n  line-height: 28px;\n  margin-bottom: 30px; }\n\n.onboarding__next {\n  float: right; }\n\n.onboarding__predictions {\n  margin-top: 100px;\n  clear: both; }\n\n.onboarding__group {\n  font-size: 14px;\n  margin-bottom: 15px; }\n  .onboarding__group--expandable .onboarding__group-name {\n    cursor: pointer; }\n\n.onboarding__group-name {\n  font-weight: bold;\n  margin-right: 10px;\n  text-transform: uppercase;\n  letter-spacing: 0.04em; }\n\n.onboarding__group-color {\n  width: 18px;\n  height: 18px;\n  border-radius: 100%;\n  vertical-align: middle;\n  display: inline-block;\n  margin-right: 8px;\n  position: relative;\n  top: -2px; }\n\n.onboarding__group-icon {\n  display: inline-block;\n  margin-left: 10px;\n  vertical-align: middle;\n  font-size: 16px; }\n\n.onboarding__prediction {\n  padding-left: 30px;\n  margin-bottom: 4px; }\n  .onboarding__prediction:first-child {\n    margin-top: 15px; }\n  .onboarding__prediction:last-child {\n    margin-bottom: 25px; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(186) + ");\n  src: url(" + __webpack_require__(186) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(472) + ") format(\"truetype\"), url(" + __webpack_require__(473) + ") format(\"woff\"), url(" + __webpack_require__(471) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-long-arrow-forward:before {\n  content: \"\\E90B\"; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(185) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(185) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(470) + ") format(\"woff2\"), url(" + __webpack_require__(469) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(184) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(184) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(468) + ") format(\"woff2\"), url(" + __webpack_require__(467) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace;\n  overflow: hidden; }\n\na {\n  color: #2E2E2E; }\n\n.page-title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  height: 120px;\n  padding: 31px 38px;\n  z-index: 999;\n  margin: 0;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 999; }\n  .page-title.is-inside-drawer {\n    background-color: rgba(250, 250, 250, 0.96);\n    border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n    border-right: 1px solid rgba(0, 0, 0, 0.08); }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.bubbles-legend {\n  position: relative; }\n\n.bubbles-legend__textbox {\n  font-size: 12px;\n  position: absolute;\n  max-width: 130px; }\n\n.bubbles-legend__textbox-lead {\n  font-size: 14px;\n  font-weight: 600;\n  letter-spacing: .05em;\n  text-transform: uppercase;\n  margin: 0; }\n\n.bubbles-legend__textbox-title {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 4px; }\n\n.bubbles-legend__textbox-copy {\n  margin: 0; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  top: 15%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center;\n  max-width: 130px;\n  /*   &:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    left: 50%;\n    bottom: -10px;\n    height: 50px;\n    width: 1px;\n    border-right: 1px dashed $c-shade-light;\n  } */ }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 14px;\n  margin-bottom: 5px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    font-weight: 600; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      color: #fcfcfc; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 2px solid;\n  text-align: center;\n  border-radius: 100%; }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  font-size: 14px; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff;\n    padding: 20px; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  width: 245px; }\n  .predictions--tooltip .chart__range-bar {\n    background-color: rgba(255, 255, 255, 0.15); }\n\n.predictions--profile .chart__value-bar:after {\n  background: #fdfdfd; }\n\n.predictions__group {\n  margin-bottom: 30px; }\n  .predictions__group:last-child {\n    margin-bottom: -15px; }\n  .predictions__group:last-child {\n    margin-right: 0; }\n\n.predictions__option-group {\n  margin-bottom: 15px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.chart--minor {\n  margin-bottom: 10px; }\n  .chart--minor .chart__label {\n    text-transform: none;\n    letter-spacing: 0;\n    font-weight: 400;\n    opacity: .6; }\n  .chart--minor:last-child {\n    margin-bottom: 0; }\n\n.chart__label,\n.chart-group__label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  font-size: 12px;\n  margin-bottom: 7px; }\n\n.chart__range-bar {\n  width: 100%;\n  height: 3px;\n  background-color: rgba(46, 46, 46, 0.15); }\n\n.chart__header {\n  position: relative; }\n\n.chart__footer {\n  margin-top: 3px; }\n\n.chart__value {\n  font-size: 12px; }\n  .chart__value--right {\n    float: right; }\n\n.chart__value-bar {\n  height: 100%;\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n  .chart__value-bar:after {\n    content: \"\";\n    position: absolute;\n    display: inline-block;\n    height: 100%;\n    right: 0;\n    top: 0;\n    width: 1px;\n    background: #2E2E2E; }\n\n.bit-spinner {\n  animation: spin 1s linear infinite;\n  height: 10px;\n  width: 10px; }\n\n@keyframes spin {\n  0% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  6.25% {\n    box-shadow: 0px -30px transparent, 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  12.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  18.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  31.25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  37.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px transparent, -10px -30px transparent; }\n  43.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px transparent; }\n  50% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  56.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  62.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  68.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  81.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  87.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  93.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px rgba(0, 0, 0, 0.3); }\n  100% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; } }\n\n.slide {\n  max-width: 780px;\n  margin: 0 auto;\n  opacity: 0;\n  visibility: hidden;\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  transition: all .3s;\n  transform: translateX(20px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .slide.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .slide.was-active {\n    transform: translateX(-20px); }\n\n.slide__content {\n  position: relative;\n  top: -5%; }\n\n.slide__lead {\n  font-size: 32px;\n  line-height: 1.3em;\n  padding-right: 120px; }\n\n.slide__next {\n  cursor: pointer;\n  color: #3163FF;\n  text-transform: uppercase;\n  font-size: 18px;\n  letter-spacing: .05em;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  margin-top: -10px; }\n\n.slide__highlight {\n  font-style: normal;\n  color: #3163FF; }\n\n.slide__title {\n  font-family: \"Playfair Display\", serif;\n  font-size: 48px;\n  color: #3163FF;\n  line-height: 53px; }\n\n.slide__login {\n  margin-top: 50px; }\n\n.slide__login-copy {\n  font-size: 18px;\n  margin-bottom: 25px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 1.5px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--cta {\n    background: #3163FF;\n    color: #fff;\n    text-transform: uppercase;\n    letter-spacing: 0.08em; }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #3163FF;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 35px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 900;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600;\n  font-size: 14px; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E;\n  font-size: 14px; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute; }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.feed__item-container {\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item-container:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n\n.feed__item-loader {\n  position: absolute; }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  margin-top: 120px;\n  padding-bottom: 120px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08);\n  overflow: scroll; }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 38px 25px 38px; }\n  .drawer__section--full {\n    padding: 0; }\n\n.drawer__title {\n  padding: 30px 38px 5px 38px;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.drawer__section-title {\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 12px; }\n\n.drawer__copy {\n  font-size: 13px;\n  line-height: 17px;\n  margin: 0; }\n\n/* \n  DRAWER ITEM — List item for account connection etc.\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 38px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 38px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n\n.onboarding__step {\n  position: fixed;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  visibility: hidden;\n  transition: all .3s;\n  transform: translateX(20px);\n  width: 450px;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  height: 100%;\n  padding: 50px;\n  overflow: scroll; }\n  .onboarding__step.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .onboarding__step.was-active {\n    transform: translateX(-20px); }\n\n.onboarding__title {\n  font-family: \"Playfair Display\", serif;\n  color: #3163FF;\n  font-size: 38px;\n  margin-bottom: 25px;\n  margin-top: 0; }\n\n.onboarding__copy {\n  font-size: 19px;\n  line-height: 26px;\n  margin-bottom: 30px; }\n  .onboarding__copy p {\n    margin-bottom: 7px; }\n\n.onboarding__next {\n  float: right; }\n\n.onboarding__predictions {\n  margin-top: 100px;\n  clear: both; }\n\n.onboarding__group {\n  font-size: 14px;\n  margin-bottom: 15px; }\n  .onboarding__group--expandable .onboarding__group-name {\n    cursor: pointer; }\n\n.onboarding__group-name {\n  font-weight: bold;\n  margin-right: 10px;\n  text-transform: uppercase;\n  letter-spacing: 0.04em;\n  margin-bottom: 10px; }\n\n.onboarding__group-color {\n  width: 18px;\n  height: 18px;\n  border-radius: 100%;\n  vertical-align: middle;\n  display: inline-block;\n  margin-right: 8px;\n  position: relative;\n  top: -2px; }\n\n.onboarding__group-icon {\n  display: inline-block;\n  margin-left: 10px;\n  vertical-align: middle;\n  font-size: 16px; }\n\n.onboarding__prediction {\n  padding-left: 26px;\n  margin-bottom: 4px; }\n  .onboarding__prediction:first-child {\n    margin-top: 15px; }\n  .onboarding__prediction:last-child {\n    margin-bottom: 25px; }\n", ""]);
 
 // exports
 

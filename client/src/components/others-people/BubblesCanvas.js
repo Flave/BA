@@ -28,7 +28,7 @@ function BubblesCanvas() {
   let _bubblesCanvas = {};
   let bubbles;
   let user;
-  let showUser;
+  let onboarding;
   let properties;
   let maxBubbleRadius = 35;
   let minBubbleRadius = 20;
@@ -37,7 +37,7 @@ function BubblesCanvas() {
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
-  const strengthGenerator = d3RandomNormal(0.02, 0.007);
+  const strengthGenerator = d3RandomNormal(0.02, 0.005);
   const collide = d3ForceCollide( function(d){return d.r + d.r * 0.1 });
   const forceX = d3ForceX().strength(strengthGenerator).x((d) => d.targetX);
   const forceY = d3ForceY().strength(strengthGenerator).y((d) => d.targetY);
@@ -47,7 +47,7 @@ function BubblesCanvas() {
       .force("collide", collide)
       .force("x", forceX)
       .force("y", forceY)
-      .velocityDecay(0.2)
+      .velocityDecay(0.13)
       .on("tick", render);
 
 
@@ -105,9 +105,9 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   }
 
-  _bubblesCanvas.showUser = function(_) {
-    if(!arguments.length) return showUser;
-    showUser = _;
+  _bubblesCanvas.onboarding = function(_) {
+    if(!arguments.length) return onboarding;
+    onboarding = _;
     return _bubblesCanvas;
   }
 
@@ -249,23 +249,36 @@ function BubblesCanvas() {
       const thisIsUser = isUser(profile);
       const overallDifference = thisIsUser ? 0 : (overallDifferences[i] - overallDifferenceExtent[0]) / overallDifferenceDelta;
       const profileGroupDifferences = getProfileGroupDifferences(groupDifferences[i], groupDifferencesExtent);
-
       const angle = (Math.PI * 2) / data.length * i + d3RandomNormal(0, 0.1)();
-      const dist = Math.random() * 20 + 50;
-      const x = Math.cos(angle) * dist + pixDimensions[0]/2;
-      const y = Math.sin(angle) * dist + pixDimensions[1]/2;
-      const r = (Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius) * pixRatio;
+      const dist = Math.random() * dimensions[1] / 2 + 100;
+      const centerX = (dimensions[0] - margins.left)/2 + margins.left;
+      const centerY = dimensions[1]/2;
+      const initialPos = getInitialPos(angle);
+
+      let x = Math.cos(angle) * dist + centerX;
+      let y = Math.sin(angle) * dist +  centerY;
+      let colored = true;
+      let r = (Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius);
+
+      if(onboarding !== false && onboarding < 2) {
+        x = initialPos.x;
+        y = initialPos.y + Math.random() * 50 + 100;
+      }
+
+      if(onboarding !== false && onboarding < 1)
+        colored = false;
 
       return Bubble(ctx, {
         predictions: profile.predictions,
         id: profile.id,
-        x: thisIsUser ? pixDimensions[0] / 2 : x,
-        y: thisIsUser ? pixDimensions[1] / 2 : y,
-        fill: thisIsUser ? "#3163FF" : "rgba(0, 0, 0, .3)",
-        r: thisIsUser ? (minBubbleRadius * 1.5 * pixRatio) : r,
-        angle,
+        x: thisIsUser ? centerX * pixRatio : x * pixRatio,
+        y: thisIsUser ? pixDimensions[1] / 2 : y * pixRatio,
+        r: thisIsUser ? (minBubbleRadius * 1.5 * pixRatio) : r * pixRatio,
         isUser: thisIsUser,
-        differences: profileGroupDifferences
+        differences: profileGroupDifferences,
+        colored,
+        angle,
+        initialPos
       }, user);
     });
     registerEvents();
@@ -280,6 +293,23 @@ function BubblesCanvas() {
     );
   }
 
+  function getInitialPos(angle) {
+    const centerX = (dimensions[0] - margins.left)/2 + margins.left;
+
+    function getPos() {
+      const dist = Math.random() * dimensions[0]/2;
+      const pos = {
+        x: Math.cos(angle) * dist + centerX,
+        y: Math.sin(angle) * dist + dimensions[1] / 2
+      };
+      if(pos.x > dimensions[0] || pos.x < 0 || pos.y > dimensions[1] || pos.y < 0)
+        return getPos();
+      return pos;
+    }
+
+    return getPos();
+  }
+
   function updateBubbles() {
     const {
       selectionDifferences,
@@ -289,28 +319,34 @@ function BubblesCanvas() {
 
 
     let selectedGroups = getSelectedGroups();
-    const shorterSide = Math.min(...dimensions);
-    // TODO: margins need to be incoorporated correctly to account for height > width
-    const maxDist = shorterSide/2 - margins.top - margins.bottom;
-    const distScope = showUser ? (maxDist - minDist) : maxDist;
     const centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
+    const centerY = dimensions[1] / 2;
+    const distScope = centerY - minDist;
 
     bubbles.forEach((bubble, i) => {
       const thisIsUser = isUser(bubble);
       const selectionDifference = thisIsUser ? 0 : (selectionDifferences[i] - selectionDifferenceExtent[0]) / selectionDifferenceDelta;
-
-      const dist = maxDist - (1 - selectionDifference) * distScope;
+      let dist = centerY - (1 - selectionDifference) * distScope;
       let targetX = Math.cos(bubble.angle) * dist + centerX;
-      let targetY = Math.sin(bubble.angle) * dist + dimensions[1] / 2;
+      let targetY = Math.sin(bubble.angle) * dist + centerY;
+      let colored = true;
+
+      if(onboarding !== false && onboarding < 2) {
+        targetX = bubble.initialPos.x;
+        targetY = bubble.initialPos.y;
+      }
+
+      if(onboarding !== false && onboarding < 1)
+        colored = false;
 
       if(isUser(bubble)) {
         targetX = centerX;
-        targetY = dimensions[1] / 2;
+        targetY = centerY;
       }
 
       targetX *= pixRatio;
       targetY *= pixRatio;
-      bubble.update({ targetX, targetY }, selectedGroups);
+      bubble.update({ targetX, targetY, colored, selectedGroups });
     });
   }
 
@@ -322,9 +358,10 @@ function BubblesCanvas() {
     ctx.fill();
 
     bubbles && bubbles.forEach((bubble) => {
-      if(isUser(bubble) && !showUser) return;
+      if(isUser(bubble) && (onboarding !== false) && onboarding < 2) return;
       bubble.render();
     });
+
     ctx.drawImage(canvas, 0, 0, pixDimensions[0], pixDimensions[1], 0, 0, dimensions[0], dimensions[1]);
   }
 

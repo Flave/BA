@@ -74,10 +74,13 @@ class SettingsDrawer extends Component {
     const disconnectedPlatforms = PLATFORMS.filter(({id}) => !_find(user.platforms, {id: id}));
     return (
       <div className="drawer__content">
+        <div className="drawer__title">
+          Platforms
+        </div>
+        <div className="drawer__section">
+          <div className="drawer__copy">If you connect to more platforms you will be able to view the corresponding feeds of other people and vice versa. Only posts made by accounts you follow will be visible to others so it is very unlikely that you will be identifiable.</div>
+        </div>
         <div className="drawer__section drawer__section--full">
-          <div className="drawer__title">
-            Platforms
-          </div>
           <div className="drawer__list">
             {connectedPlatforms.map(this.createConnectedItem.bind(this))}
             {disconnectedPlatforms.map(this.createDisconnectedItem.bind(this))}

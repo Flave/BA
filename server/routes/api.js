@@ -16,10 +16,10 @@ let userCount;
 
 // USER
 router.get('/api/user', ({ user }, res) => {
-  if(cachedUser) {
+/*  if(cachedUser) {
     res.json(cachedUser);
     return;
-  }
+  }*/
   User.find({predictions: {$ne: null}})
     .count()
     .then(count => {

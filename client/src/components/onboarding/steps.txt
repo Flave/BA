@@ -1,0 +1,17 @@
+1. The Social Platforms you use create computer predictions about who you are and what you might like.
+
+Ultimately they play a big role in what has to become known as The Filter Bubble — filter mechanisms that only show you things that falls into your interests and reflect your oppinion.
+
+Let's turn the tables...
+
+2. I used a service to create similar predictions about you and everyone else based on the pages they liked on Facebook. You can use these predictions to find other people and to peek into their bubbles.
+
+Every prediction includes the following charater traits:
+<Predictions />
+
+3. These kinds of models and machine predictions have to be treated with caution. They are statistical probabilities that are calculated based on our interactions with these platforms such as things we click on or things we like. 
+
+They are often based on our unconscious bahviour which doesn't always reflect our own best interest.
+
+
+4. Every bubble represents one person who used this application before. Your bubble is the one in the middle. The closer another bubble is to yours, the more similar this person it to you.

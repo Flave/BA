@@ -34,7 +34,6 @@ class Others extends Component {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
-    const showUser = ui.onboarding === false || ui.onboarding > 0;
 
     this.handleBubbleClick = this.handleBubbleClick.bind(this);
     this.handleTransitionStart = this.handleTransitionStart.bind(this);
@@ -47,7 +46,7 @@ class Others extends Component {
       .data(allLoaded ? users : null)
       .dimensions(ui.windowDimensions)
       .canvas(this.bubbleContainer)
-      .showUser(showUser)
+      .onboarding(ui.onboarding)
       .on('click', this.handleBubbleClick)
       .on('mouseenter', hoveredBubble => this.setState({hoveredBubble}))
       .on('mouseleave', () => this.setState({hoveredBubble: null}));
@@ -66,13 +65,12 @@ class Others extends Component {
     const { store } = this.context;
     const { users, user, ui } = store.getState();
     const allLoaded = users && (users.length === ui.userCount);
-    const showUser = ui.onboarding === false || ui.onboarding > 0;
 
     this.bubblesCanvas
       .dimensions(ui.windowDimensions)
       .data(allLoaded ? users : null)
       .canvas(this.bubbleContainer)
-      .showUser(showUser)
+      .onboarding(ui.onboarding)
       .margins({left: ui.drawer ? DRAWER_WIDTH : 0})
       .user(_find(users, {id: user.login}))
       .properties(ui.othersPeopleOptions)

@@ -24,10 +24,10 @@ function BubblesCanvas() {
   const collide = d3ForceCollide( function(d){return d.r + 2 }).iterations(2);
   const charge = d3ForceManyBody().strength(-0.5);
   const forceX = d3ForceX()
-    .strength(.018)
+    .strength(.02)
     .x(d => d.targetX);
   const forceY = d3ForceY()
-    .strength(.018)
+    .strength(.02)
     .y(d => d.targetY);
   let isUser;
   let hoveredBubble = null;
@@ -93,16 +93,17 @@ function BubblesCanvas() {
     bubbles = [];
     let groupedBubbles = subs.map((subsGroup, subscriberIndex) => {
       const colIndex = isUser && (subscriberIndex === 1) ? 0 : subscriberIndex;
-      return subsGroup.map((sub, subIndex) => 
-        Bubble(ctx, {
+      return subsGroup.map((sub, subIndex) => {
+        const pos = getPosition(subscriberIndex);
+        return Bubble(ctx, {
           ...sub,
-          x: size[0]/2 + d3RandomNormal(0, 200)(),
-          y: size[1]/2 + d3RandomNormal(0, 200)(),
+          x: pos.x + d3RandomNormal(0, 100)(),
+          y: pos.y + d3RandomNormal(0, 100)(),
           fill: colors[colIndex],
-          r: sub.relevance * (maxRadius - minRadius) + minRadius,
+          r: d3RandomNormal(7, .4)(),//sub.relevance * (maxRadius - minRadius) + minRadius,
           subscriber: subscriberIndex
         })
-      )
+      })
     });
 
     groupedBubbles.forEach(group => bubbles = bubbles.concat(group));
@@ -117,7 +118,7 @@ function BubblesCanvas() {
 
   function updateBubbles() {
     bubbles.forEach((bubble) => {
-      const { x: targetX, y: targetY } = getPosition(bubble);
+      const { x: targetX, y: targetY } = getPosition(bubble.subscriber);
       bubble.update({ targetX, targetY });
     });
   }
@@ -137,9 +138,9 @@ function BubblesCanvas() {
       .restart();
   }
 
-  function getPosition(sub) {
+  function getPosition(index) {
     return {
-      x: (sub.subscriber + 1) * (size[0] - margins.left) / 4 + margins.left,
+      x: (index + 1) * (size[0] - margins.left) / 4 + margins.left,
       y: size[1] / 2
     }
   }
