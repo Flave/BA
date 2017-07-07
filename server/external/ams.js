@@ -32,38 +32,57 @@ const getPrediction = (user) => {
     resolveWithFullResponse: true
   };
 
-  return new Promise(function (fulfill, reject){
-    return request(args).then((response) => {
-      if(response.statusCode === 204) {
-        log.red("No prediction could be made based on like ids provided.");
-        fulfill(null);
-        return;
-      }
-      log.rainbow("Got predictions");
-      fulfill(processPredictions(response.body.predictions));
-    })
-    .catch((err) => {
-      if(err.statusCode === 403) {
-        log.red("Authtoken expired, get new token!");
-        getNewToken()
-          .then(getPrediction.bind(null, user))
-          .then((predictions) => {
-            fulfill(processPredictions(response.body.predictions));
-          });
-      } else {
-        log.red("Getting predictions failed!");
-        console.log(err);
-        reject(err.message);
-      }
-    });
-
-    fs.readFile(filename, enc, function (err, res){
-      if (err) reject(err);
-      else fulfill(res);
-    });
+  return request(args).then((response) => {
+    if(response.statusCode === 204) {
+      log.red("No prediction could be made based on like ids provided.");
+      fulfill(null);
+      return;
+    }
+    log.rainbow("Got predictions");
+    return processPredictions(response.body.predictions);
+    console.log("Fulfilled");
+  })
+  .catch((err) => {
+    if(err.statusCode === 403) {
+      log.red("Authtoken expired, get new token!");
+      return getNewToken()
+        .then(() => {
+          console.log('getting predictions after token refresh');
+          return getPrediction(user);
+        });
+    } else {
+      log.red("Getting predictions failed!");
+      console.log(err);
+      reject(err.message);
+    }
   });
 
-
+  // return new Promise(function (fulfill, reject){
+  //   return request(args).then((response) => {
+  //     if(response.statusCode === 204) {
+  //       log.red("No prediction could be made based on like ids provided.");
+  //       fulfill(null);
+  //       return;
+  //     }
+  //     log.rainbow("Got predictions");
+  //     fulfill(processPredictions(response.body.predictions));
+  //     console.log("Fulfilled");
+  //   })
+  //   .catch((err) => {
+  //     if(err.statusCode === 403) {
+  //       log.red("Authtoken expired, get new token!");
+  //       return getNewToken()
+  //         .then(() => {
+  //           console.log('getting predictions after token refresh');
+  //           return getPrediction(user);
+  //         });
+  //     } else {
+  //       log.red("Getting predictions failed!");
+  //       console.log(err);
+  //       reject(err.message);
+  //     }
+  //   });
+  // });
 }
 
 

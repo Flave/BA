@@ -45,7 +45,7 @@
     "passport-facebook": "^2.1.1",
     "passport-instagram": "^1.0.0",
     "passport-twitter": "^1.0.4",
-    "passport-youtube-v3": "^2.0.0",
+    "passport-youtube-v3": "^2.1.0",
     "promise": "^7.1.1",
     "prop-types": "^15.5.8",
     "querystring": "^0.2.0",

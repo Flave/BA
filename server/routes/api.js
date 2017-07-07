@@ -26,8 +26,7 @@ router.get('/api/user', ({ user }, res) => {
       log.rainbow('Sending USER');
       userCount = count;
       if(user) {
-        cachedUser = stripUser(user);
-        res.json(cachedUser);
+        res.json(stripUser(user));
       }
       else
         res.json({ login: null });
@@ -53,11 +52,11 @@ let all;
 
 // ALL
 router.get('/api/all', isLoggedInAjax, (req, res) => {
-  if(all) {
+/*  if(all) {
     log.rainbow('Sending ALL');
     res.json(all);
     return;
-  }
+  }*/
   User.find({}).then((users) => {
     let strippedUsers = _(users).map(user => {
       if(!user.predictions) return;
