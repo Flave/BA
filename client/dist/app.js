@@ -2892,10 +2892,10 @@ module.exports = function(module) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_root_constants__ = __webpack_require__(32);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_root_constants__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return rebind; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return getDistance; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return getDistance; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getSubURL; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return getSelectedPredictions; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return calculateSimilarity; });
+/* unused harmony export getSelectedPredictions */
+/* unused harmony export calculateSimilarity */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return getFreeSpots; });
 
 
@@ -3017,14 +3017,18 @@ var getFreeSpotsGenerator = function getFreeSpotsGenerator() {
       }
 
       itemsInCol.sort(function (itemA, itemB) {
-        return itemA.y - itemB.y;
+        var aY = itemA.y !== null ? itemA.y : itemA.siblingTop - 1;
+        var bY = itemB.y !== null ? itemB.y : itemB.siblingTop - 1;
+        return aY - bY;
       });
+
       var topItem = itemsInCol[0];
       var bottomItem = itemsInCol[itemsInCol.length - 1];
-      if (!topItem.loading && topItem.y < transform.y) {
+
+      if (topItem.loaded && topItem.y > -transform.y) {
         freeSpots.push(createNewSpot(colIndex, topItem, 'top', xOffset));
       }
-      if (!bottomItem.loading && bottomItem.y + bottomItem.height < bottom) {
+      if (bottomItem.loaded && bottomItem.y + bottomItem.height < bottom) {
         freeSpots.push(createNewSpot(colIndex, bottomItem, 'bottom', xOffset));
       }
     });
@@ -4269,7 +4273,7 @@ module.exports = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_deviation__ = __webpack_require__(149);
 /* unused harmony reexport deviation */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_extent__ = __webpack_require__(150);
-/* unused harmony reexport extent */
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_6__src_extent__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_histogram__ = __webpack_require__(321);
 /* unused harmony reexport histogram */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_threshold_freedmanDiaconis__ = __webpack_require__(331);
@@ -4281,7 +4285,7 @@ module.exports = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_max__ = __webpack_require__(323);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_11__src_max__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_mean__ = __webpack_require__(324);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_12__src_mean__["a"]; });
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_12__src_mean__["a"]; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_median__ = __webpack_require__(325);
 /* unused harmony reexport median */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_merge__ = __webpack_require__(326);
@@ -18482,11 +18486,10 @@ function warning(message) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__containers_Intro_jsx__ = __webpack_require__(304);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__containers_Profile_jsx__ = __webpack_require__(307);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__containers_OthersPeople_jsx__ = __webpack_require__(306);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__containers_OthersContent_jsx__ = __webpack_require__(305);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__actions__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash_throttle__ = __webpack_require__(576);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_lodash_throttle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_lodash_throttle__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_react_router_dom__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__actions__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_throttle__ = __webpack_require__(576);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_lodash_throttle___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_lodash_throttle__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_react_router_dom__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18505,9 +18508,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-var handleResize = __WEBPACK_IMPORTED_MODULE_7_lodash_throttle___default()(function (store) {
-  store.dispatch(__WEBPACK_IMPORTED_MODULE_6__actions__["a" /* setWindowDimensions */]([window.innerWidth, window.innerHeight]));
+var handleResize = __WEBPACK_IMPORTED_MODULE_6_lodash_throttle___default()(function (store) {
+  store.dispatch(__WEBPACK_IMPORTED_MODULE_5__actions__["a" /* setWindowDimensions */]([window.innerWidth, window.innerHeight]));
 }, 800, { leading: false });
 
 var App = function (_Component) {
@@ -18530,7 +18532,7 @@ var App = function (_Component) {
         _this2.forceUpdate();
       });
 
-      store.dispatch(__WEBPACK_IMPORTED_MODULE_6__actions__["b" /* fetchUser */]());
+      store.dispatch(__WEBPACK_IMPORTED_MODULE_5__actions__["b" /* fetchUser */]());
 
       window.addEventListener('resize', handleResize.bind(null, store));
     }
@@ -18552,19 +18554,18 @@ var App = function (_Component) {
       // for later retrieval
       if ((!user || !user.login) && currentPath !== "/") {
         localStorage.setItem("redirectTo", currentPath);
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["b" /* Redirect */], { from: currentPath, to: '/' });
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["b" /* Redirect */], { from: currentPath, to: '/' });
       } else if (!user || !user.login) {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__containers_Intro_jsx__["a" /* default */], { user: user });
       } else if (redirectTo) {
         localStorage.removeItem("redirectTo");
-        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["b" /* Redirect */], { from: '/', to: redirectTo });
+        return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["b" /* Redirect */], { from: '/', to: redirectTo });
       } else {
         return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'div',
           null,
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["c" /* Route */], { path: '/', exact: true, component: __WEBPACK_IMPORTED_MODULE_4__containers_OthersPeople_jsx__["a" /* default */] }),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["c" /* Route */], { path: '/content', exact: true, component: __WEBPACK_IMPORTED_MODULE_5__containers_OthersContent_jsx__["a" /* default */] }),
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["c" /* Route */], { path: '/:id', component: __WEBPACK_IMPORTED_MODULE_3__containers_Profile_jsx__["a" /* default */] })
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { path: '/', exact: true, component: __WEBPACK_IMPORTED_MODULE_4__containers_OthersPeople_jsx__["a" /* default */] }),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["c" /* Route */], { path: '/:id', component: __WEBPACK_IMPORTED_MODULE_3__containers_Profile_jsx__["a" /* default */] })
         );
       }
     }
@@ -18577,7 +18578,7 @@ App.contextTypes = {
   store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_8_react_router_dom__["d" /* withRouter */])(App));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_7_react_router_dom__["d" /* withRouter */])(App));
 
 /***/ }),
 /* 249 */
@@ -19862,6 +19863,7 @@ var FBEmbedPost = function (_Component) {
           show = _props.show,
           options = _props.options;
 
+      var halfWidth = window.innerWidth / 2;
       var itemStyle = {
         top: item.y === null ? item.siblingTop : item.y,
         left: item.x
@@ -20751,6 +20753,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 
 
+
 // PIXELATION CODE
 // http://jsfiddle.net/epistemex/u6apxgfk/
 
@@ -20766,9 +20769,10 @@ function BubblesCanvas() {
   var user = void 0;
   var showUser = void 0;
   var properties = void 0;
-  var maxBubbleRadius = 40;
+  var maxBubbleRadius = 35;
+  var minBubbleRadius = 20;
   var minDist = 80;
-  var pixRatio = .09;
+  var pixRatio = .15;
   var invertPixRatio = 1 / pixRatio;
   var pixDimensions = void 0;
   // to have a natural movement...
@@ -20846,56 +20850,170 @@ function BubblesCanvas() {
     return _bubblesCanvas;
   };
 
-  function calculateGroupDifferences(profile, group) {
-    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["b" /* mean */])(group.properties, function (prop) {
-      var userValue = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(user.predictions, { id: prop }).value;
-      var profileValue = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(profile.predictions, { id: prop }).value;
-      return Math.abs(userValue - profileValue);
+  function getPredictionExtents() {
+    return __WEBPACK_IMPORTED_MODULE_7_root_constants_predictions___default.a.map(function (_ref) {
+      var id = _ref.id;
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["b" /* extent */])(data, function (_ref2) {
+        var predictions = _ref2.predictions;
+        return __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(predictions, { id: id }).value;
+      });
     });
   }
 
-  function calculateMaxGroupDifferences() {
-    return __WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions___default.a.map(function (group) {
-      var differences = data.map(function (profile, i) {
-        return calculateGroupDifferences(profile, group);
+  // converts all the predictions of the users to values that are relative 
+  // to the values (extents) that are actually occurring in the data
+  function convertToRelativeValues(extents) {
+    return data.map(function (profile) {
+      var relativePredictions = __WEBPACK_IMPORTED_MODULE_7_root_constants_predictions___default.a.map(function (_ref3, i) {
+        var id = _ref3.id;
+
+        var extent = extents[i];
+        var profileValue = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(profile.predictions, { id: id }).value;
+        var delta = extent[1] - extent[0];
+        return (profileValue - extent[0]) / delta;
       });
-      return { id: group.id, value: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["a" /* max */])(differences) };
-    }, 0);
+      return { id: profile.id, predictions: relativePredictions };
+    });
   }
 
-  function calculateDifferences(profile, maxGroupDifferences) {
+  // Returns a nested array of profiles and differences for each prediction.
+  function getPredictionDifferences(relativeData) {
+    var userPredictions = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(relativeData, { id: user.id }).predictions;
+    return relativeData.map(function (profile) {
+      return __WEBPACK_IMPORTED_MODULE_7_root_constants_predictions___default.a.map(function (_ref4, i) {
+        var id = _ref4.id;
+
+        var userValue = userPredictions[i];
+        var profileValue = profile.predictions[i];
+        return { id: id, value: Math.abs(userValue - profileValue) };
+      });
+    });
+  }
+
+  // Returns a nested array of profiles and differences for each option group
+  function getGroupDifferences(predictionDifferences) {
+    return predictionDifferences.map(function (differences) {
+      return __WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions___default.a.map(function (group) {
+        return {
+          id: group.id,
+          value: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["c" /* mean */])(group.properties, function (id) {
+            return __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(differences, { id: id }).value;
+          })
+        };
+      });
+    });
+  }
+
+  // Returns array of profiles containing the average difference for the selected options
+  function getOverallDifferences(groupDifferences) {
+    return groupDifferences.map(function (profileGroupDifferences) {
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["c" /* mean */])(profileGroupDifferences, function (group) {
+        return group.value;
+      });
+    });
+  }
+
+  // Returns array of profiles containing the average difference for the selected options
+  function getSelectionDifferences(groupDifferences, selection) {
+    return groupDifferences.map(function (profileGroupDifferences) {
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["c" /* mean */])(selection, function (_ref5) {
+        var id = _ref5.id;
+        return __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(profileGroupDifferences, { id: id }).value;
+      });
+    });
+  }
+
+  // returns the maximum difference for each group
+  function getMaxGroupDifferences(groupDifferences) {
     return __WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions___default.a.map(function (group) {
-      var difference = calculateGroupDifferences(profile, group);
-      var relativeDifference = difference / __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(maxGroupDifferences, { id: group.id }).value;
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["a" /* max */])(groupDifferences, function (profileGroupDifferences) {
+        return __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(profileGroupDifferences, { id: group.id }).value;
+      });
+    });
+  }
+
+  // returns the maximum difference for each group
+  function getGroupDifferencesExtent(groupDifferences) {
+    return __WEBPACK_IMPORTED_MODULE_8_root_constants_predictionOptions___default.a.map(function (group) {
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["b" /* extent */])(groupDifferences, function (profileGroupDifferences) {
+        return __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(profileGroupDifferences, { id: group.id }).value;
+      });
+    });
+  }
+
+  // returns the RELATIVE difference of one profile for each group
+  function getProfileGroupDifferences(groupDifferences, groupDifferencesExtent) {
+    return groupDifferences.map(function (groupDifference, i) {
       return {
-        id: group.id,
-        relativeDifference: relativeDifference,
-        difference: difference
+        id: groupDifference.id,
+        difference: groupDifference.value,
+        relativeDifference: (groupDifference.value - groupDifferencesExtent[i][0]) / (groupDifferencesExtent[i][1] - groupDifferencesExtent[i][0])
       };
     });
   }
 
+  function getDifferencesExtent(differences) {
+    return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_3_d3_array__["b" /* extent */])(differences, function (difference) {
+      return difference === 0 ? undefined : difference;
+    });
+  }
+
+  function getDifferenceValues() {
+    var extents = getPredictionExtents();
+    var relativeData = convertToRelativeValues(extents);
+    var predictionDifferences = getPredictionDifferences(relativeData);
+    var groupDifferences = getGroupDifferences(predictionDifferences);
+    var overallDifferences = getOverallDifferences(groupDifferences);
+    var selectionDifferences = getSelectionDifferences(groupDifferences, getSelectedGroups());
+    var maxGroupDifferences = getMaxGroupDifferences(groupDifferences);
+    var groupDifferencesExtent = getGroupDifferencesExtent(groupDifferences);
+    var overallDifferenceExtent = getDifferencesExtent(overallDifferences);
+    var selectionDifferenceExtent = getDifferencesExtent(selectionDifferences);
+    var overallDifferenceDelta = overallDifferenceExtent[1] - overallDifferenceExtent[0];
+    var selectionDifferenceDelta = selectionDifferenceExtent[1] - selectionDifferenceExtent[0];
+
+    return {
+      groupDifferences: groupDifferences,
+      overallDifferences: overallDifferences,
+      selectionDifferences: selectionDifferences,
+      maxGroupDifferences: maxGroupDifferences,
+      groupDifferencesExtent: groupDifferencesExtent,
+      overallDifferenceExtent: overallDifferenceExtent,
+      selectionDifferenceExtent: selectionDifferenceExtent,
+      overallDifferenceDelta: overallDifferenceDelta,
+      selectionDifferenceDelta: selectionDifferenceDelta
+    };
+  }
+
   function initializeBubbles() {
-    var getSimilarity = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_app_utility__["d" /* calculateSimilarity */])(user, data, properties);
-    var maxGroupDifferences = calculateMaxGroupDifferences();
+    var _getDifferenceValues = getDifferenceValues(),
+        groupDifferences = _getDifferenceValues.groupDifferences,
+        overallDifferences = _getDifferenceValues.overallDifferences,
+        groupDifferencesExtent = _getDifferenceValues.groupDifferencesExtent,
+        overallDifferenceDelta = _getDifferenceValues.overallDifferenceDelta,
+        overallDifferenceExtent = _getDifferenceValues.overallDifferenceExtent;
 
     bubbles = data.map(function (profile, i) {
-      var similarity = getSimilarity(profile);
+      var thisIsUser = isUser(profile);
+      var overallDifference = thisIsUser ? 0 : (overallDifferences[i] - overallDifferenceExtent[0]) / overallDifferenceDelta;
+      var profileGroupDifferences = getProfileGroupDifferences(groupDifferences[i], groupDifferencesExtent);
+
       var angle = Math.PI * 2 / data.length * i + __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_4_d3_random__["a" /* randomNormal */])(0, 0.1)();
       var dist = Math.random() * 20 + 50;
       var x = Math.cos(angle) * dist + pixDimensions[0] / 2;
       var y = Math.sin(angle) * dist + pixDimensions[1] / 2;
+      var r = (Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius) * pixRatio;
 
       return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5__Bubble__["a" /* default */])(ctx, {
         predictions: profile.predictions,
         id: profile.id,
-        x: isUser(profile) ? pixDimensions[0] / 2 : x,
-        y: isUser(profile) ? pixDimensions[1] / 2 : y,
-        fill: isUser(profile) ? "#3163FF" : "rgba(0, 0, 0, .3)",
-        r: (Math.sqrt(similarity) * maxBubbleRadius + 2) * pixRatio,
+        x: thisIsUser ? pixDimensions[0] / 2 : x,
+        y: thisIsUser ? pixDimensions[1] / 2 : y,
+        fill: thisIsUser ? "#3163FF" : "rgba(0, 0, 0, .3)",
+        r: thisIsUser ? minBubbleRadius * 1.5 * pixRatio : r,
         angle: angle,
-        isUser: isUser(profile),
-        differences: calculateDifferences(profile, maxGroupDifferences)
+        isUser: thisIsUser,
+        differences: profileGroupDifferences
       }, user);
     });
     registerEvents();
@@ -20911,21 +21029,23 @@ function BubblesCanvas() {
   }
 
   function updateBubbles() {
-    var selectedProperties = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_app_utility__["e" /* getSelectedPredictions */])(properties);
+    var _getDifferenceValues2 = getDifferenceValues(),
+        selectionDifferences = _getDifferenceValues2.selectionDifferences,
+        selectionDifferenceExtent = _getDifferenceValues2.selectionDifferenceExtent,
+        selectionDifferenceDelta = _getDifferenceValues2.selectionDifferenceDelta;
+
     var selectedGroups = getSelectedGroups();
-    // TODO: Calculate similarity based on a max similarity which depends on 
-    // the selected properties
-    var getSimilarity = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_app_utility__["d" /* calculateSimilarity */])(user, data, selectedProperties);
     var shorterSide = Math.min.apply(Math, _toConsumableArray(dimensions));
     // TODO: margins need to be incoorporated correctly to account for height > width
     var maxDist = shorterSide / 2 - margins.top - margins.bottom;
     var distScope = showUser ? maxDist - minDist : maxDist;
     var centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
 
-    bubbles.forEach(function (bubble) {
-      var profile = __WEBPACK_IMPORTED_MODULE_6_lodash_find___default()(data, { id: bubble.id });
-      var similarity = getSimilarity(profile);
-      var dist = maxDist - similarity * distScope;
+    bubbles.forEach(function (bubble, i) {
+      var thisIsUser = isUser(bubble);
+      var selectionDifference = thisIsUser ? 0 : (selectionDifferences[i] - selectionDifferenceExtent[0]) / selectionDifferenceDelta;
+
+      var dist = maxDist - (1 - selectionDifference) * distScope;
       var targetX = Math.cos(bubble.angle) * dist + centerX;
       var targetY = Math.sin(bubble.angle) * dist + dimensions[1] / 2;
 
@@ -20990,7 +21110,7 @@ function BubblesCanvas() {
   function getBubbleUnderCursor(cursorPosition) {
     for (var i = 0; i < bubbles.length; i++) {
       var bubble = bubbles[i];
-      var distance = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_app_utility__["f" /* getDistance */])({ x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y }, cursorPosition);
+      var distance = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_app_utility__["d" /* getDistance */])({ x: invertPixRatio * bubble.x, y: invertPixRatio * bubble.y }, cursorPosition);
       if (distance < bubble.r * invertPixRatio) {
         return bubble;
         break;
@@ -21196,17 +21316,54 @@ var BubblesLegend = function (_Component) {
           'div',
           {
             style: {
-              right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 20,
-              top: bubbleSpecs[2].y * INVERT_RATIO + 20,
+              left: bubbleSpecs[2].x * INVERT_RATIO + 26,
+              top: bubbleSpecs[2].y * INVERT_RATIO - 15
+            },
+            className: 'bubbles-legend__textbox' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h4',
+            { className: 'bubbles-legend__textbox-lead' },
+            'Less',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            'similar'
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          {
+            style: {
+              left: bubbleSpecs[1].x * INVERT_RATIO + 40,
+              top: bubbleSpecs[1].y * INVERT_RATIO - 15
+            },
+            className: 'bubbles-legend__textbox' },
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'h4',
+            { className: 'bubbles-legend__textbox-lead' },
+            'More',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            'similar'
+          )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          {
+            style: {
+              right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 35,
+              top: bubbleSpecs[2].y * INVERT_RATIO - 15,
               textAlign: "right"
             },
             className: 'bubbles-legend__textbox' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
             { className: 'bubbles-legend__textbox-title' },
-            '1. Bubble',
+            '1.Size'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            { className: 'bubbles-legend__textbox-copy' },
+            'Overall',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-            'Size'
+            'similarity'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -21214,13 +21371,18 @@ var BubblesLegend = function (_Component) {
           {
             style: {
               left: bubbleSpecs[2].x * INVERT_RATIO + 40,
-              top: bubbleSpecs[2].y * INVERT_RATIO + 45
+              top: bubbleSpecs[2].y * INVERT_RATIO + 55
             },
             className: 'bubbles-legend__textbox' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
             { className: 'bubbles-legend__textbox-title' },
-            '2. Distance'
+            '2.Distance'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            { className: 'bubbles-legend__textbox-copy' },
+            'Similarity in selected predictions'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -21235,7 +21397,12 @@ var BubblesLegend = function (_Component) {
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
             { className: 'bubbles-legend__textbox-title' },
-            '3. Color intensity'
+            '3.Color intensity'
+          ),
+          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'p',
+            { className: 'bubbles-legend__textbox-copy' },
+            'Similarity in individual prediction'
           )
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -21249,7 +21416,7 @@ var BubblesLegend = function (_Component) {
             className: 'bubbles-legend__textbox' },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'h4',
-            { className: 'bubbles-legend__textbox-title' },
+            { className: 'bubbles-legend__textbox-lead' },
             'YOUR',
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
             'BUBBLE'
@@ -21267,67 +21434,7 @@ var BubblesLegend = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (BubblesLegend);
 
 /***/ }),
-/* 295 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(11);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-var Info = function (_Component) {
-  _inherits(Info, _Component);
-
-  function Info() {
-    _classCallCheck(this, Info);
-
-    return _possibleConstructorReturn(this, (Info.__proto__ || Object.getPrototypeOf(Info)).apply(this, arguments));
-  }
-
-  _createClass(Info, [{
-    key: 'render',
-    value: function render() {
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        { className: 'drawer__content' },
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          'div',
-          { className: 'drawer__section' },
-          __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            'p',
-            null,
-            'Good Job! You discovered content of ',
-            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-              'b',
-              null,
-              '13 sources'
-            ),
-            ' you wouldn\'t have discovered on your internet...'
-          )
-        )
-      );
-    }
-  }]);
-
-  return Info;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-;
-
-/* unused harmony default export */ var _unused_webpack_default_export = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_router_dom__["d" /* withRouter */])(Info));
-
-/***/ }),
+/* 295 */,
 /* 296 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -21402,18 +21509,27 @@ var Others = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         { className: 'drawer__section' },
-        __WEBPACK_IMPORTED_MODULE_6_root_constants_predictionOptions___default.a.map(function (group, i) {
-          var options = ui.othersPeopleOptions.filter(function (option) {
-            return group.properties.indexOf(option.id) !== -1 && option.value;
-          });
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h3',
+          { className: 'drawer__section-title' },
+          'Select some traits...'
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'div',
+          null,
+          __WEBPACK_IMPORTED_MODULE_6_root_constants_predictionOptions___default.a.map(function (group, i) {
+            var options = ui.othersPeopleOptions.filter(function (option) {
+              return group.properties.indexOf(option.id) !== -1 && option.value;
+            });
 
-          return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_app_components_common_Check_jsx__["a" /* default */], {
-            key: group.id,
-            option: group,
-            value: options.length,
-            color: group.color(1) + "",
-            onChange: _this2.handleOptionsChange.bind(_this2) });
-        })
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_app_components_common_Check_jsx__["a" /* default */], {
+              key: group.id,
+              option: group,
+              value: options.length,
+              color: group.color(1) + "",
+              onChange: _this2.handleOptionsChange.bind(_this2) });
+          })
+        )
       );
     }
   }, {
@@ -21655,33 +21771,7 @@ Feed.contextTypes = {
 /* harmony default export */ __webpack_exports__["a"] = (Feed);
 
 /***/ }),
-/* 298 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-
-/* unused harmony default export */ var _unused_webpack_default_export = (function (_ref) {
-    var more = _ref.more,
-        onClick = _ref.onClick;
-
-    if (more) return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "div",
-        {
-            className: "btn btn--raised btn--load-more",
-            onClick: onClick },
-        "Load More"
-    );
-
-    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        "div",
-        { className: "btn btn--raised btn--load-more btn--disabled" },
-        "Nothing left to load"
-    );
-});
-
-/***/ }),
+/* 298 */,
 /* 299 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -21949,19 +22039,6 @@ var Sidebar = function Sidebar(_ref2) {
       onMenuClick = _ref2.onMenuClick;
 
   var isUser = userProfile.id === profile.id;
-  var title = isUser ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    'div',
-    null,
-    'your',
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-    'internet'
-  ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-    'div',
-    null,
-    'the internet of',
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
-    'someone else'
-  );
   var options = isUser ? optionsConfig.user : optionsConfig.profile;
   var elStyle = {
     transform: 'translateX(' + (drawer ? offset : 0) + 'px)'
@@ -21975,11 +22052,6 @@ var Sidebar = function Sidebar(_ref2) {
   return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
     'div',
     { style: elStyle, className: 'sidebar' },
-    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-      'h1',
-      { style: titleStyle, className: 'sidebar__title' },
-      title
-    ),
     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       'div',
       { className: 'sidebar__links' },
@@ -22095,7 +22167,7 @@ function BubblesCanvas() {
   var size = void 0;
   var margins = { top: 0, right: 0, bobbotm: 0, left: 0 };
   var subs = void 0;
-  var maxRadius = 25;
+  var maxRadius = 15;
   var minRadius = 2;
   var _bubblesCanvas = {};
   var bubbles = void 0;
@@ -22313,79 +22385,7 @@ var Intro = function (_Component) {
 /* harmony default export */ __webpack_exports__["a"] = (Intro);
 
 /***/ }),
-/* 305 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_prop_types___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_prop_types__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_react_router_dom__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_app_components_others_people_Sidebar_jsx__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__ = __webpack_require__(85);
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-
-
-
-
-var DRAWER_WIDTH = 350;
-
-var Others = function (_Component) {
-  _inherits(Others, _Component);
-
-  function Others() {
-    _classCallCheck(this, Others);
-
-    return _possibleConstructorReturn(this, (Others.__proto__ || Object.getPrototypeOf(Others)).apply(this, arguments));
-  }
-
-  _createClass(Others, [{
-    key: 'render',
-    value: function render() {
-      var store = this.context.store;
-
-      var _store$getState = store.getState(),
-          users = _store$getState.users,
-          user = _store$getState.user,
-          ui = _store$getState.ui;
-
-      return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        'div',
-        null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-          __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__["a" /* default */],
-          { width: DRAWER_WIDTH, isOpen: ui.drawer },
-          'Others Content Drawer'
-        ),
-        'This is the content of other people'
-      );
-    }
-  }]);
-
-  return Others;
-}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
-
-;
-
-Others.contextTypes = {
-  store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
-};
-
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["d" /* withRouter */])(Others));
-
-/***/ }),
+/* 305 */,
 /* 306 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -22401,15 +22401,14 @@ Others.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_app_components_common_Tooltip_jsx__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_app_components_common_Predictions_jsx__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_app_components_others_people_Options_jsx__ = __webpack_require__(296);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_app_components_others_people_Info_jsx__ = __webpack_require__(295);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_components_onboarding_Onboarding_jsx__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_utility__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_app_actions__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash_find__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_lodash_find__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_root_constants__ = __webpack_require__(32);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_root_constants__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_react_router_dom__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_app_components_onboarding_Onboarding_jsx__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_app_utility__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_app_actions__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_lodash_find__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants__ = __webpack_require__(32);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_root_constants___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_root_constants__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_react_router_dom__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22435,8 +22434,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 
 
-
-var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_14_root_constants__["ui"].DRAWER_WIDTH;
+var DRAWER_WIDTH = __WEBPACK_IMPORTED_MODULE_13_root_constants__["ui"].DRAWER_WIDTH;
 
 var Others = function (_Component) {
   _inherits(Others, _Component);
@@ -22471,9 +22469,9 @@ var Others = function (_Component) {
       this.handleBubbleClick = this.handleBubbleClick.bind(this);
       this.handleTransitionStart = this.handleTransitionStart.bind(this);
 
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["c" /* resetUi */]({ drawer: 'options' }));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["c" /* resetUi */]({ drawer: 'options' }));
       // if user landed on profile there will be already 1-2 profiles
-      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["j" /* fetchAll */]());
+      !allLoaded && store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["j" /* fetchAll */]());
 
       this.bubblesCanvas.data(allLoaded ? users : null).dimensions(ui.windowDimensions).canvas(this.bubbleContainer).showUser(showUser).on('click', this.handleBubbleClick).on('mouseenter', function (hoveredBubble) {
         return _this2.setState({ hoveredBubble: hoveredBubble });
@@ -22491,7 +22489,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleTransitionStart',
     value: function handleTransitionStart() {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["c" /* resetUi */]());
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["c" /* resetUi */]());
     }
   }, {
     key: 'componentDidUpdate',
@@ -22506,7 +22504,7 @@ var Others = function (_Component) {
       var allLoaded = users && users.length === ui.userCount;
       var showUser = ui.onboarding === false || ui.onboarding > 0;
 
-      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).showUser(showUser).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_13_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
+      this.bubblesCanvas.dimensions(ui.windowDimensions).data(allLoaded ? users : null).canvas(this.bubbleContainer).showUser(showUser).margins({ left: ui.drawer ? DRAWER_WIDTH : 0 }).user(__WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: user.login })).properties(ui.othersPeopleOptions).update();
     }
   }, {
     key: 'createTooltip',
@@ -22519,7 +22517,7 @@ var Others = function (_Component) {
 
       var hoveredBubble = this.state.hoveredBubble;
 
-      var profile = __WEBPACK_IMPORTED_MODULE_13_lodash_find___default()(users, { id: hoveredBubble.id });
+      var profile = __WEBPACK_IMPORTED_MODULE_12_lodash_find___default()(users, { id: hoveredBubble.id });
 
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         __WEBPACK_IMPORTED_MODULE_6_app_components_common_Tooltip_jsx__["a" /* default */],
@@ -22536,7 +22534,7 @@ var Others = function (_Component) {
   }, {
     key: 'handleMenuClick',
     value: function handleMenuClick(menuId) {
-      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_12_app_actions__["e" /* toggleDrawer */](menuId));
+      this.context.store.dispatch(__WEBPACK_IMPORTED_MODULE_11_app_actions__["e" /* toggleDrawer */](menuId));
     }
   }, {
     key: 'render',
@@ -22558,15 +22556,15 @@ var Others = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
-        !onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_10_app_components_onboarding_Onboarding_jsx__["a" /* default */], { currentStep: ui.onboarding }),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        !onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_9_app_components_onboarding_Onboarding_jsx__["a" /* default */], { currentStep: ui.onboarding }),
+        onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           'h1',
-          { className: 'page-title' },
+          { style: { width: DRAWER_WIDTH }, className: 'page-title is-inside-drawer' },
           'the internet',
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
           'of other people'
         ),
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        onboardingDone && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
           __WEBPACK_IMPORTED_MODULE_4_app_components_Drawer_jsx__["a" /* default */],
           { width: DRAWER_WIDTH, isOpen: true },
           __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_8_app_components_others_people_Options_jsx__["a" /* default */], null)
@@ -22593,7 +22591,7 @@ Others.contextTypes = {
   store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_15_react_router_dom__["d" /* withRouter */])(Others));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_14_react_router_dom__["d" /* withRouter */])(Others));
 
 /***/ }),
 /* 307 */
@@ -22703,6 +22701,7 @@ var Profile = function (_Component) {
       var isUser = false;
       var baseProfilesLoaded = !!(profile && userProfile);
       var fullyLoaded = !!(baseProfilesLoaded && profile.subs && userProfile.subs);
+      var title = void 0;
 
       // base profile could already be loaded so we have to make sure
       // the actual profile with "subs" is loaded
@@ -22719,6 +22718,23 @@ var Profile = function (_Component) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_common_Nav_jsx__["a" /* default */], {
           baseUrl: match.url,
           segments: [{ key: "feed", label: "Feed" }, { key: "sources", label: "Sources" }] }),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+          'h1',
+          { style: { width: DRAWER_WIDTH }, className: 'page-title ' + (ui.drawer ? 'is-inside-drawer' : '') },
+          isUser ? __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'span',
+            null,
+            'your',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            'internet'
+          ) : __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'span',
+            null,
+            'the internet of',
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('br', null),
+            'someone else'
+          )
+        ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6_app_components_profile_feed_Sidebar_jsx__["a" /* default */], {
           profile: profile,
           userProfile: userProfile,
@@ -22758,9 +22774,8 @@ Profile.contextTypes = {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__actions__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash_find___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash_find__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_profile_feed_LoadMoreBtn_jsx__ = __webpack_require__(298);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_app_components_profile_feed_Feed_jsx__ = __webpack_require__(297);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_react_router_dom__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_app_components_profile_feed_Feed_jsx__ = __webpack_require__(297);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_react_router_dom__ = __webpack_require__(11);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22768,7 +22783,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
 
 
 
@@ -22826,7 +22840,7 @@ var Profile = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'div',
         null,
-        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5_app_components_profile_feed_Feed_jsx__["a" /* default */], {
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4_app_components_profile_feed_Feed_jsx__["a" /* default */], {
           itemsShown: ui.itemsShown,
           batchStartIndex: ui.lastItemsShown,
           loading: ui.feedLoading,
@@ -22844,7 +22858,7 @@ Profile.contextTypes = {
   store: __WEBPACK_IMPORTED_MODULE_1_prop_types___default.a.object
 };
 
-/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_6_react_router_dom__["d" /* withRouter */])(Profile));
+/* harmony default export */ __webpack_exports__["a"] = (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_5_react_router_dom__["d" /* withRouter */])(Profile));
 
 /***/ }),
 /* 309 */
@@ -23270,7 +23284,7 @@ var initialState = {
     case 'RECEIVE_USER':
       return _extends({}, state, {
         userCount: action.data && action.data.userCount,
-        onboarding: action.data.returning ? false : 3
+        onboarding: action.data.returning ? false : 0
       });
 
     case 'RECEIVE_UPDATED_USER':
@@ -23336,10 +23350,18 @@ function setFeedLoading(state, _ref3) {
 }
 
 function setOthersPeopleOptions(state, action) {
-  return state.othersPeopleOptions.map(function (option) {
+  var nextOptions = state.othersPeopleOptions.map(function (option) {
     var newOption = __WEBPACK_IMPORTED_MODULE_1_lodash_find___default()(action.options, { id: option.id });
     return newOption ? newOption : option;
   });
+
+  var selectedOptions = __WEBPACK_IMPORTED_MODULE_0_root_constants__["predictionOptions"].filter(function (group) {
+    return nextOptions.filter(function (prediction) {
+      return group.properties.indexOf(prediction.id) !== -1 && prediction.value;
+    }).length;
+  });
+
+  return selectedOptions.length ? nextOptions : state.othersPeopleOptions;
 }
 
 function increaseItemsShown(_ref4) {
@@ -23391,9 +23413,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 
 
-
-var ITEM_WIDTH = 350;
-var GRID_PADDING = 20;
 
 /*
 [
@@ -25504,7 +25523,7 @@ exports = module.exports = __webpack_require__(317)(undefined);
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(186) + ");\n  src: url(" + __webpack_require__(186) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(472) + ") format(\"truetype\"), url(" + __webpack_require__(473) + ") format(\"woff\"), url(" + __webpack_require__(471) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-long-arrow-forward:before {\n  content: \"\\E90B\"; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(185) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(185) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(470) + ") format(\"woff2\"), url(" + __webpack_require__(469) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(184) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(184) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(468) + ") format(\"woff2\"), url(" + __webpack_require__(467) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace; }\n\na {\n  color: #2E2E2E; }\n\n.page-title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  margin: 0;\n  position: fixed;\n  top: 36px;\n  z-index: 999;\n  left: 35px; }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.bubbles-legend {\n  position: relative; }\n\n.bubbles-legend__textbox {\n  font-size: 12px;\n  position: absolute;\n  max-width: 125px; }\n\n.bubbles-legend__textbox-title {\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 3px; }\n\n.bubbles-legend__textbox-copy {\n  margin: 0; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  top: 15%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center;\n  max-width: 130px;\n  /*   &:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    left: 50%;\n    bottom: -10px;\n    height: 50px;\n    width: 1px;\n    border-right: 1px dashed $c-shade-light;\n  } */ }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 14px;\n  margin-bottom: 5px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    font-weight: 600; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      color: #fcfcfc; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 2px solid;\n  text-align: center;\n  border-radius: 100%; }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  font-size: 14px; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff;\n    padding: 20px; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  width: 245px; }\n  .predictions--tooltip .chart__range-bar {\n    background-color: rgba(255, 255, 255, 0.15); }\n\n.predictions--profile .chart__value-bar:after {\n  background: #fdfdfd; }\n\n.predictions__group {\n  margin-bottom: 30px; }\n  .predictions__group:last-child {\n    margin-bottom: -15px; }\n  .predictions__group:last-child {\n    margin-right: 0; }\n\n.predictions__option-group {\n  margin-bottom: 15px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.chart--minor {\n  margin-bottom: 10px; }\n  .chart--minor .chart__label {\n    text-transform: none;\n    letter-spacing: 0;\n    font-weight: 400;\n    opacity: .6; }\n  .chart--minor:last-child {\n    margin-bottom: 0; }\n\n.chart__label,\n.chart-group__label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  font-size: 12px;\n  margin-bottom: 7px; }\n\n.chart__range-bar {\n  width: 100%;\n  height: 3px;\n  background-color: rgba(46, 46, 46, 0.15); }\n\n.chart__header {\n  position: relative; }\n\n.chart__footer {\n  margin-top: 3px; }\n\n.chart__value {\n  font-size: 12px; }\n  .chart__value--right {\n    float: right; }\n\n.chart__value-bar {\n  height: 100%;\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n  .chart__value-bar:after {\n    content: \"\";\n    position: absolute;\n    display: inline-block;\n    height: 100%;\n    right: 0;\n    top: 0;\n    width: 1px;\n    background: #2E2E2E; }\n\n.bit-spinner {\n  animation: spin 1s linear infinite;\n  height: 10px;\n  width: 10px; }\n\n@keyframes spin {\n  0% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  6.25% {\n    box-shadow: 0px -30px transparent, 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  12.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  18.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  31.25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  37.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px transparent, -10px -30px transparent; }\n  43.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px transparent; }\n  50% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  56.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  62.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  68.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  81.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  87.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  93.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px rgba(0, 0, 0, 0.3); }\n  100% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; } }\n\n.slide {\n  max-width: 780px;\n  margin: 0 auto;\n  opacity: 0;\n  visibility: hidden;\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  transition: all .3s;\n  transform: translateX(20px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .slide.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .slide.was-active {\n    transform: translateX(-20px); }\n\n.slide__content {\n  position: relative;\n  top: -5%; }\n\n.slide__lead {\n  font-size: 32px;\n  line-height: 1.3em;\n  padding-right: 120px; }\n\n.slide__next {\n  cursor: pointer;\n  color: #3163FF;\n  text-transform: uppercase;\n  font-size: 18px;\n  letter-spacing: .05em;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  margin-top: -10px; }\n\n.slide__highlight {\n  font-style: normal;\n  color: #3163FF; }\n\n.slide__title {\n  font-family: \"Playfair Display\", serif;\n  font-size: 48px;\n  color: #3163FF;\n  line-height: 53px; }\n\n.slide__login {\n  margin-top: 50px; }\n\n.slide__login-copy {\n  font-size: 18px;\n  margin-bottom: 25px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 1.5px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--cta {\n    background: #3163FF;\n    color: #fff;\n    text-transform: uppercase;\n    letter-spacing: 0.08em; }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #3163FF;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 35px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 999;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute; }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.feed__item-container {\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item-container:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n\n.feed__item-loader {\n  position: absolute; }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  padding-top: 130px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08); }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__content {\n  border-top: 1px solid rgba(0, 0, 0, 0.08); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 38px 25px 38px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__title {\n  padding: 30px 38px 5px 38px;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.drawer__section-title {\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0; }\n\n.drawer__copy {\n  font-size: 13px;\n  line-height: 17px;\n  margin-bottom: 0; }\n\n/* \n  DRAWER ITEM — List item for account connection etc.\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 38px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 38px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n\n.onboarding__step {\n  position: fixed;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  visibility: hidden;\n  transition: all .3s;\n  transform: translateX(20px);\n  width: 430px;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  height: 100%;\n  padding: 30px;\n  overflow: scroll; }\n  .onboarding__step.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .onboarding__step.was-active {\n    transform: translateX(-20px); }\n\n.onboarding__title {\n  font-family: \"Playfair Display\", serif;\n  color: #3163FF;\n  font-size: 38px;\n  margin-bottom: 25px;\n  margin-top: 15px; }\n\n.onboarding__copy {\n  font-size: 20px;\n  line-height: 28px;\n  margin-bottom: 30px; }\n\n.onboarding__next {\n  float: right; }\n\n.onboarding__predictions {\n  margin-top: 100px;\n  clear: both; }\n\n.onboarding__group {\n  font-size: 14px;\n  margin-bottom: 15px; }\n  .onboarding__group--expandable .onboarding__group-name {\n    cursor: pointer; }\n\n.onboarding__group-name {\n  font-weight: bold;\n  margin-right: 10px;\n  text-transform: uppercase;\n  letter-spacing: 0.04em; }\n\n.onboarding__group-color {\n  width: 18px;\n  height: 18px;\n  border-radius: 100%;\n  vertical-align: middle;\n  display: inline-block;\n  margin-right: 8px;\n  position: relative;\n  top: -2px; }\n\n.onboarding__group-icon {\n  display: inline-block;\n  margin-left: 10px;\n  vertical-align: middle;\n  font-size: 16px; }\n\n.onboarding__prediction {\n  padding-left: 30px;\n  margin-bottom: 4px; }\n  .onboarding__prediction:first-child {\n    margin-top: 15px; }\n  .onboarding__prediction:last-child {\n    margin-bottom: 25px; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: 'icomoon';\n  src: url(" + __webpack_require__(186) + ");\n  src: url(" + __webpack_require__(186) + "#iefix) format(\"embedded-opentype\"), url(" + __webpack_require__(472) + ") format(\"truetype\"), url(" + __webpack_require__(473) + ") format(\"woff\"), url(" + __webpack_require__(471) + "#icomoon) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n[class^=\"icon-\"], [class*=\" icon-\"] {\n  /* use !important to prevent issues with browser extensions that change fonts */\n  font-family: 'icomoon' !important;\n  speak: none;\n  font-style: normal;\n  font-weight: normal;\n  font-variant: normal;\n  text-transform: none;\n  line-height: 1;\n  /* Better Font Rendering =========== */\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n.icon-long-arrow-forward:before {\n  content: \"\\E90B\"; }\n\n.icon-carret-down:before {\n  content: \"\\E900\"; }\n\n.icon-carret-up:before {\n  content: \"\\E901\"; }\n\n.icon-check:before {\n  content: \"\\E902\"; }\n\n.icon-cross:before {\n  content: \"\\E903\"; }\n\n.icon-facebook:before {\n  content: \"\\E904\"; }\n\n.icon-instagram:before {\n  content: \"\\E905\"; }\n\n.icon-long-arrow-back:before {\n  content: \"\\E906\"; }\n\n.icon-refresh:before {\n  content: \"\\E907\"; }\n\n.icon-semi-check:before {\n  content: \"\\E908\"; }\n\n.icon-twitter:before {\n  content: \"\\E909\"; }\n\n.icon-youtube:before {\n  content: \"\\E90A\"; }\n\n@font-face {\n  src: url(" + __webpack_require__(185) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(185) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(470) + ") format(\"woff2\"), url(" + __webpack_require__(469) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: normal; }\n\n@font-face {\n  src: url(" + __webpack_require__(184) + ");\n  /* IE < 9 */\n  src: url(" + __webpack_require__(184) + "?#) format(\"embedded-opentype\"), url(" + __webpack_require__(468) + ") format(\"woff2\"), url(" + __webpack_require__(467) + ") format(\"woff\");\n  font-family: 'InputSansCondensed';\n  font-style: normal;\n  font-weight: bold; }\n\n* {\n  box-sizing: border-box; }\n\nbody {\n  font-family: \"InputSansCondensed\", monospace;\n  overflow: hidden; }\n\na {\n  color: #2E2E2E; }\n\n.page-title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  height: 120px;\n  padding: 31px 38px;\n  z-index: 999;\n  margin: 0;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: 999; }\n  .page-title.is-inside-drawer {\n    background-color: rgba(250, 250, 250, 0.96);\n    border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n    border-right: 1px solid rgba(0, 0, 0, 0.08); }\n\n/*! normalize.css v5.0.0 | MIT License | github.com/necolas/normalize.css */\n/**\n * 1. Change the default font family in all browsers (opinionated).\n * 2. Correct the line height in all browsers.\n * 3. Prevent adjustments of font size after orientation changes in\n *    IE on Windows Phone and in iOS.\n */\n/* Document\n   ========================================================================== */\nhtml {\n  font-family: sans-serif;\n  /* 1 */\n  line-height: 1.15;\n  /* 2 */\n  -ms-text-size-adjust: 100%;\n  /* 3 */\n  -webkit-text-size-adjust: 100%;\n  /* 3 */ }\n\n/* Sections\n   ========================================================================== */\n/**\n * Remove the margin in all browsers (opinionated).\n */\nbody {\n  margin: 0; }\n\n/**\n * Add the correct display in IE 9-.\n */\narticle,\naside,\nfooter,\nheader,\nnav,\nsection {\n  display: block; }\n\n/**\n * Correct the font size and margin on `h1` elements within `section` and\n * `article` contexts in Chrome, Firefox, and Safari.\n */\nh1 {\n  font-size: 2em;\n  margin: 0.67em 0; }\n\n/* Grouping content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n * 1. Add the correct display in IE.\n */\nfigcaption,\nfigure,\nmain {\n  /* 1 */\n  display: block; }\n\n/**\n * Add the correct margin in IE 8.\n */\nfigure {\n  margin: 1em 40px; }\n\n/**\n * 1. Add the correct box sizing in Firefox.\n * 2. Show the overflow in Edge and IE.\n */\nhr {\n  box-sizing: content-box;\n  /* 1 */\n  height: 0;\n  /* 1 */\n  overflow: visible;\n  /* 2 */ }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\npre {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/* Text-level semantics\n   ========================================================================== */\n/**\n * 1. Remove the gray background on active links in IE 10.\n * 2. Remove gaps in links underline in iOS 8+ and Safari 8+.\n */\na {\n  background-color: transparent;\n  /* 1 */\n  -webkit-text-decoration-skip: objects;\n  /* 2 */ }\n\n/**\n * Remove the outline on focused links when they are also active or hovered\n * in all browsers (opinionated).\n */\na:active,\na:hover {\n  outline-width: 0; }\n\n/**\n * 1. Remove the bottom border in Firefox 39-.\n * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.\n */\nabbr[title] {\n  border-bottom: none;\n  /* 1 */\n  text-decoration: underline;\n  /* 2 */\n  text-decoration: underline dotted;\n  /* 2 */ }\n\n/**\n * Prevent the duplicate application of `bolder` by the next rule in Safari 6.\n */\nb,\nstrong {\n  font-weight: inherit; }\n\n/**\n * Add the correct font weight in Chrome, Edge, and Safari.\n */\nb,\nstrong {\n  font-weight: bolder; }\n\n/**\n * 1. Correct the inheritance and scaling of font size in all browsers.\n * 2. Correct the odd `em` font sizing in all browsers.\n */\ncode,\nkbd,\nsamp {\n  font-family: monospace, monospace;\n  /* 1 */\n  font-size: 1em;\n  /* 2 */ }\n\n/**\n * Add the correct font style in Android 4.3-.\n */\ndfn {\n  font-style: italic; }\n\n/**\n * Add the correct background and color in IE 9-.\n */\nmark {\n  background-color: #ff0;\n  color: #000; }\n\n/**\n * Add the correct font size in all browsers.\n */\nsmall {\n  font-size: 80%; }\n\n/**\n * Prevent `sub` and `sup` elements from affecting the line height in\n * all browsers.\n */\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline; }\n\nsub {\n  bottom: -0.25em; }\n\nsup {\n  top: -0.5em; }\n\n/* Embedded content\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\naudio,\nvideo {\n  display: inline-block; }\n\n/**\n * Add the correct display in iOS 4-7.\n */\naudio:not([controls]) {\n  display: none;\n  height: 0; }\n\n/**\n * Remove the border on images inside links in IE 10-.\n */\nimg {\n  border-style: none; }\n\n/**\n * Hide the overflow in IE.\n */\nsvg:not(:root) {\n  overflow: hidden; }\n\n/* Forms\n   ========================================================================== */\n/**\n * 1. Change the font styles in all browsers (opinionated).\n * 2. Remove the margin in Firefox and Safari.\n */\nbutton,\ninput,\noptgroup,\nselect,\ntextarea {\n  font-family: sans-serif;\n  /* 1 */\n  font-size: 100%;\n  /* 1 */\n  line-height: 1.15;\n  /* 1 */\n  margin: 0;\n  /* 2 */ }\n\n/**\n * Show the overflow in IE.\n * 1. Show the overflow in Edge.\n */\nbutton,\ninput {\n  /* 1 */\n  overflow: visible; }\n\n/**\n * Remove the inheritance of text transform in Edge, Firefox, and IE.\n * 1. Remove the inheritance of text transform in Firefox.\n */\nbutton,\nselect {\n  /* 1 */\n  text-transform: none; }\n\n/**\n * 1. Prevent a WebKit bug where (2) destroys native `audio` and `video`\n *    controls in Android 4.\n * 2. Correct the inability to style clickable types in iOS and Safari.\n */\nbutton,\nhtml [type=\"button\"],\n[type=\"reset\"],\n[type=\"submit\"] {\n  -webkit-appearance: button;\n  /* 2 */ }\n\n/**\n * Remove the inner border and padding in Firefox.\n */\nbutton::-moz-focus-inner,\n[type=\"button\"]::-moz-focus-inner,\n[type=\"reset\"]::-moz-focus-inner,\n[type=\"submit\"]::-moz-focus-inner {\n  border-style: none;\n  padding: 0; }\n\n/**\n * Restore the focus styles unset by the previous rule.\n */\nbutton:-moz-focusring,\n[type=\"button\"]:-moz-focusring,\n[type=\"reset\"]:-moz-focusring,\n[type=\"submit\"]:-moz-focusring {\n  outline: 1px dotted ButtonText; }\n\n/**\n * Change the border, margin, and padding in all browsers (opinionated).\n */\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em; }\n\n/**\n * 1. Correct the text wrapping in Edge and IE.\n * 2. Correct the color inheritance from `fieldset` elements in IE.\n * 3. Remove the padding so developers are not caught out when they zero out\n *    `fieldset` elements in all browsers.\n */\nlegend {\n  box-sizing: border-box;\n  /* 1 */\n  color: inherit;\n  /* 2 */\n  display: table;\n  /* 1 */\n  max-width: 100%;\n  /* 1 */\n  padding: 0;\n  /* 3 */\n  white-space: normal;\n  /* 1 */ }\n\n/**\n * 1. Add the correct display in IE 9-.\n * 2. Add the correct vertical alignment in Chrome, Firefox, and Opera.\n */\nprogress {\n  display: inline-block;\n  /* 1 */\n  vertical-align: baseline;\n  /* 2 */ }\n\n/**\n * Remove the default vertical scrollbar in IE.\n */\ntextarea {\n  overflow: auto; }\n\n/**\n * 1. Add the correct box sizing in IE 10-.\n * 2. Remove the padding in IE 10-.\n */\n[type=\"checkbox\"],\n[type=\"radio\"] {\n  box-sizing: border-box;\n  /* 1 */\n  padding: 0;\n  /* 2 */ }\n\n/**\n * Correct the cursor style of increment and decrement buttons in Chrome.\n */\n[type=\"number\"]::-webkit-inner-spin-button,\n[type=\"number\"]::-webkit-outer-spin-button {\n  height: auto; }\n\n/**\n * 1. Correct the odd appearance in Chrome and Safari.\n * 2. Correct the outline style in Safari.\n */\n[type=\"search\"] {\n  -webkit-appearance: textfield;\n  /* 1 */\n  outline-offset: -2px;\n  /* 2 */ }\n\n/**\n * Remove the inner padding and cancel buttons in Chrome and Safari on macOS.\n */\n[type=\"search\"]::-webkit-search-cancel-button,\n[type=\"search\"]::-webkit-search-decoration {\n  -webkit-appearance: none; }\n\n/**\n * 1. Correct the inability to style clickable types in iOS and Safari.\n * 2. Change font properties to `inherit` in Safari.\n */\n::-webkit-file-upload-button {\n  -webkit-appearance: button;\n  /* 1 */\n  font: inherit;\n  /* 2 */ }\n\n/* Interactive\n   ========================================================================== */\n/*\n * Add the correct display in IE 9-.\n * 1. Add the correct display in Edge, IE, and Firefox.\n */\ndetails,\nmenu {\n  display: block; }\n\n/*\n * Add the correct display in all browsers.\n */\nsummary {\n  display: list-item; }\n\n/* Scripting\n   ========================================================================== */\n/**\n * Add the correct display in IE 9-.\n */\ncanvas {\n  display: inline-block; }\n\n/**\n * Add the correct display in IE.\n */\ntemplate {\n  display: none; }\n\n/* Hidden\n   ========================================================================== */\n/**\n * Add the correct display in IE 10-.\n */\n[hidden] {\n  display: none; }\n\n.bubble circle {\n  fill: #000; }\n\n.bubble.is-me circle,\n.bubble.is-me.is-visited circle {\n  fill: #3163FF;\n  stroke-width: 0; }\n\n.bubble.is-visited circle {\n  fill: #fff;\n  stroke-width: 3px; }\n\n.bubbles-legend {\n  position: relative; }\n\n.bubbles-legend__textbox {\n  font-size: 12px;\n  position: absolute;\n  max-width: 130px; }\n\n.bubbles-legend__textbox-lead {\n  font-size: 14px;\n  font-weight: 600;\n  letter-spacing: .05em;\n  text-transform: uppercase;\n  margin: 0; }\n\n.bubbles-legend__textbox-title {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 4px; }\n\n.bubbles-legend__textbox-copy {\n  margin: 0; }\n\n.traits {\n  margin-bottom: 20px; }\n\n.trait {\n  margin-bottom: 10px; }\n\n.trait__label,\n.spectrum__label {\n  font-weight: 700; }\n\n.subs-vis__label {\n  position: absolute;\n  top: 15%;\n  transition: all .3s;\n  transform: translateX(-50%);\n  text-align: center;\n  max-width: 130px;\n  /*   &:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    left: 50%;\n    bottom: -10px;\n    height: 50px;\n    width: 1px;\n    border-right: 1px dashed $c-shade-light;\n  } */ }\n\n.subs-vis__label-text {\n  font-weight: 600;\n  font-size: 14px;\n  margin-bottom: 5px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.subs-vis__thumbs {\n  visibility: hidden;\n  opacity: 0;\n  display: none; }\n\n.check-group {\n  margin-bottom: 20px; }\n\n.check {\n  line-height: 28px;\n  cursor: pointer;\n  margin-bottom: 4px;\n  font-size: 14px;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n  .check--header {\n    font-weight: 800; }\n    .check--header .check__label {\n      cursor: pointer; }\n  .check.is-active, .check.is-semi-active {\n    font-weight: 600; }\n    .check.is-active .check__box, .check.is-semi-active .check__box {\n      color: #fcfcfc; }\n\n.check__collapse-icon {\n  font-size: 20px;\n  float: right; }\n\n.check__box {\n  display: inline-block;\n  cursor: pointer;\n  width: 18px;\n  height: 18px;\n  vertical-align: text-bottom;\n  margin-right: 10px;\n  border: 2px solid;\n  text-align: center;\n  border-radius: 100%; }\n\n.check__icon {\n  display: inline-block;\n  vertical-align: top;\n  position: relative;\n  font-size: 14px; }\n\n.loader {\n  position: absolute;\n  width: 300px;\n  height: 300px;\n  left: 50%;\n  top: 50%;\n  margin-left: -150px;\n  margin-top: -150px;\n  text-align: center;\n  z-index: 999; }\n\n.sk-cube-grid {\n  width: 40px;\n  height: 40px;\n  margin: 0 auto 30px auto; }\n\n.sk-cube-grid .sk-cube {\n  width: 33%;\n  height: 33%;\n  background-color: rgba(0, 0, 0, 0.3);\n  float: left;\n  -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;\n  animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; }\n\n.sk-cube-grid .sk-cube1 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube2 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube3 {\n  -webkit-animation-delay: 0.4s;\n  animation-delay: 0.4s; }\n\n.sk-cube-grid .sk-cube4 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube5 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n.sk-cube-grid .sk-cube6 {\n  -webkit-animation-delay: 0.3s;\n  animation-delay: 0.3s; }\n\n.sk-cube-grid .sk-cube7 {\n  -webkit-animation-delay: 0s;\n  animation-delay: 0s; }\n\n.sk-cube-grid .sk-cube8 {\n  -webkit-animation-delay: 0.1s;\n  animation-delay: 0.1s; }\n\n.sk-cube-grid .sk-cube9 {\n  -webkit-animation-delay: 0.2s;\n  animation-delay: 0.2s; }\n\n@-webkit-keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n@keyframes sk-cubeGridScaleDelay {\n  0%, 70%, 100% {\n    -webkit-transform: scale3D(1, 1, 1);\n    transform: scale3D(1, 1, 1); }\n  35% {\n    -webkit-transform: scale3D(0, 0, 1);\n    transform: scale3D(0, 0, 1); } }\n\n.nav {\n  position: fixed;\n  left: 50%;\n  top: 20px;\n  transform: translateX(-50%);\n  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);\n  border: 1px solid #2E2E2E; }\n  .nav a {\n    padding: 5px 10px;\n    text-decoration: none;\n    text-transform: uppercase;\n    color: #2E2E2E;\n    background-color: white;\n    display: inline-block;\n    min-width: 90px;\n    text-align: center; }\n    .nav a.is-active {\n      color: white;\n      background-color: #2E2E2E; }\n\n.tooltip {\n  position: fixed;\n  left: 50%;\n  top: 200px;\n  transform: translateX(-50%);\n  max-width: 250px;\n  background-color: #fff;\n  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n  padding: 15px 20px;\n  z-index: 999; }\n  .tooltip:after {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 14px;\n    height: 14px;\n    left: 50%;\n    transform: rotate(45deg) translateX(-50%);\n    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);\n    background-color: inherit; }\n  .tooltip:before {\n    content: \"\";\n    display: inline-block;\n    position: absolute;\n    bottom: -11px;\n    width: 100%;\n    height: 11px;\n    background-color: red;\n    left: 0;\n    opacity: 0; }\n  .tooltip--source {\n    text-align: center; }\n  .tooltip--dark {\n    background-color: #2E2E2E;\n    color: #fff;\n    padding: 20px; }\n  .tooltip--predictions {\n    max-width: none; }\n  .tooltip--bottom:after {\n    top: -2px;\n    bottom: auto; }\n\n.tooltip__thumb {\n  height: 60px;\n  width: 60px;\n  margin: 0 auto 12px auto;\n  background-size: cover;\n  border-radius: 100%;\n  background-position: 50% 50%; }\n\n.predictions--tooltip {\n  width: 245px; }\n  .predictions--tooltip .chart__range-bar {\n    background-color: rgba(255, 255, 255, 0.15); }\n\n.predictions--profile .chart__value-bar:after {\n  background: #fdfdfd; }\n\n.predictions__group {\n  margin-bottom: 30px; }\n  .predictions__group:last-child {\n    margin-bottom: -15px; }\n  .predictions__group:last-child {\n    margin-right: 0; }\n\n.predictions__option-group {\n  margin-bottom: 15px; }\n\n.prediction {\n  margin-bottom: 10px; }\n  .prediction.is-inactive {\n    opacity: .2; }\n\n.chart--minor {\n  margin-bottom: 10px; }\n  .chart--minor .chart__label {\n    text-transform: none;\n    letter-spacing: 0;\n    font-weight: 400;\n    opacity: .6; }\n  .chart--minor:last-child {\n    margin-bottom: 0; }\n\n.chart__label,\n.chart-group__label {\n  font-weight: 600;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  font-size: 12px;\n  margin-bottom: 7px; }\n\n.chart__range-bar {\n  width: 100%;\n  height: 3px;\n  background-color: rgba(46, 46, 46, 0.15); }\n\n.chart__header {\n  position: relative; }\n\n.chart__footer {\n  margin-top: 3px; }\n\n.chart__value {\n  font-size: 12px; }\n  .chart__value--right {\n    float: right; }\n\n.chart__value-bar {\n  height: 100%;\n  display: inline-block;\n  position: relative;\n  vertical-align: top; }\n  .chart__value-bar:after {\n    content: \"\";\n    position: absolute;\n    display: inline-block;\n    height: 100%;\n    right: 0;\n    top: 0;\n    width: 1px;\n    background: #2E2E2E; }\n\n.bit-spinner {\n  animation: spin 1s linear infinite;\n  height: 10px;\n  width: 10px; }\n\n@keyframes spin {\n  0% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  6.25% {\n    box-shadow: 0px -30px transparent, 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  12.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  18.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  31.25% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; }\n  37.5% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px transparent, -10px -30px transparent; }\n  43.75% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px rgba(0, 0, 0, 0.3), 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px transparent; }\n  50% {\n    box-shadow: 0px -30px transparent, 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px rgba(0, 0, 0, 0.3), -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  56.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px transparent, 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px rgba(0, 0, 0, 0.3), -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  62.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px transparent, 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px rgba(0, 0, 0, 0.3), -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  68.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px transparent, 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px rgba(0, 0, 0, 0.3), -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px transparent, 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px rgba(0, 0, 0, 0.3), -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  81.25% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px transparent, 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px rgba(0, 0, 0, 0.3), -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  87.5% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px transparent, 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px rgba(0, 0, 0, 0.3), -10px -30px rgba(0, 0, 0, 0.3); }\n  93.75% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px transparent, 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px rgba(0, 0, 0, 0.3); }\n  100% {\n    box-shadow: 0px -30px rgba(0, 0, 0, 0.3), 10px -30px rgba(0, 0, 0, 0.3), 20px -20px rgba(0, 0, 0, 0.3), 30px -10px rgba(0, 0, 0, 0.3), 30px 0px rgba(0, 0, 0, 0.3), 30px 10px rgba(0, 0, 0, 0.3), 20px 20px rgba(0, 0, 0, 0.3), 10px 30px rgba(0, 0, 0, 0.3), 0px 30px transparent, -10px 30px transparent, -20px 20px transparent, -30px 10px transparent, -30px 0px transparent, -30px -10px transparent, -20px -20px transparent, -10px -30px transparent; } }\n\n.slide {\n  max-width: 780px;\n  margin: 0 auto;\n  opacity: 0;\n  visibility: hidden;\n  position: fixed;\n  left: 0;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  transition: all .3s;\n  transform: translateX(20px);\n  display: flex;\n  align-items: center;\n  justify-content: center; }\n  .slide.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .slide.was-active {\n    transform: translateX(-20px); }\n\n.slide__content {\n  position: relative;\n  top: -5%; }\n\n.slide__lead {\n  font-size: 32px;\n  line-height: 1.3em;\n  padding-right: 120px; }\n\n.slide__next {\n  cursor: pointer;\n  color: #3163FF;\n  text-transform: uppercase;\n  font-size: 18px;\n  letter-spacing: .05em;\n  position: absolute;\n  right: 0;\n  top: 50%;\n  margin-top: -10px; }\n\n.slide__highlight {\n  font-style: normal;\n  color: #3163FF; }\n\n.slide__title {\n  font-family: \"Playfair Display\", serif;\n  font-size: 48px;\n  color: #3163FF;\n  line-height: 53px; }\n\n.slide__login {\n  margin-top: 50px; }\n\n.slide__login-copy {\n  font-size: 18px;\n  margin-bottom: 25px; }\n\n.btn {\n  text-decoration: none;\n  display: inline-block;\n  text-align: center;\n  color: #2E2E2E;\n  background: #fff;\n  font-size: 16px;\n  font-family: \"InputSansCondensed\", monospace;\n  border-radius: 1.5px;\n  padding: 10px 20px;\n  margin-right: 20px;\n  cursor: pointer; }\n  .btn--raised {\n    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2); }\n  .btn--cta {\n    background: #3163FF;\n    color: #fff;\n    text-transform: uppercase;\n    letter-spacing: 0.08em; }\n  .btn--big {\n    font-size: 20px;\n    padding: 13px 27px; }\n    .btn--big.btn [class*=\"icon-\"] {\n      font-size: 18px;\n      margin-right: 10px; }\n  .btn--disabled {\n    opacity: .6;\n    cursor: default; }\n  .btn--facebook {\n    background: #3163FF;\n    color: #fff; }\n  .btn--twitter {\n    background: #1AB7EA;\n    color: #fff; }\n  .btn [class*=\"icon-\"] {\n    display: inline-block;\n    margin-right: 5px; }\n  .btn--load-more {\n    position: absolute;\n    bottom: 20px;\n    right: 20px; }\n\n.sidebar {\n  height: 100%;\n  padding: 20px 35px;\n  position: fixed;\n  min-width: 200px;\n  top: 0;\n  left: 0;\n  z-index: 900;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  transition: all .3s; }\n\n.sidebar__title {\n  color: #3163FF;\n  font-family: \"Playfair Display\", serif;\n  font-size: 27px;\n  font-weight: 900;\n  line-height: 28px;\n  transition: all .3s;\n  margin-bottom: 60px; }\n\n.sidebar__links {\n  position: absolute;\n  top: 45%;\n  transform: translateY(-50%);\n  font-size: 15px; }\n\n.sidebar__link-group {\n  margin-bottom: 30px; }\n\n.sidebar__link {\n  line-height: 15px;\n  margin-bottom: 8px;\n  text-transform: uppercase;\n  letter-spacing: .08em;\n  cursor: pointer;\n  text-decoration: none;\n  color: #2E2E2E;\n  font-weight: 600;\n  font-size: 14px; }\n  .sidebar__link.is-active {\n    color: #3163FF;\n    font-weight: 700; }\n\n.sidebar__link-icon {\n  vertical-align: text-top;\n  display: inline-block;\n  margin-right: 4px; }\n\n.sidebar__platforms {\n  border-top: 1px solid rgba(0, 0, 0, 0.08);\n  padding-top: 20px; }\n\n.sidebar__platforms-title {\n  text-transform: uppercase;\n  margin-bottom: 10px;\n  color: #2E2E2E;\n  font-size: 14px; }\n\n.sidebar__platform {\n  color: rgba(0, 0, 0, 0.5);\n  display: inline-block;\n  font-size: 16px;\n  margin-right: 9px; }\n  .sidebar__platform--is-connected {\n    color: #3163FF; }\n\n.feed {\n  position: fixed;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0;\n  user-select: none; }\n  .feed.is-loading .feed__canvas {\n    opacity: .5; }\n\n.feed__canvas {\n  width: 100%;\n  height: 100%;\n  transition: opacity .3s; }\n  .feed__canvas.is-zooming div {\n    pointer-events: none; }\n\n.feed__item {\n  position: absolute; }\n  .feed__item--instagram iframe {\n    margin: 0 !important;\n    width: 100% !important; }\n  .feed__item--twitter twitterwidget {\n    margin: 0 !important; }\n  .feed__item--youtube:hover {\n    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.23); }\n\n.feed__item-container {\n  box-shadow: 0 0 10px rgba(0, 0, 0, 0.13);\n  border-radius: 4px;\n  transition: box-shadow .1s, opacity .5s; }\n  .feed__item-container:hover {\n    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.19); }\n\n.feed__item-loader {\n  position: absolute; }\n\n.drawer {\n  position: fixed;\n  z-index: 1;\n  left: 0;\n  top: 0;\n  height: 100%;\n  background-color: rgba(250, 250, 250, 0.96);\n  transition: all .3s;\n  transform: translateX(-100%);\n  margin-top: 120px;\n  padding-bottom: 120px;\n  border-right: 1px solid rgba(0, 0, 0, 0.08);\n  overflow: scroll; }\n  .drawer.is-open {\n    transform: translateX(0); }\n\n.drawer__section {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 25px 38px 25px 38px; }\n  .drawer__section--full {\n    padding-left: 0;\n    padding-right: 0; }\n\n.drawer__title {\n  padding: 30px 38px 5px 38px;\n  font-weight: bold;\n  text-transform: uppercase;\n  letter-spacing: .05em; }\n\n.drawer__section-title {\n  font-size: 12px;\n  text-transform: uppercase;\n  letter-spacing: .05em;\n  margin: 0;\n  margin-bottom: 12px; }\n\n.drawer__copy {\n  font-size: 13px;\n  line-height: 17px;\n  margin: 0; }\n\n/* \n  DRAWER ITEM — List item for account connection etc.\n*/\n.drawer__item {\n  border-bottom: 1px solid rgba(0, 0, 0, 0.08);\n  padding: 10px 38px;\n  position: relative; }\n  .drawer__item:last-child {\n    border-bottom: none; }\n  .drawer__item.is-connected .drawer__item-icon {\n    background-color: #3163FF; }\n\n.drawer__item-icon {\n  background-color: #AFAFAF;\n  display: inline-block;\n  width: 30px;\n  height: 30px;\n  text-align: center;\n  padding-top: 6px;\n  margin-right: 12px;\n  border-radius: 100%;\n  color: #fff;\n  font-size: 17px;\n  vertical-align: middle; }\n\n.drawer__item-meta {\n  transition: all .2s;\n  position: absolute;\n  right: 38px;\n  line-height: 28px;\n  opacity: 1;\n  visibility: visible;\n  transform: translateY(0);\n  color: rgba(0, 0, 0, 0.5);\n  transform: translateY(0);\n  transition: all .2s;\n  font-style: italic;\n  cursor: default; }\n  .drawer__item-meta.is-inactive {\n    opacity: 0;\n    visibility: hidden; }\n  .drawer__item-meta--01.is-inactive {\n    transform: translateY(10px); }\n  .drawer__item-meta--02.is-inactive {\n    transform: translateY(-10px); }\n\n.drawer__item-info {\n  display: inline-block;\n  margin-right: 5px; }\n\n.drawer__item-action {\n  color: #3163FF;\n  font-style: normal;\n  cursor: pointer;\n  display: inline-block;\n  margin-left: 10px; }\n  .drawer__item-action--plain {\n    color: rgba(0, 0, 0, 0.5); }\n\n.onboarding__step {\n  position: fixed;\n  left: 0;\n  top: 0;\n  opacity: 0;\n  visibility: hidden;\n  transition: all .3s;\n  transform: translateX(20px);\n  width: 430px;\n  background: linear-gradient(to right, rgba(255, 255, 255, 0.89) 40%, rgba(255, 255, 255, 0) 100%);\n  height: 100%;\n  padding: 30px;\n  overflow: scroll; }\n  .onboarding__step.is-active {\n    opacity: 1;\n    transition: all .3s .2s;\n    transform: translateX(0);\n    visibility: visible; }\n  .onboarding__step.was-active {\n    transform: translateX(-20px); }\n\n.onboarding__title {\n  font-family: \"Playfair Display\", serif;\n  color: #3163FF;\n  font-size: 38px;\n  margin-bottom: 25px;\n  margin-top: 15px; }\n\n.onboarding__copy {\n  font-size: 20px;\n  line-height: 28px;\n  margin-bottom: 30px; }\n\n.onboarding__next {\n  float: right; }\n\n.onboarding__predictions {\n  margin-top: 100px;\n  clear: both; }\n\n.onboarding__group {\n  font-size: 14px;\n  margin-bottom: 15px; }\n  .onboarding__group--expandable .onboarding__group-name {\n    cursor: pointer; }\n\n.onboarding__group-name {\n  font-weight: bold;\n  margin-right: 10px;\n  text-transform: uppercase;\n  letter-spacing: 0.04em; }\n\n.onboarding__group-color {\n  width: 18px;\n  height: 18px;\n  border-radius: 100%;\n  vertical-align: middle;\n  display: inline-block;\n  margin-right: 8px;\n  position: relative;\n  top: -2px; }\n\n.onboarding__group-icon {\n  display: inline-block;\n  margin-left: 10px;\n  vertical-align: middle;\n  font-size: 16px; }\n\n.onboarding__prediction {\n  padding-left: 30px;\n  margin-bottom: 4px; }\n  .onboarding__prediction:first-child {\n    margin-top: 15px; }\n  .onboarding__prediction:last-child {\n    margin-bottom: 25px; }\n", ""]);
 
 // exports
 

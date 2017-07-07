@@ -7,7 +7,6 @@ import Loader from 'app/components/common/Loader.jsx';
 import Tooltip from 'app/components/common/Tooltip.jsx';
 import Predictions from 'app/components/common/Predictions.jsx';
 import Options from 'app/components/others-people/Options.jsx';
-import Info from 'app/components/others-people/Info.jsx';
 import Onboarding from 'app/components/onboarding/Onboarding.jsx';
 import { getSelectedPredictions } from 'app/utility';
 import * as actions from 'app/actions';
@@ -115,11 +114,11 @@ class Others extends Component {
     return (
       <div>
         {!onboardingDone && <Onboarding currentStep={ui.onboarding} />}
-        <h1 className="page-title">the internet<br/>of other people</h1>
+        {onboardingDone && <h1 style={{width: DRAWER_WIDTH}} className="page-title is-inside-drawer">the internet<br/>of other people</h1>}
         {/*onboardingDone && <Sidebar onMenuClick={this.handleMenuClick.bind(this)} drawer={ui.drawer} offset={DRAWER_WIDTH} />*/}
-        <Drawer width={DRAWER_WIDTH} isOpen={true}>
+        {onboardingDone && <Drawer width={DRAWER_WIDTH} isOpen={true}>
           <Options />
-        </Drawer>
+        </Drawer>}
         {!allLoaded && <Loader copy="Loading remaining users" />}
         <canvas 
           width={ui.windowDimensions[0]} 

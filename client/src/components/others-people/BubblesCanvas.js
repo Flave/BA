@@ -7,6 +7,7 @@ import { forceX as d3ForceX } from 'd3-force';
 import { forceY as d3ForceY } from 'd3-force';
 import { max as d3Max } from 'd3-array';
 import { mean as d3Mean } from 'd3-array';
+import { extent as d3Extent } from 'd3-array';
 import { randomNormal as d3RandomNormal } from 'd3-random';
 
 import Bubble from './Bubble';
@@ -29,9 +30,10 @@ function BubblesCanvas() {
   let user;
   let showUser;
   let properties;
-  let maxBubbleRadius = 40;
+  let maxBubbleRadius = 35;
+  let minBubbleRadius = 20;
   let minDist = 80;
-  let pixRatio = .09;
+  let pixRatio = .15;
   let invertPixRatio = 1 / pixRatio;
   let pixDimensions;
   // to have a natural movement...
@@ -110,58 +112,160 @@ function BubblesCanvas() {
   }
 
 
-  function calculateGroupDifferences(profile, group) {
-    return d3Mean(group.properties, prop => {
-      const userValue = _find(user.predictions, {id: prop}).value;
-      const profileValue = _find(profile.predictions, {id: prop}).value;
-      return Math.abs(userValue - profileValue);
-    });
-  }
-
-
-  function calculateMaxGroupDifferences() {
-    return predictionOptions.map(group => {
-      const differences = data.map((profile, i) => {
-        return calculateGroupDifferences(profile, group);
-      });
-      return {id: group.id, value: d3Max(differences)}
-    }, 0);
-  }
-
-  function calculateDifferences(profile, maxGroupDifferences) {
-    return predictionOptions.map(group => {
-      const difference = calculateGroupDifferences(profile, group);
-      const relativeDifference = difference / _find(maxGroupDifferences, {id: group.id}).value;
-      return {
-        id: group.id,
-        relativeDifference,
-        difference
-      }
-    }
+  function getPredictionExtents() {
+    return predictions.map(({ id }) =>
+      d3Extent(data, ({ predictions }) => _find(predictions, {id}).value)
     )
   }
 
+  // converts all the predictions of the users to values that are relative 
+  // to the values (extents) that are actually occurring in the data
+  function convertToRelativeValues(extents) {
+    return data.map(profile => {
+      const relativePredictions = predictions.map(({id}, i) => {
+        const extent = extents[i];
+        const profileValue = _find(profile.predictions, {id}).value;
+        const delta = extent[1] - extent[0];
+        return (profileValue - extent[0]) / delta;
+      });
+      return {id: profile.id, predictions: relativePredictions}
+    })
+  }
+
+  // Returns a nested array of profiles and differences for each prediction.
+  function getPredictionDifferences(relativeData) {
+    const userPredictions = _find(relativeData, {id: user.id}).predictions;
+    return relativeData.map(profile => 
+      predictions.map(({ id }, i) => {
+        const userValue = userPredictions[i];
+        const profileValue = profile.predictions[i];
+        return {id, value: Math.abs(userValue - profileValue)};
+      })
+    )
+  }
+
+  // Returns a nested array of profiles and differences for each option group
+  function getGroupDifferences(predictionDifferences) {
+    return predictionDifferences.map(differences =>
+      predictionOptions.map(group => (
+        {
+          id: group.id,
+          value: d3Mean(group.properties, id =>
+            _find(differences, {id}).value
+          )
+        }
+      ))
+    )
+  }
+
+  // Returns array of profiles containing the average difference for the selected options
+  function getOverallDifferences(groupDifferences) {
+    return groupDifferences.map(profileGroupDifferences => 
+      d3Mean(profileGroupDifferences, group => group.value)
+    )
+  }
+
+  // Returns array of profiles containing the average difference for the selected options
+  function getSelectionDifferences(groupDifferences, selection) {
+    return groupDifferences.map(profileGroupDifferences => 
+      d3Mean(selection, ({ id }) => 
+        _find(profileGroupDifferences, { id }).value
+      )
+    )
+  }
+
+  // returns the maximum difference for each group
+  function getMaxGroupDifferences(groupDifferences) {
+    return predictionOptions.map(group => 
+      d3Max(groupDifferences, profileGroupDifferences => 
+        _find(profileGroupDifferences, {id: group.id}).value
+      )
+    )
+  }
+
+  // returns the maximum difference for each group
+  function getGroupDifferencesExtent(groupDifferences) {
+    return predictionOptions.map(group => 
+      d3Extent(groupDifferences, profileGroupDifferences => 
+        _find(profileGroupDifferences, {id: group.id}).value
+      )
+    )
+  }
+
+  // returns the RELATIVE difference of one profile for each group
+  function getProfileGroupDifferences(groupDifferences, groupDifferencesExtent) {
+    return groupDifferences.map((groupDifference, i) => (
+      {
+        id: groupDifference.id,
+        difference: groupDifference.value,
+        relativeDifference: (groupDifference.value - groupDifferencesExtent[i][0]) / (groupDifferencesExtent[i][1] - groupDifferencesExtent[i][0])
+      }
+    ))
+  }
+
+  function getDifferencesExtent(differences) {
+    return d3Extent(differences, difference => 
+      difference === 0 ? undefined : difference
+    )
+  }
+
+  function getDifferenceValues() {
+    const extents = getPredictionExtents();
+    const relativeData = convertToRelativeValues(extents);
+    const predictionDifferences = getPredictionDifferences(relativeData);
+    const groupDifferences = getGroupDifferences(predictionDifferences);
+    const overallDifferences = getOverallDifferences(groupDifferences);
+    const selectionDifferences = getSelectionDifferences(groupDifferences, getSelectedGroups());
+    const maxGroupDifferences = getMaxGroupDifferences(groupDifferences);
+    const groupDifferencesExtent = getGroupDifferencesExtent(groupDifferences);
+    const overallDifferenceExtent = getDifferencesExtent(overallDifferences);
+    const selectionDifferenceExtent = getDifferencesExtent(selectionDifferences);
+    const overallDifferenceDelta = overallDifferenceExtent[1] - overallDifferenceExtent[0];
+    const selectionDifferenceDelta = selectionDifferenceExtent[1] - selectionDifferenceExtent[0];
+
+    return {
+      groupDifferences,
+      overallDifferences,
+      selectionDifferences,
+      maxGroupDifferences,
+      groupDifferencesExtent,
+      overallDifferenceExtent,
+      selectionDifferenceExtent,
+      overallDifferenceDelta,
+      selectionDifferenceDelta
+    }
+  }
+
   function initializeBubbles() {
-    const getSimilarity = calculateSimilarity(user, data, properties);
-    const maxGroupDifferences = calculateMaxGroupDifferences();
+    const {
+      groupDifferences, 
+      overallDifferences, 
+      groupDifferencesExtent,
+      overallDifferenceDelta,
+      overallDifferenceExtent
+    } = getDifferenceValues();
 
     bubbles = data.map((profile, i) => {
-      const similarity = getSimilarity(profile);
-      let angle = (Math.PI * 2) / data.length * i + d3RandomNormal(0, 0.1)();
-      let dist = Math.random() * 20 + 50;
-      let x = Math.cos(angle) * dist + pixDimensions[0]/2;
-      let y = Math.sin(angle) * dist + pixDimensions[1]/2;
+      const thisIsUser = isUser(profile);
+      const overallDifference = thisIsUser ? 0 : (overallDifferences[i] - overallDifferenceExtent[0]) / overallDifferenceDelta;
+      const profileGroupDifferences = getProfileGroupDifferences(groupDifferences[i], groupDifferencesExtent);
+
+      const angle = (Math.PI * 2) / data.length * i + d3RandomNormal(0, 0.1)();
+      const dist = Math.random() * 20 + 50;
+      const x = Math.cos(angle) * dist + pixDimensions[0]/2;
+      const y = Math.sin(angle) * dist + pixDimensions[1]/2;
+      const r = (Math.sqrt(overallDifference) * (maxBubbleRadius - minBubbleRadius) + minBubbleRadius) * pixRatio;
 
       return Bubble(ctx, {
         predictions: profile.predictions,
         id: profile.id,
-        x: isUser(profile) ? pixDimensions[0] / 2 : x,
-        y: isUser(profile) ? pixDimensions[1] / 2 : y,
-        fill: isUser(profile) ? "#3163FF" : "rgba(0, 0, 0, .3)",
-        r: (Math.sqrt(similarity) * maxBubbleRadius + 2) * pixRatio,
+        x: thisIsUser ? pixDimensions[0] / 2 : x,
+        y: thisIsUser ? pixDimensions[1] / 2 : y,
+        fill: thisIsUser ? "#3163FF" : "rgba(0, 0, 0, .3)",
+        r: thisIsUser ? (minBubbleRadius * 1.5 * pixRatio) : r,
         angle,
-        isUser: isUser(profile),
-        differences: calculateDifferences(profile, maxGroupDifferences)
+        isUser: thisIsUser,
+        differences: profileGroupDifferences
       }, user);
     });
     registerEvents();
@@ -177,21 +281,25 @@ function BubblesCanvas() {
   }
 
   function updateBubbles() {
-    let selectedProperties = getSelectedPredictions(properties);
+    const {
+      selectionDifferences,
+      selectionDifferenceExtent,
+      selectionDifferenceDelta
+    } = getDifferenceValues();
+
+
     let selectedGroups = getSelectedGroups();
-    // TODO: Calculate similarity based on a max similarity which depends on 
-    // the selected properties
-    const getSimilarity = calculateSimilarity(user, data, selectedProperties);
     const shorterSide = Math.min(...dimensions);
     // TODO: margins need to be incoorporated correctly to account for height > width
     const maxDist = shorterSide/2 - margins.top - margins.bottom;
     const distScope = showUser ? (maxDist - minDist) : maxDist;
     const centerX = (dimensions[0] - margins.left - margins.right) / 2 + margins.left;
 
-    bubbles.forEach((bubble) => {
-      const profile = _find(data, {id: bubble.id});
-      const similarity = getSimilarity(profile);
-      const dist = maxDist - similarity * distScope;
+    bubbles.forEach((bubble, i) => {
+      const thisIsUser = isUser(bubble);
+      const selectionDifference = thisIsUser ? 0 : (selectionDifferences[i] - selectionDifferenceExtent[0]) / selectionDifferenceDelta;
+
+      const dist = maxDist - (1 - selectionDifference) * distScope;
       let targetX = Math.cos(bubble.angle) * dist + centerX;
       let targetY = Math.sin(bubble.angle) * dist + dimensions[1] / 2;
 

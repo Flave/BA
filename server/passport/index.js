@@ -88,6 +88,7 @@ module.exports = function(passport) {
         throw err;
       api.fetchPredictions(user)
         .then(() => {
+          console.log("predections done");
           return done(null, user);
         })
         .catch((err) => {

@@ -33,6 +33,7 @@
 
 body {
   font-family: $monospace;
+  overflow: hidden;
 }
 
 a {
@@ -45,9 +46,18 @@ a {
   font-size: 27px;
   font-weight: 900;
   line-height: 28px;
+  height: $page-title-height;
+  padding: 31px $drawer-padding;
+  z-index: 999;
   margin: 0;
   position: fixed;
-  top: 36px;
+  top: 0;
+  left: 0;
   z-index: 999;
-  left: 35px;
+
+  &.is-inside-drawer {
+    background-color: $c-drawer-background;
+    border-bottom: 1px solid $c-shade-superlight;
+    border-right: 1px solid $c-shade-superlight;
+  }
 }

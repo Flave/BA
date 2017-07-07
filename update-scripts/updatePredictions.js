@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var configDB = require('../config/db');
 var mongoose = require('mongoose');
 var User = require('../server/models/user');

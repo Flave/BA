@@ -99,6 +99,7 @@ export default class FBEmbedPost extends Component {
 
   render() {
     const { item, show, options } = this.props;
+    const halfWidth = window.innerWidth / 2;
     let itemStyle = {
       top: item.y === null ? item.siblingTop : item.y,
       left: item.x

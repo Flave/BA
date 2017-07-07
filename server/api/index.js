@@ -20,7 +20,7 @@ const platformApis = {
 // Fetching the main feed for a profile
 const fetchFeed = (user) => {
   let promises = _.map(getConnectedPlatforms(user), platform => {
-    return platformApis[platform.id].fetchFeed(user, 12)
+    return platformApis[platform.id].fetchFeed(user, 20)
   });
   return Promise.all(promises)
     .then(items => _(items).flatten(items).shuffle());
@@ -59,6 +59,7 @@ module.exports.fetchPredictions = (user) => {
     })
     .then((predictions) => {
       user.predictions = predictions;
+      console.log("saving predictions");
       return user.save().then(() => {
         return predictions;
       });

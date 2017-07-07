@@ -173,20 +173,38 @@ class BubblesLegend extends Component {
           className="bubbles-legend__canvas" ref={el => this.canvas = el}/>
         <div 
           style={{
-            right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 20, 
-            top: bubbleSpecs[2].y * INVERT_RATIO + 20,
+            left: bubbleSpecs[2].x * INVERT_RATIO + 26, 
+            top: bubbleSpecs[2].y * INVERT_RATIO - 15
+          }}
+          className="bubbles-legend__textbox">
+          <h4 className="bubbles-legend__textbox-lead">Less<br/>similar</h4>
+        </div>
+        <div 
+          style={{
+            left: bubbleSpecs[1].x * INVERT_RATIO + 40, 
+            top: bubbleSpecs[1].y * INVERT_RATIO - 15
+          }}
+          className="bubbles-legend__textbox">
+          <h4 className="bubbles-legend__textbox-lead">More<br/>similar</h4>
+        </div>
+        <div 
+          style={{
+            right: WIDTH - bubbleSpecs[2].x * INVERT_RATIO + 35, 
+            top: bubbleSpecs[2].y * INVERT_RATIO - 15,
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">1. Bubble<br/>Size</h4>
+          <h4 className="bubbles-legend__textbox-title">1.Size</h4>
+          <p className="bubbles-legend__textbox-copy">Overall<br/>similarity</p>
         </div>
         <div 
           style={{
             left: bubbleSpecs[2].x * INVERT_RATIO + 40, 
-            top: bubbleSpecs[2].y * INVERT_RATIO + 45
+            top: bubbleSpecs[2].y * INVERT_RATIO + 55
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">2. Distance</h4>
+          <h4 className="bubbles-legend__textbox-title">2.Distance</h4>
+          <p className="bubbles-legend__textbox-copy">Similarity in selected predictions</p>
         </div>
         <div 
           style={{
@@ -195,7 +213,8 @@ class BubblesLegend extends Component {
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">3. Color intensity</h4>
+          <h4 className="bubbles-legend__textbox-title">3.Color intensity</h4>
+          <p className="bubbles-legend__textbox-copy">Similarity in individual prediction</p>
         </div>
         <div 
           style={{
@@ -204,7 +223,7 @@ class BubblesLegend extends Component {
             textAlign: "right"
           }}
           className="bubbles-legend__textbox">
-          <h4 className="bubbles-legend__textbox-title">YOUR<br/>BUBBLE</h4>
+          <h4 className="bubbles-legend__textbox-lead">YOUR<br/>BUBBLE</h4>
         </div>
       </div>
     )

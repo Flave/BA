@@ -56,6 +56,7 @@ class Profile extends Component {
     let isUser = false;
     const baseProfilesLoaded = !!(profile && userProfile);
     const fullyLoaded = !!(baseProfilesLoaded && profile.subs && userProfile.subs)
+    let title;
 
     // base profile could already be loaded so we have to make sure
     // the actual profile with "subs" is loaded
@@ -72,6 +73,9 @@ class Profile extends Component {
         <Nav 
           baseUrl={match.url} 
           segments={[{key: "feed", label: "Feed"}, {key: "sources", label: "Sources"}]}/>
+        <h1 style={{width: DRAWER_WIDTH}} className={`page-title ${ui.drawer ? 'is-inside-drawer' : ''}`}>
+          {isUser ? <span>your<br/>internet</span> : <span>the internet of<br/>someone else</span>}
+        </h1>
         <Sidebar 
           profile={profile} 
           userProfile={userProfile}

@@ -9,15 +9,23 @@
 .bubbles-legend__textbox {
   font-size: 12px;
   position: absolute;
-  max-width: 125px;
+  max-width: 130px;
+}
+
+.bubbles-legend__textbox-lead {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 .bubbles-legend__textbox-title {
-  font-weight: bold;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: .05em;
   margin: 0;
-  margin-bottom: 3px;
+  margin-bottom: 4px;
 }
 
 .bubbles-legend__textbox-copy {

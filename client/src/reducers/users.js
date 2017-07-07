@@ -4,10 +4,6 @@ import { range as d3Range } from 'd3-array';
 import { randomNormal as d3RandomNormal } from 'd3-random';
 import { getFreeSpots } from 'app/utility';
 
-
-const ITEM_WIDTH = 350;
-const GRID_PADDING = 20;
-
 /*
 [
   {

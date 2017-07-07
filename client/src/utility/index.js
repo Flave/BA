@@ -1,6 +1,6 @@
 import { max as d3Max } from 'd3-array';
 import _find from 'lodash/find';
-import { ui } from 'root/constants';
+import { ui, predictionOptions } from 'root/constants';
 
 // Copies a variable number of methods from source to target.
 export const rebind = function(target, source) {
@@ -110,13 +110,19 @@ const getFreeSpotsGenerator = () => {
           return;
         }
         
-        itemsInCol.sort((itemA, itemB) => itemA.y - itemB.y);
+        itemsInCol.sort((itemA, itemB) => {
+          let aY = itemA.y !== null ? itemA.y : itemA.siblingTop - 1;
+          let bY = itemB.y !== null ? itemB.y : itemB.siblingTop - 1;
+          return aY - bY;
+        });
+
         let topItem = itemsInCol[0];
         let bottomItem = itemsInCol[itemsInCol.length - 1];
-        if(!topItem.loading && topItem.y < transform.y) {
+
+        if(topItem.loaded && topItem.y > -transform.y) {
           freeSpots.push(createNewSpot(colIndex, topItem, 'top', xOffset));
         }
-        if(!bottomItem.loading && (bottomItem.y + bottomItem.height) < bottom) {
+        if(bottomItem.loaded && (bottomItem.y + bottomItem.height) < bottom) {
           freeSpots.push(createNewSpot(colIndex, bottomItem, 'bottom', xOffset));
         }
 

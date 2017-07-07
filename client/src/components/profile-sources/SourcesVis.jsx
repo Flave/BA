@@ -16,7 +16,7 @@ function BubblesCanvas() {
   let size;
   let margins = {top: 0, right: 0, bobbotm: 0, left: 0};
   let subs;
-  let maxRadius = 25;
+  let maxRadius = 15;
   let minRadius = 2;
   let _bubblesCanvas = {};
   let bubbles;

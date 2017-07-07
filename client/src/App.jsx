@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Intro from './containers/Intro.jsx';
 import Profile from './containers/Profile.jsx';
 import OthersPeople from './containers/OthersPeople.jsx';
-import OthersContent from './containers/OthersContent.jsx';
 import *  as actions from './actions';
 import _throttle from 'lodash/throttle';
 
@@ -56,7 +55,6 @@ class App extends Component {
       return (
         <div>
           <Route path="/" exact component={OthersPeople} />
-          <Route path="/content" exact component={OthersContent} />
           <Route path="/:id" component={Profile} />
         </div>
       )

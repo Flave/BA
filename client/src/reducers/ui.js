@@ -1,4 +1,4 @@
-import { predictions, ui } from 'root/constants';
+import { predictions, ui, predictionOptions } from 'root/constants';
 import _find from 'lodash/find';
 
 const deselectedOptions = ['female', 'satisfaction_life']
@@ -61,7 +61,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         userCount: action.data && action.data.userCount,
-        onboarding: action.data.returning ? false : 3
+        onboarding: action.data.returning ? false : 0
       }
 
     case 'RECEIVE_UPDATED_USER':
@@ -130,10 +130,18 @@ function setFeedLoading(state, { profile }) {
 }
 
 function setOthersPeopleOptions(state, action) {
-  return state.othersPeopleOptions.map((option) => {
+  const nextOptions = state.othersPeopleOptions.map((option) => {
     const newOption = _find(action.options, {id: option.id});
     return newOption ? newOption : option;
   });
+
+  const selectedOptions = predictionOptions.filter(group =>
+    nextOptions.filter(prediction => 
+      group.properties.indexOf(prediction.id) !== -1 && prediction.value
+    ).length
+  )
+
+  return selectedOptions.length ? nextOptions : state.othersPeopleOptions;
 }
 
 function increaseItemsShown({ itemsShown, maxItems, itemsIncrement }) {

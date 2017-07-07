@@ -1,16 +1,16 @@
-$padding: 38px;
-
 .drawer {
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   height: 100%;
-  background-color: rgba(250, 250, 250, .96);
+  background-color: $c-drawer-background;
   transition: all .3s;
   transform: translateX(-100%);
-  padding-top: 130px;
+  margin-top: $page-title-height;
+  padding-bottom: $page-title-height;
   border-right: 1px solid $c-shade-superlight;
+  overflow: scroll;
 
   &.is-open {
     transform: translateX(0);
@@ -18,12 +18,12 @@ $padding: 38px;
 }
 
 .drawer__content {
-  border-top: 1px solid $c-shade-superlight;
+  
 }
 
 .drawer__section {
   border-bottom: 1px solid $c-shade-superlight;
-  padding: 25px $padding 25px $padding;
+  padding: 25px $drawer-padding 25px $drawer-padding;
 
   &--full {
     padding-left: 0;
@@ -34,7 +34,7 @@ $padding: 38px;
 
 
 .drawer__title {
-  padding: 30px $padding 5px $padding;
+  padding: 30px $drawer-padding 5px $drawer-padding;
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: .05em;
@@ -45,12 +45,13 @@ $padding: 38px;
   text-transform: uppercase;
   letter-spacing: .05em;
   margin: 0;
+  margin-bottom: 12px;
 }
 
 .drawer__copy {
   font-size: 13px;
   line-height: 17px;
-  margin-bottom: 0;
+  margin: 0;
 }
 
 /* 
@@ -59,7 +60,7 @@ $padding: 38px;
 
 .drawer__item {
   border-bottom: 1px solid $c-shade-superlight;
-  padding: 10px $padding;
+  padding: 10px $drawer-padding;
   position: relative;
 
   &:last-child {
@@ -90,7 +91,7 @@ $padding: 38px;
 .drawer__item-meta {
   transition: all .2s;
   position: absolute;
-  right: $padding;
+  right: $drawer-padding;
   line-height: 28px;
   opacity: 1;
   visibility: visible;

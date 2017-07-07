@@ -5,7 +5,7 @@
   min-width: 200px;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 900;
   background: linear-gradient(to right, rgba(255,255,255, .89) 40%,rgba(255,255,255,0) 100%);
   transition: all .3s;
 }
@@ -40,6 +40,7 @@
   text-decoration: none;
   color: $c-black;
   font-weight: 600;
+  font-size: 14px;
 
   &.is-active {
     color: $c-accent;
@@ -63,6 +64,7 @@
   text-transform: uppercase;
   margin-bottom: 10px;
   color: $c-black;
+  font-size: 14px;
 }
 
 .sidebar__platform {

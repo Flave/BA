@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as actions from '../actions';
 import _find from 'lodash/find';
-import LoadMoreBtn from 'app/components/profile-feed/LoadMoreBtn.jsx';
 import Feed from 'app/components/profile-feed/Feed.jsx';
 
 import {

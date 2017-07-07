@@ -29,23 +29,29 @@ const getRandomItems = require('../util').getRandomItems;
 // Fetches and ranks the subscriptions (liked pages) of a user
 const fetchRankedSubs = (user) => {
   let pages = [];
-  let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes.limit(10){name,username,picture.height(100),id,fan_count,posts.limit(3)}&access_token=' + user.facebook.token;
+  let maxItems = 400;
+  let itemsCount = 0;
+  let startUri = 'https://graph.facebook.com/v2.8/me?fields=likes.limit(50){name,username,picture.height(100),id,fan_count,posts.limit(3)}&access_token=' + user.facebook.token;
 
   const fetchPagesBatch = (batchUri) => {
     let opts = {
       uri: batchUri,
       json: true
     }
-
+    
     if(batchUri) {
       return request(opts)
         .then((response) => {
           // for some reason there is a last batch which is empty
           if(!response.likes && !response.data.length)
             return pages;
+
           const pagesBatch = response.likes ? response.likes.data : response.data;
           const nextUri = response.likes ? response.likes.paging.next : response.paging.next;
           pages = pages.concat(pagesBatch);
+          if(pages.length >= maxItems)
+            return pages;
+
           return fetchPagesBatch(nextUri);
         })
         .catch((err) => {
@@ -55,7 +61,6 @@ const fetchRankedSubs = (user) => {
       return pages;
     }
   }
-
   return fetchPagesBatch(startUri)
     .then(pages => {
       return rankPages(pages);

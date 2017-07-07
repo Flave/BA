@@ -30,18 +30,21 @@ class Others extends Component {
 
     return (
         <div className="drawer__section">
-          {predictionOptions.map((group, i) => {
-            const options = ui.othersPeopleOptions.filter(option => 
-              (group.properties.indexOf(option.id) !== -1) && option.value
-            )
+          <h3 className="drawer__section-title">Select some traits...</h3>
+          <div>
+            {predictionOptions.map((group, i) => {
+              const options = ui.othersPeopleOptions.filter(option => 
+                (group.properties.indexOf(option.id) !== -1) && option.value
+              )
 
-            return <CheckGroup
-              key={group.id}
-              option={group}
-              value={options.length}
-              color={group.color(1) + ""}
-              onChange={this.handleOptionsChange.bind(this)}/>
-          })}
+              return <CheckGroup
+                key={group.id}
+                option={group}
+                value={options.length}
+                color={group.color(1) + ""}
+                onChange={this.handleOptionsChange.bind(this)}/>
+            })}
+          </div>
         </div>
     )
   }
